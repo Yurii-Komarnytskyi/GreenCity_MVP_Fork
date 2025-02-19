@@ -196,6 +196,8 @@
     <include file="db/changelog/logs/ch-alter-table-notifications-2-Derecha.xml"/>
     <include file="db/changelog/logs/ch-alter-table-notifications-Derecha.xml"/>
     <include file="db/changelog/logs/ch-add-table-friendships-Komarnytskyi.xml"/>
+    <include file="db/changelog/logs/ch-add-achievements-1-derecha.xml"/>
+    <include file="db/changelog/logs/ch-add-user-achievements-1-derecha.xml"/>
 
 
 </databaseChangeLog>
