@@ -20,6 +20,12 @@ target/
 *.iml
 *.ipr
 
+### Eclipse ###
+core/.checkstyle
+dao/.checkstyle
+service-api/.checkstyle
+service/.checkstyle
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
