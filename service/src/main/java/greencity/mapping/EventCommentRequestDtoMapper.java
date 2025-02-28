@@ -16,8 +16,8 @@ public class EventCommentRequestDtoMapper extends AbstractConverter<EventComment
         }
 
         return EventComment.builder()
-                .text(eventCommentRequestDto.getText())
-                .createdDate(LocalDateTime.now())
-                .build();
+            .text(eventCommentRequestDto.getText())
+            .createdDate(LocalDateTime.now())
+            .build();
     }
 }

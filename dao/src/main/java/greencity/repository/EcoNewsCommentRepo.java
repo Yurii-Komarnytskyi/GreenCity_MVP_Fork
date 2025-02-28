@@ -56,8 +56,8 @@ public interface EcoNewsCommentRepo extends JpaRepository<EcoNewsComment, Long> 
      * @return count of comments, specified by {@link greencity.entity.EcoNews}
      */
     @Query(value = "SELECT count(ec.id) FROM econews_comment ec "
-            + "JOIN eco_news en ON en.id = ec.eco_news_id "
-            + "WHERE en.id = :ecoNewsId AND ec.deleted <> 'true'", nativeQuery = true)
+        + "JOIN eco_news en ON en.id = ec.eco_news_id "
+        + "WHERE en.id = :ecoNewsId AND ec.deleted <> 'true'", nativeQuery = true)
     int countEcoNewsCommentByEcoNews(Long ecoNewsId);
 
     /**

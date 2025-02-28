@@ -85,10 +85,10 @@ class EventControllerTest {
         attributes.put("trace", "Test stack trace");
 
         mockMvc = MockMvcBuilders.standaloneSetup(eventController)
-                .setControllerAdvice(new CustomExceptionHandler(errorAttributes, objectMapper))
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
-                        new UserArgumentResolver(userService, modelMapper))
-                .build();
+            .setControllerAdvice(new CustomExceptionHandler(errorAttributes, objectMapper))
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
+                new UserArgumentResolver(userService, modelMapper))
+            .build();
 
         objectMapper2 = new ObjectMapper();
         objectMapper2.registerModule(new JavaTimeModule());
@@ -158,15 +158,15 @@ class EventControllerTest {
         eventRequestDto.setTitle(null);
 
         mockMvc.perform(post("/events")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper2.writeValueAsString(eventRequestDto))
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("Validation failed"))
-                .andExpect(jsonPath("$.errors[0].message").value("Title cannot be empty"))
-                .andExpect(jsonPath("$.errors[0].field").value("title"))
-                .andReturn();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper2.writeValueAsString(eventRequestDto))
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.message").value("Validation failed"))
+            .andExpect(jsonPath("$.errors[0].message").value("Title cannot be empty"))
+            .andExpect(jsonPath("$.errors[0].field").value("title"))
+            .andReturn();
 
         verify(eventService, times(0)).createEvent(any(EventRequestDto.class));
     }
@@ -174,52 +174,51 @@ class EventControllerTest {
     @Test
     void getEventsByUserTest() throws Exception {
         EventProfilePreviewDto eventProfilePreviewDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Sample Event")
-                .creationDate(ZonedDateTime.now())
-                .eventDate(LocalDate.now().plusDays(5))
-                .eventTimeStart(LocalDateTime.now().plusHours(3))
-                .author(new AuthorDto(1L, "John Doe"))
-                .location("Online")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(true)
-                .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
-                .rating(4.5)
-                .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
-                .build();
+            .id(1L)
+            .title("Sample Event")
+            .creationDate(ZonedDateTime.now())
+            .eventDate(LocalDate.now().plusDays(5))
+            .eventTimeStart(LocalDateTime.now().plusHours(3))
+            .author(new AuthorDto(1L, "John Doe"))
+            .location("Online")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(true)
+            .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
+            .rating(4.5)
+            .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
+            .build();
 
         EventProfilePreviewDto eventProfilePreviewDto2 = EventProfilePreviewDto.builder()
-                .id(2L)
-                .title("Eco Conference 2025")
-                .creationDate(ZonedDateTime.now().minusDays(2))
-                .eventDate(LocalDate.now().plusDays(10))
-                .eventTimeStart(LocalDateTime.now().plusHours(5))
-                .author(new AuthorDto(2L, "Alice Johnson"))
-                .location("Kharkiv")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(false)
-                .mainImage(new ImageResponseDto(2L, "https://example.com/event2.jpg"))
-                .rating(4.8)
-                .participants(List.of(
-                        new UserProfilePictureDto(2L, "David", "https://example.com/user2.jpg"),
-                        new UserProfilePictureDto(3L, "Sophia", "https://example.com/user3.jpg")
-                ))
-                .build();
+            .id(2L)
+            .title("Eco Conference 2025")
+            .creationDate(ZonedDateTime.now().minusDays(2))
+            .eventDate(LocalDate.now().plusDays(10))
+            .eventTimeStart(LocalDateTime.now().plusHours(5))
+            .author(new AuthorDto(2L, "Alice Johnson"))
+            .location("Kharkiv")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(false)
+            .mainImage(new ImageResponseDto(2L, "https://example.com/event2.jpg"))
+            .rating(4.8)
+            .participants(List.of(
+                new UserProfilePictureDto(2L, "David", "https://example.com/user2.jpg"),
+                new UserProfilePictureDto(3L, "Sophia", "https://example.com/user3.jpg")))
+            .build();
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                List.of(eventProfilePreviewDto, eventProfilePreviewDto2),
-                0, 3, 10L, 5, false);
+            List.of(eventProfilePreviewDto, eventProfilePreviewDto2),
+            0, 3, 10L, 5, false);
 
         when(eventService.getAllUserEvents(anyString(), any(Pageable.class))).thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/myEvents")
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "3")
-                        .param("sort", "id,desc"))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "3")
+            .param("sort", "id,desc"))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -253,14 +252,15 @@ class EventControllerTest {
 
     @Test
     void getEventByIdTest() throws Exception {
-        eventResponseDto.setParticipants(List.of(UserProfilePictureDto.builder().id(1L).name("Masha").profilePicturePath("picture").build()));
+        eventResponseDto.setParticipants(
+            List.of(UserProfilePictureDto.builder().id(1L).name("Masha").profilePicturePath("picture").build()));
         when(eventService.getEventById(anyLong(), anyString())).thenReturn(Optional.of(eventResponseDto));
 
         MvcResult result = mockMvc.perform(get("/events/1")
-                .principal(principal)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         EventResponseDto response = objectMapper2.readValue(jsonResponse, EventResponseDto.class);
@@ -289,34 +289,34 @@ class EventControllerTest {
     @Test
     void getPastEventsByUserTest() throws Exception {
         EventProfilePreviewDto eventProfilePreviewDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Past Event")
-                .creationDate(ZonedDateTime.now().minusDays(5))
-                .eventDate(LocalDate.now().minusDays(3))
-                .eventTimeStart(LocalDateTime.now().minusHours(2))
-                .author(new AuthorDto(1L, "John Doe"))
-                .location("Online")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(true)
-                .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
-                .rating(4.5)
-                .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
-                .build();
+            .id(1L)
+            .title("Past Event")
+            .creationDate(ZonedDateTime.now().minusDays(5))
+            .eventDate(LocalDate.now().minusDays(3))
+            .eventTimeStart(LocalDateTime.now().minusHours(2))
+            .author(new AuthorDto(1L, "John Doe"))
+            .location("Online")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(true)
+            .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
+            .rating(4.5)
+            .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
+            .build();
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                List.of(eventProfilePreviewDto),
-                0, 1, 1L, 1, true);
+            List.of(eventProfilePreviewDto),
+            0, 1, 1L, 1, true);
 
         when(eventService.getAllUserPastEvents(anyString(), any(Pageable.class))).thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/myEvents/past")
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc"))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc"))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -334,34 +334,34 @@ class EventControllerTest {
     @Test
     void getLiveEventsByUserTest() throws Exception {
         EventProfilePreviewDto eventProfilePreviewDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Live Event")
-                .creationDate(ZonedDateTime.now().minusDays(1))
-                .eventDate(LocalDate.now())
-                .eventTimeStart(LocalDateTime.now().plusHours(1))
-                .author(new AuthorDto(1L, "John Doe"))
-                .location("Online")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(true)
-                .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
-                .rating(4.5)
-                .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
-                .build();
+            .id(1L)
+            .title("Live Event")
+            .creationDate(ZonedDateTime.now().minusDays(1))
+            .eventDate(LocalDate.now())
+            .eventTimeStart(LocalDateTime.now().plusHours(1))
+            .author(new AuthorDto(1L, "John Doe"))
+            .location("Online")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(true)
+            .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
+            .rating(4.5)
+            .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
+            .build();
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                List.of(eventProfilePreviewDto),
-                0, 1, 1L, 1, true);
+            List.of(eventProfilePreviewDto),
+            0, 1, 1L, 1, true);
 
         when(eventService.getAllUserLiveEvents(anyString(), any(Pageable.class))).thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/myEvents/live")
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc"))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc"))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -379,34 +379,34 @@ class EventControllerTest {
     @Test
     void getUpcomingEventsByUserTest() throws Exception {
         EventProfilePreviewDto eventProfilePreviewDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Upcoming Event")
-                .creationDate(ZonedDateTime.now().minusDays(2))
-                .eventDate(LocalDate.now().plusDays(5))
-                .eventTimeStart(LocalDateTime.now().plusDays(1).plusHours(2))
-                .author(new AuthorDto(1L, "John Doe"))
-                .location("Kharkiv")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(true)
-                .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
-                .rating(4.8)
-                .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
-                .build();
+            .id(1L)
+            .title("Upcoming Event")
+            .creationDate(ZonedDateTime.now().minusDays(2))
+            .eventDate(LocalDate.now().plusDays(5))
+            .eventTimeStart(LocalDateTime.now().plusDays(1).plusHours(2))
+            .author(new AuthorDto(1L, "John Doe"))
+            .location("Kharkiv")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(true)
+            .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
+            .rating(4.8)
+            .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
+            .build();
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                List.of(eventProfilePreviewDto),
-                0, 1, 1L, 1, true);
+            List.of(eventProfilePreviewDto),
+            0, 1, 1L, 1, true);
 
         when(eventService.getAllUserUpcomingEvents(anyString(), any(Pageable.class))).thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/myEvents/upcoming")
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc"))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc"))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -424,20 +424,20 @@ class EventControllerTest {
     @Test
     void getUpcomingEventsByUser_EmptyListTest() throws Exception {
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                Collections.emptyList(),
-                0, 1, 0L, 0, true);
+            Collections.emptyList(),
+            0, 1, 0L, 0, true);
 
         when(eventService.getAllUserUpcomingEvents(anyString(), any(Pageable.class)))
-                .thenReturn(result);
+            .thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/myEvents/upcoming")
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc"))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc"))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -457,24 +457,24 @@ class EventControllerTest {
         String userEmail = principal.getName();
 
         EventProfilePreviewPageable eventProfilePreviewPageable = new EventProfilePreviewPageable(
-                List.of(new EventProfilePreviewDto()),
-                0, 1, 1L, 1, true);
+            List.of(new EventProfilePreviewDto()),
+            0, 1, 1L, 1, true);
 
         Pageable pageable = PageRequest.of(0, 1);
 
         when(eventService.getAllUserEventsByStatus(userEmail, status, pageable))
-                .thenReturn(eventProfilePreviewPageable);
+            .thenReturn(eventProfilePreviewPageable);
 
         mockMvc.perform(get("/events/myEvents/status/{status}", status)
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.totalElements").value(1))
-                .andExpect(jsonPath("$.totalPages").value(1))
-                .andExpect(jsonPath("$.last").value(true));
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "1"))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.totalElements").value(1))
+            .andExpect(jsonPath("$.totalPages").value(1))
+            .andExpect(jsonPath("$.last").value(true));
     }
 
     @Test
@@ -541,12 +541,12 @@ class EventControllerTest {
         eventUpdateDto.setMainImage(ImageRequestDto.builder().imagePath("imagePath").build());
 
         mockMvc.perform(put("/events/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper2.writeValueAsString(eventUpdateDto))
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isBadRequest())
-                .andReturn();
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper2.writeValueAsString(eventUpdateDto))
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isBadRequest())
+            .andReturn();
 
         verify(eventService, times(0)).updateEvent(eq(1L), any(EventUpdateDto.class), eq(principal.getName()));
     }
@@ -627,50 +627,49 @@ class EventControllerTest {
     @Test
     void getAllEventsTest() throws Exception {
         EventProfilePreviewDto eventProfilePreviewDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Sample Event")
-                .creationDate(ZonedDateTime.now())
-                .eventDate(LocalDate.now().plusDays(5))
-                .eventTimeStart(LocalDateTime.now().plusHours(3))
-                .author(new AuthorDto(1L, "John Doe"))
-                .location("Online")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(true)
-                .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
-                .rating(4.5)
-                .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
-                .build();
+            .id(1L)
+            .title("Sample Event")
+            .creationDate(ZonedDateTime.now())
+            .eventDate(LocalDate.now().plusDays(5))
+            .eventTimeStart(LocalDateTime.now().plusHours(3))
+            .author(new AuthorDto(1L, "John Doe"))
+            .location("Online")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(true)
+            .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
+            .rating(4.5)
+            .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
+            .build();
 
         EventProfilePreviewDto eventProfilePreviewDto2 = EventProfilePreviewDto.builder()
-                .id(2L)
-                .title("Eco Conference 2025")
-                .creationDate(ZonedDateTime.now().minusDays(2))
-                .eventDate(LocalDate.now().plusDays(10))
-                .eventTimeStart(LocalDateTime.now().plusHours(5))
-                .author(new AuthorDto(2L, "Alice Johnson"))
-                .location("Kharkiv")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(false)
-                .mainImage(new ImageResponseDto(2L, "https://example.com/event2.jpg"))
-                .rating(4.8)
-                .participants(List.of(
-                        new UserProfilePictureDto(2L, "David", "https://example.com/user2.jpg"),
-                        new UserProfilePictureDto(3L, "Sophia", "https://example.com/user3.jpg")
-                ))
-                .build();
+            .id(2L)
+            .title("Eco Conference 2025")
+            .creationDate(ZonedDateTime.now().minusDays(2))
+            .eventDate(LocalDate.now().plusDays(10))
+            .eventTimeStart(LocalDateTime.now().plusHours(5))
+            .author(new AuthorDto(2L, "Alice Johnson"))
+            .location("Kharkiv")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(false)
+            .mainImage(new ImageResponseDto(2L, "https://example.com/event2.jpg"))
+            .rating(4.8)
+            .participants(List.of(
+                new UserProfilePictureDto(2L, "David", "https://example.com/user2.jpg"),
+                new UserProfilePictureDto(3L, "Sophia", "https://example.com/user3.jpg")))
+            .build();
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                List.of(eventProfilePreviewDto, eventProfilePreviewDto2),
-                0, 3, 10L, 5, false);
+            List.of(eventProfilePreviewDto, eventProfilePreviewDto2),
+            0, 3, 10L, 5, false);
 
         when(eventService.getAllEventsPageable(any(Pageable.class))).thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("page", "0")
-                        .param("size", "3"))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .param("page", "0")
+            .param("size", "3"))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -689,34 +688,34 @@ class EventControllerTest {
     void searchEventByTitleTest() throws Exception {
         String title = "Upcoming Event";
         EventProfilePreviewDto eventProfilePreviewDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Upcoming Event")
-                .creationDate(ZonedDateTime.now().minusDays(2))
-                .eventDate(LocalDate.now().plusDays(5))
-                .eventTimeStart(LocalDateTime.now().plusDays(1).plusHours(2))
-                .author(new AuthorDto(1L, "John Doe"))
-                .location("Kharkiv")
-                .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
-                .isOpen(true)
-                .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
-                .rating(4.8)
-                .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
-                .build();
+            .id(1L)
+            .title("Upcoming Event")
+            .creationDate(ZonedDateTime.now().minusDays(2))
+            .eventDate(LocalDate.now().plusDays(5))
+            .eventTimeStart(LocalDateTime.now().plusDays(1).plusHours(2))
+            .author(new AuthorDto(1L, "John Doe"))
+            .location("Kharkiv")
+            .initiativeTypes(List.of(new InitiativeTypeResponseDto(3L, "Economic")))
+            .isOpen(true)
+            .mainImage(new ImageResponseDto(1L, "https://example.com/image.jpg"))
+            .rating(4.8)
+            .participants(List.of(new UserProfilePictureDto(1L, "Maria", "https://example.com/user1.jpg")))
+            .build();
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                List.of(eventProfilePreviewDto),
-                0, 1, 1L, 1, true);
+            List.of(eventProfilePreviewDto),
+            0, 1, 1L, 1, true);
 
         when(eventService.getEventsByTitle(eq(title), any(Pageable.class))).thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/search")
-                        .param("title", title)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+            .param("title", title)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -736,20 +735,20 @@ class EventControllerTest {
         String title = "Non-existent Event";
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                Collections.emptyList(),
-                0, 1, 0L, 0, true);
+            Collections.emptyList(),
+            0, 1, 0L, 0, true);
 
         when(eventService.getEventsByTitle(eq(title), any(Pageable.class)))
-                .thenReturn(result);
+            .thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/search")
-                        .param("title", title)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+            .param("title", title)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);
@@ -767,20 +766,20 @@ class EventControllerTest {
         String invalidTitle = "";
 
         EventProfilePreviewPageable result = new EventProfilePreviewPageable(
-                Collections.emptyList(),
-                0, 1, 0L, 0, true);
+            Collections.emptyList(),
+            0, 1, 0L, 0, true);
 
         when(eventService.getEventsByTitle(eq(invalidTitle), any(Pageable.class)))
-                .thenReturn(result);
+            .thenReturn(result);
 
         MvcResult mvcResult = mockMvc.perform(get("/events/search")
-                        .param("title", invalidTitle)
-                        .param("page", "0")
-                        .param("size", "1")
-                        .param("sort", "id,desc")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+            .param("title", invalidTitle)
+            .param("page", "0")
+            .param("size", "1")
+            .param("sort", "id,desc")
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = mvcResult.getResponse().getContentAsString();
         EventProfilePreviewPageable response = objectMapper2.readValue(jsonResponse, EventProfilePreviewPageable.class);

@@ -18,20 +18,20 @@ public class UserAchievementController {
 
     private final UserAchievementService userAchievementService;
 
-
     @PostMapping
-    public ResponseEntity<UserAchievementResponseDto> addNewUserAchievement(@RequestBody UserAchievementRequestDto newUserAchievement){
+    public ResponseEntity<UserAchievementResponseDto> addNewUserAchievement(
+        @RequestBody UserAchievementRequestDto newUserAchievement) {
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(userAchievementService.addUserAchievement(newUserAchievement));
+            .body(userAchievementService.addUserAchievement(newUserAchievement));
     }
 
     @GetMapping("/{userId}")
-    public ResponseEntity<List<UserAchievementResponseDto>> getAllUserAchievements(@PathVariable Long userId){
+    public ResponseEntity<List<UserAchievementResponseDto>> getAllUserAchievements(@PathVariable Long userId) {
 
         List<UserAchievementResponseDto> foundUserAchievements = userAchievementService.getAllUserAchievements(userId);
 
-        if(foundUserAchievements.isEmpty())
+        if (foundUserAchievements.isEmpty())
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(List.of());
 
         return ResponseEntity.status(HttpStatus.OK).body(foundUserAchievements);
@@ -39,13 +39,11 @@ public class UserAchievementController {
 
     @GetMapping
     public ResponseEntity<UserAchievementResponseDto> getUserAchievement(@RequestParam Long userId,
-                                                                         @RequestParam Long achievementId){
+        @RequestParam Long achievementId) {
         UserAchievementRequestDto userAchievementRequestDto = new UserAchievementRequestDto(userId, achievementId);
 
         return ResponseEntity.status(HttpStatus.OK)
-                .body(userAchievementService.getUserAchievementByIds(userAchievementRequestDto));
+            .body(userAchievementService.getUserAchievementByIds(userAchievementRequestDto));
     }
-
-
 
 }

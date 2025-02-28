@@ -37,13 +37,13 @@ public class MultipartBase64ImageMapper extends AbstractConverter<String, Multip
             BufferedImage bufferedImage = ImageIO.read(bis);
             ImageIO.write(bufferedImage, "png", tempFile);
             FileItem fileItem = new DiskFileItem("mainFile", Files.probeContentType(tempFile.toPath()),
-                    false, tempFile.getName(), (int) tempFile.length(), tempFile.getParentFile());
+                false, tempFile.getName(), (int) tempFile.length(), tempFile.getParentFile());
             try (InputStream input = new FileInputStream(tempFile);
-                 OutputStream outputStream = fileItem.getOutputStream()) {
+                OutputStream outputStream = fileItem.getOutputStream()) {
                 IOUtils.copy(input, outputStream);
                 outputStream.flush();
                 return new MultipartFileImpl("mainFile", tempFile.getName(),
-                        Files.probeContentType(tempFile.toPath()), Files.readAllBytes(tempFile.toPath()));
+                    Files.probeContentType(tempFile.toPath()), Files.readAllBytes(tempFile.toPath()));
             }
         } catch (IOException e) {
             throw new NotSavedException("Cannot convert to BASE64 image");

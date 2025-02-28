@@ -42,7 +42,7 @@ public class HabitStatisticController {
     @GetMapping("/{habitId}")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = List.class))),
+            content = @Content(schema = @Schema(implementation = List.class))),
         @ApiResponse(responseCode = "404", description = HttpStatuses.NOT_FOUND)
     })
     public ResponseEntity<GetHabitStatisticDto> findAllByHabitId(
@@ -60,7 +60,7 @@ public class HabitStatisticController {
     @GetMapping("/assign/{habitAssignId}")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(array = @ArraySchema(schema = @Schema(implementation = HabitStatisticDto.class)))),
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = HabitStatisticDto.class)))),
         @ApiResponse(responseCode = "404", description = HttpStatuses.NOT_FOUND)
     })
     public ResponseEntity<List<HabitStatisticDto>> findAllStatsByHabitAssignId(
@@ -82,7 +82,7 @@ public class HabitStatisticController {
     @Operation(summary = "add statistic by habit id that is assigned for current user.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = HttpStatuses.CREATED,
-                content = @Content(schema = @Schema(implementation = HabitStatisticDto.class))),
+            content = @Content(schema = @Schema(implementation = HabitStatisticDto.class))),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "401", description = HttpStatuses.UNAUTHORIZED)
@@ -109,7 +109,7 @@ public class HabitStatisticController {
     @Operation(summary = "Update habit statistic.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = HabitStatisticDto.class))),
+            content = @Content(schema = @Schema(implementation = HabitStatisticDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "401", description = HttpStatuses.UNAUTHORIZED),
         @ApiResponse(responseCode = "404", description = HttpStatuses.NOT_FOUND)
@@ -137,7 +137,7 @@ public class HabitStatisticController {
     @Operation(summary = "Get today's statistic for all habit items.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(array = @ArraySchema(schema = @Schema(implementation = HabitStatisticDto.class)))),
+            content = @Content(array = @ArraySchema(schema = @Schema(implementation = HabitStatisticDto.class)))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST)
     })
     @GetMapping("/todayStatisticsForAllHabitItems")

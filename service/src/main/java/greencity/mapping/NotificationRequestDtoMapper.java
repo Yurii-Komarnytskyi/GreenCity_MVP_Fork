@@ -24,11 +24,11 @@ public class NotificationRequestDtoMapper extends AbstractConverter<Notification
     public Notification convert(NotificationRequestDto notificationRequestDto) {
 
         return Notification.builder()
-                .message(notificationRequestDto.getMessage())
-                .createdAt(LocalDateTime.now())
-                .section(NotificationSection.valueOf(notificationRequestDto.getSection()))
-                .description(notificationRequestDto.getDescription())
-                .linkToFollow(notificationRequestDto.getLinkToFollow())
-                .build();
+            .message(notificationRequestDto.getMessage())
+            .createdAt(LocalDateTime.now())
+            .section(NotificationSection.valueOf(notificationRequestDto.getSection()))
+            .description(notificationRequestDto.getDescription())
+            .linkToFollow(notificationRequestDto.getLinkToFollow())
+            .build();
     }
 }

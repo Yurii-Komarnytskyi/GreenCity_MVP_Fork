@@ -24,4 +24,3 @@ public class ConsistentDateTimeFieldsValidator implements ConstraintValidator<Co
         return startTime.isBefore(endTime);
     }
 }
-

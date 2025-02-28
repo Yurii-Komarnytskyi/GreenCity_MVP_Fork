@@ -46,44 +46,43 @@ class EventDateInfoServiceImplTest {
     @BeforeEach
     void setUp() {
         eventDateInfoRequestDto = EventDateInfoRequestDto.builder()
-                .eventDate(LocalDate.now())
-                .eventTimeStart(LocalDateTime.now())
-                .eventTimeEnd(LocalDateTime.now().plusHours(1))
-                .isAllDay(true)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Location")
-                .url("http://example.com")
-                .build();
+            .eventDate(LocalDate.now())
+            .eventTimeStart(LocalDateTime.now())
+            .eventTimeEnd(LocalDateTime.now().plusHours(1))
+            .isAllDay(true)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Location")
+            .url("http://example.com")
+            .build();
 
         event = new Event();
         event.setId(1L);
 
         eventDateInfo = EventDateInfo.builder()
-                .id(1L)
-                .event(event)
-                .eventDate(eventDateInfoRequestDto.getEventDate())
-                .eventTimeStart(eventDateInfoRequestDto.getEventTimeStart())
-                .eventTimeEnd(eventDateInfoRequestDto.getEventTimeEnd())
-                .isAllDay(eventDateInfoRequestDto.getIsAllDay())
-                .isPlace(eventDateInfoRequestDto.getIsPlace())
-                .isOnline(eventDateInfoRequestDto.getIsOnline())
-                .location(eventDateInfoRequestDto.getLocation())
-                .url(eventDateInfoRequestDto.getUrl())
-                .build();
-
+            .id(1L)
+            .event(event)
+            .eventDate(eventDateInfoRequestDto.getEventDate())
+            .eventTimeStart(eventDateInfoRequestDto.getEventTimeStart())
+            .eventTimeEnd(eventDateInfoRequestDto.getEventTimeEnd())
+            .isAllDay(eventDateInfoRequestDto.getIsAllDay())
+            .isPlace(eventDateInfoRequestDto.getIsPlace())
+            .isOnline(eventDateInfoRequestDto.getIsOnline())
+            .location(eventDateInfoRequestDto.getLocation())
+            .url(eventDateInfoRequestDto.getUrl())
+            .build();
 
         eventDateInfoResponseDto = EventDateInfoResponseDto.builder()
-                .id(eventDateInfo.getId())
-                .eventDate(eventDateInfo.getEventDate())
-                .eventTimeStart(eventDateInfo.getEventTimeStart())
-                .eventTimeEnd(eventDateInfo.getEventTimeEnd())
-                .isAllDay(eventDateInfo.isAllDay())
-                .isPlace(eventDateInfo.isPlace())
-                .isOnline(eventDateInfo.isOnline())
-                .location(eventDateInfo.getLocation())
-                .url(eventDateInfo.getUrl())
-                .build();
+            .id(eventDateInfo.getId())
+            .eventDate(eventDateInfo.getEventDate())
+            .eventTimeStart(eventDateInfo.getEventTimeStart())
+            .eventTimeEnd(eventDateInfo.getEventTimeEnd())
+            .isAllDay(eventDateInfo.isAllDay())
+            .isPlace(eventDateInfo.isPlace())
+            .isOnline(eventDateInfo.isOnline())
+            .location(eventDateInfo.getLocation())
+            .url(eventDateInfo.getUrl())
+            .build();
     }
 
     @Test

@@ -24,7 +24,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     /**
      * Constructor.
-     * 
+     *
      * @param jwtTool {@link JwtTool}
      */
     public JwtAuthenticationProvider(JwtTool jwtTool) {
@@ -49,20 +49,20 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
     public Authentication authenticate(Authentication authentication) {
         SecretKey key = Keys.hmacShaKeyFor(jwtTool.getAccessTokenKey().getBytes());
         String email = Jwts.parser()
-                .verifyWith(key).build()
-                .parseSignedClaims(authentication.getName())
-                .getPayload()
-                .getSubject();
+            .verifyWith(key).build()
+            .parseSignedClaims(authentication.getName())
+            .getPayload()
+            .getSubject();
         @SuppressWarnings({"unchecked, rawtype"})
         List<String> authorities = (List<String>) Jwts.parser()
-                .verifyWith(key).build()
-                .parseSignedClaims(authentication.getName())
-                .getPayload()
-                .get(ROLE);
+            .verifyWith(key).build()
+            .parseSignedClaims(authentication.getName())
+            .getPayload()
+            .get(ROLE);
         return new UsernamePasswordAuthenticationToken(
-                email,
-                "",
-                authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+            email,
+            "",
+            authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
     }
 
     /**

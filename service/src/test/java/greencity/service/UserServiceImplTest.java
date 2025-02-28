@@ -51,15 +51,15 @@ class UserServiceImplTest {
     private ModelMapper modelMapper;
 
     private UserVO userVO = UserVO.builder()
-            .id(1L)
-            .name("Test Testing")
-            .email("test@gmail.com")
-            .role(Role.ROLE_USER)
-            .userStatus(ACTIVATED)
-            .emailNotification(EmailNotification.DISABLED)
-            .lastActivityTime(LocalDateTime.of(2020, 10, 10, 20, 10, 10))
-            .dateOfRegistration(LocalDateTime.now())
-            .build();
+        .id(1L)
+        .name("Test Testing")
+        .email("test@gmail.com")
+        .role(Role.ROLE_USER)
+        .userStatus(ACTIVATED)
+        .emailNotification(EmailNotification.DISABLED)
+        .lastActivityTime(LocalDateTime.of(2020, 10, 10, 20, 10, 10))
+        .dateOfRegistration(LocalDateTime.now())
+        .build();
 
     @Test
     void findByIdTest() {
@@ -234,16 +234,16 @@ class UserServiceImplTest {
         managementVOsList.add(userManagementVO);
         Page<UserManagementVO> page = new PageImpl<>(managementVOsList, pageable, 1);
         when(userRepo.findAllManagementVo(any(greencity.repository.options.UserFilter.class), eq(pageable)))
-                .thenReturn(page);
+            .thenReturn(page);
 
         // when
         PageableDto<UserManagementVO> allUsersByCriteria =
-                userService.getAllUsersByCriteria("Test", "ROLE_ADMIN", "ACTIVATED", pageable);
+            userService.getAllUsersByCriteria("Test", "ROLE_ADMIN", "ACTIVATED", pageable);
 
         // then
         assertTrue(allUsersByCriteria.getPage().contains(userManagementVO));
         verify(userRepo, times(1)).findAllManagementVo(any(greencity.repository.options.UserFilter.class),
-                eq(pageable));
+            eq(pageable));
     }
 
     @Test

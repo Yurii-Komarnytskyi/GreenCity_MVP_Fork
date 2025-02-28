@@ -8,7 +8,7 @@ import lombok.*;
 @Setter
 @Builder
 @EqualsAndHashCode
-public class    UserFilterDtoResponse {
+public class UserFilterDtoResponse {
     private Long id;
     private String name;
     private String searchCriteria;

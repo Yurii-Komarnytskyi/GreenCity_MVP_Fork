@@ -5,11 +5,11 @@ import greencity.dto.notification.NotificationResponseDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-
 public interface NotificationService {
 
     /**
-     * Method to create a new Notification by passing {@link NotificationRequestDto} as an input parameter
+     * Method to create a new Notification by passing {@link NotificationRequestDto}
+     * as an input parameter
      *
      * @param newNotification as a DTO to create a new notification
      * @return {@link NotificationResponseDto}.
@@ -20,7 +20,7 @@ public interface NotificationService {
     /**
      * Method get all the notifications that have been sent by some sender
      *
-     * @param senderId  to get all notifications by sender as Pageable
+     * @param senderId to get all notifications by sender as Pageable
      * @param pageable
      * @return {@link Page<NotificationResponseDto>}.
      * @author Mykhailo Derecha
@@ -30,7 +30,7 @@ public interface NotificationService {
     /**
      * Method get all the notifications that have been received by some receiver
      *
-     * @param receiverId  to get all notifications by receiverId as Pageable
+     * @param receiverId to get all notifications by receiverId as Pageable
      * @param pageable
      * @return {@link Page<NotificationResponseDto>}.
      * @author Mykhailo Derecha
@@ -40,7 +40,7 @@ public interface NotificationService {
     /**
      * Method get all the notifications whether being viewed or not
      *
-     * @param viewedStatus  to get all notifications by viewedStatus
+     * @param viewedStatus to get all notifications by viewedStatus
      * @param pageable
      * @return {@link Page<NotificationResponseDto>}.
      * @author Mykhailo Derecha

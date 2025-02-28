@@ -40,8 +40,8 @@ public class SearchController {
     @ApiLocale
     @GetMapping("")
     public ResponseEntity<SearchResponseDto> search(
-            @Parameter(description = "Query to search") @RequestParam String searchQuery,
-            @Parameter(hidden = true) @ValidLanguage Locale locale) {
+        @Parameter(description = "Query to search") @RequestParam String searchQuery,
+        @Parameter(hidden = true) @ValidLanguage Locale locale) {
         return ResponseEntity.status(HttpStatus.OK).body(searchService.search(searchQuery, locale.getLanguage()));
     }
 

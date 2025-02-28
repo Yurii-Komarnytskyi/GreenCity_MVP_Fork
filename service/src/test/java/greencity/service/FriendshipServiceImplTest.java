@@ -101,7 +101,6 @@ public class FriendshipServiceImplTest {
         requestedFriendshipDto.setRecipientId(user2.getId());
     }
 
-
     @Test
     @DisplayName("Finds mutual friends successfully for two users with common friends")
     void testGetAllMutualFriendsByUserId_Positive() {
@@ -137,7 +136,6 @@ public class FriendshipServiceImplTest {
         assertTrue(result.isEmpty());
     }
 
-
     @Test
     @DisplayName("Gets all friends for a user successfully")
     void testGetAllFriendsByUserId_Positive() {
@@ -159,7 +157,6 @@ public class FriendshipServiceImplTest {
 
         assertTrue(result.isEmpty());
     }
-
 
     @Test
     @DisplayName("Requests friendship successfully and sends notification")
@@ -185,7 +182,6 @@ public class FriendshipServiceImplTest {
         verify(notificationService, never()).addNotification(any(NotificationRequestDto.class));
     }
 
-
     @Test
     @DisplayName("Cancels friendship request and sends notification")
     void testCancelFriendshipRequestByUserId_Positive() {
@@ -209,7 +205,6 @@ public class FriendshipServiceImplTest {
         verify(friendshipRepo, never()).save(any(Friendship.class));
         verify(notificationService, never()).addNotification(any(NotificationRequestDto.class));
     }
-
 
     @Test
     @DisplayName("Accepts friendship request and sends notification")
@@ -235,7 +230,6 @@ public class FriendshipServiceImplTest {
         verify(notificationService, never()).addNotification(any(NotificationRequestDto.class));
     }
 
-
     @Test
     @DisplayName("Declines friendship request and sends notification")
     void testDeclineFriendshipRequestByUserId_Positive() {
@@ -260,7 +254,6 @@ public class FriendshipServiceImplTest {
         verify(notificationService, never()).addNotification(any(NotificationRequestDto.class));
     }
 
-
     @Test
     void testGetFriendshipStatusByUserId_Positive() {
         when(friendshipRepo.findFriendshipByEitherUserId(userId, targetUserId)).thenReturn(Optional.of(friendship1));
@@ -280,7 +273,6 @@ public class FriendshipServiceImplTest {
 
         assertFalse(result.isPresent());
     }
-
 
     @Test
     @DisplayName("Successfully deletes a friendship")
@@ -304,7 +296,6 @@ public class FriendshipServiceImplTest {
         verify(friendshipRepo, never()).delete(any(Friendship.class));
     }
 
-
     @Test
     @DisplayName("Identifies users as friends successfully")
     void testAreFriends_Positive() {
@@ -324,7 +315,6 @@ public class FriendshipServiceImplTest {
 
         assertFalse(result);
     }
-
 
     @Test
     @DisplayName("Blocks friendship request and sends notification")
@@ -349,7 +339,6 @@ public class FriendshipServiceImplTest {
         verify(friendshipRepo, never()).save(any(Friendship.class));
         verify(notificationService, never()).addNotification(any(NotificationRequestDto.class));
     }
-
 
     @Test
     @DisplayName("Gets all friendship requests for a user successfully")

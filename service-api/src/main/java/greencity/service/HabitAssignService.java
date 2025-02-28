@@ -11,7 +11,7 @@ public interface HabitAssignService {
     /**
      * Method to find {@code HabitAssign} by habitAssignId, userId and specific
      * language.
-     * 
+     *
      * @param userId        {@code User} id.
      * @param habitAssignId {@code HabitAssign} id.
      * @param language      {@link String} of language code value.

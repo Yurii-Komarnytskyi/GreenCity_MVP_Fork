@@ -49,10 +49,9 @@ public class Event {
 
     @ManyToMany
     @JoinTable(
-            name = "event_initiative_type",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "initiative_type_id")
-    )
+        name = "event_initiative_type",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "initiative_type_id"))
     private List<InitiativeType> initiativeTypes = new ArrayList<>();
 
     @Column(name = "is_open")
@@ -60,10 +59,9 @@ public class Event {
 
     @ManyToMany
     @JoinTable(
-            name = "event_image",
-            joinColumns = @JoinColumn(name = "event_id"),
-            inverseJoinColumns = @JoinColumn(name = "image_id")
-    )
+        name = "event_image",
+        joinColumns = @JoinColumn(name = "event_id"),
+        inverseJoinColumns = @JoinColumn(name = "image_id"))
     private Set<Image> images = new HashSet<>();
 
     @ManyToOne

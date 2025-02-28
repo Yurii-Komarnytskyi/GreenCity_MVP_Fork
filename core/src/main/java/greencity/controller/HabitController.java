@@ -52,7 +52,7 @@ public class HabitController {
     @Operation(summary = "Find habit by id.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = HabitDto.class))),
+            content = @Content(schema = @Schema(implementation = HabitDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "404", description = HttpStatuses.NOT_FOUND),
     })
@@ -211,7 +211,7 @@ public class HabitController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = HttpStatuses.CREATED,
-                content = @Content(schema = @Schema(implementation = AddCustomHabitDtoResponse.class))),
+            content = @Content(schema = @Schema(implementation = AddCustomHabitDtoResponse.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "401", description = HttpStatuses.UNAUTHORIZED),
         @ApiResponse(responseCode = "404", description = HttpStatuses.NOT_FOUND),

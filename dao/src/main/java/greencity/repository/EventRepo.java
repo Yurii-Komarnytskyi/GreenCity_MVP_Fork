@@ -51,66 +51,68 @@ public interface EventRepo extends JpaRepository<Event, Long> {
     List<Event> findAllByCreationDateBetween(ZonedDateTime startDate, ZonedDateTime endDate);
 
     @Query("""
-            SELECT e FROM Event e 
-            WHERE (e.author.id = :userId OR EXISTS (
-                SELECT p FROM Participation p WHERE p.id.event.id = e.id AND p.id.user.id = :userId
+        SELECT e FROM Event e
+        WHERE (e.author.id = :userId OR EXISTS (
+            SELECT p FROM Participation p WHERE p.id.event.id = e.id AND p.id.user.id = :userId
+        ))
+        AND (
+            (:type = 'PAST' AND EXISTS (
+                SELECT d FROM EventDateInfo d WHERE d.event = e AND d.eventTimeEnd < :now
             ))
-            AND (
-                (:type = 'PAST' AND EXISTS (
-                    SELECT d FROM EventDateInfo d WHERE d.event = e AND d.eventTimeEnd < :now
-                ))
-                OR (:type = 'LIVE' AND EXISTS (
-                    SELECT d FROM EventDateInfo d WHERE d.event = e AND d.eventTimeStart <= :now AND d.eventTimeEnd >= :now
-                ))
-                OR (:type = 'UPCOMING' AND EXISTS (
-                    SELECT d FROM EventDateInfo d WHERE d.event = e AND d.eventTimeStart > :now
-                ))
-            )
-            """)
+            OR (:type = 'LIVE' AND EXISTS (
+                SELECT d FROM EventDateInfo d WHERE d.event = e AND d.eventTimeStart <= :now AND d.eventTimeEnd >= :now
+            ))
+            OR (:type = 'UPCOMING' AND EXISTS (
+                SELECT d FROM EventDateInfo d WHERE d.event = e AND d.eventTimeStart > :now
+            ))
+        )
+        """)
     Page<Event> findUserEventsByTime(@Param("userId") Long userId,
-                                     @Param("now") LocalDateTime now,
-                                     @Param("type") String type,
-                                     Pageable pageable);
+        @Param("now") LocalDateTime now,
+        @Param("type") String type,
+        Pageable pageable);
 
     List<Event> findAllByAuthorId(Long userId);
 
     @Query("""
-            SELECT e FROM Event e 
-            WHERE e.author.id = :userId 
-            OR EXISTS (
-                SELECT p FROM Participation p WHERE p.id.event.id = e.id AND p.id.user.id = :userId
-            )
-            """)
+        SELECT e FROM Event e
+        WHERE e.author.id = :userId
+        OR EXISTS (
+            SELECT p FROM Participation p WHERE p.id.event.id = e.id AND p.id.user.id = :userId
+        )
+        """)
     Page<Event> findAllByAuthorOrParticipant(@Param("userId") Long userId, Pageable pageable);
 
     @Query("SELECT e FROM Event e JOIN EventDateInfo edi ON edi.event.id = e.id " +
-            "WHERE e.author.id = :authorId " +
-            "AND edi.isOnline = :isOnline " +
-            "AND (" +
-            "   (:isOnline = true AND edi.eventDate = (SELECT MIN(edi2.eventDate) FROM EventDateInfo edi2 WHERE edi2.event.id = e.id)) " +
-            "   OR " +
-            "   (:isOnline = false AND edi.location = (SELECT edi3.location FROM EventDateInfo edi3 WHERE edi3.event.id = e.id))" +
-            ")")
+        "WHERE e.author.id = :authorId " +
+        "AND edi.isOnline = :isOnline " +
+        "AND (" +
+        "   (:isOnline = true AND edi.eventDate = (SELECT MIN(edi2.eventDate) FROM EventDateInfo edi2 WHERE edi2.event.id = e.id)) "
+        +
+        "   OR " +
+        "   (:isOnline = false AND edi.location = (SELECT edi3.location FROM EventDateInfo edi3 WHERE edi3.event.id = e.id))"
+        +
+        ")")
     Page<Event> findEventsByAuthorAndFirstDayOnlineStatus(@Param("authorId") Long authorId,
-                                                          @Param("isOnline") boolean isOnline,
-                                                          Pageable pageable);
+        @Param("isOnline") boolean isOnline,
+        Pageable pageable);
 
     @Query("""
-                SELECT e FROM Event e
-                JOIN EventDateInfo edi ON edi.event = e
-                WHERE edi.numOfDayInEvent = 1
-                ORDER BY edi.eventTimeStart ASC
-            """)
+            SELECT e FROM Event e
+            JOIN EventDateInfo edi ON edi.event = e
+            WHERE edi.numOfDayInEvent = 1
+            ORDER BY edi.eventTimeStart ASC
+        """)
     Page<Event> findAllSortedByStartDateAsc(Pageable pageable);
 
     @Query("SELECT e FROM Event e " +
-            "WHERE LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
-            "ORDER BY e.title ASC")
+        "WHERE LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
+        "ORDER BY e.title ASC")
     Page<Event> findByTitleContainingIgnoreCaseSortedByTitle(@Param("title") String title, Pageable pageable);
 
     @Query("SELECT e FROM Event e " +
-            "JOIN EventDateInfo edi ON edi.event = e " +
-            "WHERE LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
-            "ORDER BY edi.eventTimeStart ASC")
+        "JOIN EventDateInfo edi ON edi.event = e " +
+        "WHERE LOWER(e.title) LIKE LOWER(CONCAT('%', :title, '%')) " +
+        "ORDER BY edi.eventTimeStart ASC")
     Page<Event> findByTitleContainingIgnoreCaseSortedByDate(@Param("title") String title, Pageable pageable);
 }

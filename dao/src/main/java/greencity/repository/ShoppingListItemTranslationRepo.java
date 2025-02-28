@@ -25,8 +25,8 @@ public interface ShoppingListItemTranslationRepo extends JpaRepository<ShoppingL
      * @return List of available {@link ShoppingListItemTranslation}'s.
      */
     @Query("SELECT g FROM ShoppingListItemTranslation g WHERE g.shoppingListItem.id NOT IN "
-            + "(SELECT ug.shoppingListItem.id FROM UserShoppingListItem ug WHERE ug.habitAssign.id = ?1 "
-            + "AND ug.status = 'ACTIVE') AND g.language.code = ?2")
+        + "(SELECT ug.shoppingListItem.id FROM UserShoppingListItem ug WHERE ug.habitAssign.id = ?1 "
+        + "AND ug.status = 'ACTIVE') AND g.language.code = ?2")
     List<ShoppingListItemTranslation> findAvailableByUserId(Long userId, String languageCode);
 
     /**

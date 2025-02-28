@@ -21,14 +21,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @TestPropertySource(properties = {
-        "spring.test.database.replace=NONE",
-        "spring.datasource.url=jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
-        "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
-        "spring.datasource.username=sa",
-        "spring.datasource.password=",
-        "spring.jpa.hibernate.ddl-auto=update",
-        "spring.sql.init.mode=never",
-        "spring.liquibase.enabled=false"
+    "spring.test.database.replace=NONE",
+    "spring.datasource.url=jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
+    "spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect",
+    "spring.datasource.username=sa",
+    "spring.datasource.password=",
+    "spring.jpa.hibernate.ddl-auto=update",
+    "spring.sql.init.mode=never",
+    "spring.liquibase.enabled=false"
 })
 public class EventCommentRepoTest {
     @Autowired

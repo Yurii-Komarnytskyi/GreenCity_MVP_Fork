@@ -51,7 +51,6 @@ public class ParticipationControllerTest {
     private MockMvc mockMvc;
     private Map<String, Object> attributes;
 
-
     @BeforeEach
     void setUp() {
         attributes = new HashMap<>();
@@ -60,10 +59,10 @@ public class ParticipationControllerTest {
         attributes.put("trace", "Test stack trace");
 
         mockMvc = MockMvcBuilders.standaloneSetup(participationController)
-                .setControllerAdvice(new CustomExceptionHandler(errorAttributes, objectMapper))
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
-                        new UserArgumentResolver(userService, modelMapper))
-                .build();
+            .setControllerAdvice(new CustomExceptionHandler(errorAttributes, objectMapper))
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
+                new UserArgumentResolver(userService, modelMapper))
+            .build();
     }
 
     @Test
@@ -72,9 +71,9 @@ public class ParticipationControllerTest {
         when(userService.findIdByEmail(anyString())).thenReturn(1L);
 
         mockMvc.perform(delete("/participation/1")
-                        .principal(() -> "testuser@gmail.com"))
-                .andExpect(status().isOk())
-                .andExpect(content().string("Participation successfully deleted"));
+            .principal(() -> "testuser@gmail.com"))
+            .andExpect(status().isOk())
+            .andExpect(content().string("Participation successfully deleted"));
     }
 
     @Test
@@ -82,13 +81,15 @@ public class ParticipationControllerTest {
         attributes.put("path", "/participation/1");
         attributes.put("message", "You cannot remove the participation from the event that is in the past");
 
-        when(errorAttributes.getErrorAttributes(any(WebRequest.class), any(ErrorAttributeOptions.class))).thenReturn(attributes);
+        when(errorAttributes.getErrorAttributes(any(WebRequest.class), any(ErrorAttributeOptions.class)))
+            .thenReturn(attributes);
 
-        doThrow(new BadRequestException("You cannot remove the participation from the event that is in the past")).when(participationService).removeParticipation(anyLong(), anyLong());
+        doThrow(new BadRequestException("You cannot remove the participation from the event that is in the past"))
+            .when(participationService).removeParticipation(anyLong(), anyLong());
         when(userService.findIdByEmail(anyString())).thenReturn(1L);
 
         mockMvc.perform(delete("/participation/1")
-                        .principal(() -> "testuser@gmail.com"))
-                .andExpect(status().isBadRequest());
+            .principal(() -> "testuser@gmail.com"))
+            .andExpect(status().isBadRequest());
     }
 }

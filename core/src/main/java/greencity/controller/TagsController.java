@@ -38,10 +38,10 @@ public class TagsController {
     @GetMapping("/search")
     @ApiLocale
     public ResponseEntity<List<TagDto>> findByTypeAndLanguageCode(
-            @Parameter(hidden = true) @ValidLanguage Locale locale,
-            @RequestParam TagType type) {
+        @Parameter(hidden = true) @ValidLanguage Locale locale,
+        @RequestParam TagType type) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(tagsService.findByTypeAndLanguageCode(type, locale.getLanguage()));
+            .body(tagsService.findByTypeAndLanguageCode(type, locale.getLanguage()));
     }
 
     /**
@@ -56,6 +56,6 @@ public class TagsController {
     @GetMapping("/v2/search")
     public ResponseEntity<List<NewTagDto>> findByType(@RequestParam TagType type) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(tagsService.findByType(type));
+            .body(tagsService.findByType(type));
     }
 }

@@ -44,7 +44,7 @@ public class EcoNewsCommentController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = HttpStatuses.CREATED,
-                content = @Content(schema = @Schema(implementation = AddEcoNewsCommentDtoResponse.class))),
+            content = @Content(schema = @Schema(implementation = AddEcoNewsCommentDtoResponse.class))),
         @ApiResponse(responseCode = "303", description = HttpStatuses.SEE_OTHER),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "401", description = HttpStatuses.UNAUTHORIZED),
@@ -148,7 +148,7 @@ public class EcoNewsCommentController {
     })
     @PatchMapping("")
     public void update(Long id, @RequestParam @NotBlank String text,
-                       @Parameter(hidden = true) @CurrentUser UserVO user) {
+        @Parameter(hidden = true) @CurrentUser UserVO user) {
         ecoNewsCommentService.update(text, id, user);
     }
 
@@ -195,7 +195,7 @@ public class EcoNewsCommentController {
     @GetMapping("/active")
     @ApiPageableWithoutSort
     public ResponseEntity<PageableDto<EcoNewsCommentDto>> getAllActiveComments(
-            @Parameter(hidden = true) Pageable pageable, Long ecoNewsId,
+        @Parameter(hidden = true) Pageable pageable, Long ecoNewsId,
         @Parameter(hidden = true) @CurrentUser UserVO user) {
         return ResponseEntity.status(HttpStatus.OK)
             .body(ecoNewsCommentService.getAllActiveComments(pageable, user, ecoNewsId));
@@ -219,7 +219,7 @@ public class EcoNewsCommentController {
     @GetMapping("replies/active/{parentCommentId}")
     @ApiPageable
     public ResponseEntity<PageableDto<EcoNewsCommentDto>> findAllActiveReplies(
-            @Parameter(hidden = true) Pageable pageable, @PathVariable Long parentCommentId,
+        @Parameter(hidden = true) Pageable pageable, @PathVariable Long parentCommentId,
         @Parameter(hidden = true) @CurrentUser UserVO user) {
         return ResponseEntity
             .status(HttpStatus.OK)

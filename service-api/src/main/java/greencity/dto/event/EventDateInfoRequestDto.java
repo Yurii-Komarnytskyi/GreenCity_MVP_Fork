@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ConsistentDateTime
-public class EventDateInfoRequestDto implements EventDateInfoDto{
+public class EventDateInfoRequestDto implements EventDateInfoDto {
 
     @NotNull(message = "Event date is mandatory.")
     @FutureOrPresent(message = "Event date cannot be in the past.")

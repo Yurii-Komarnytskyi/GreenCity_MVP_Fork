@@ -80,7 +80,8 @@ public class ImageServiceImplTest {
     void createImageBadRequestTest() {
         imageRequestDto = null;
 
-        Exception exception = Assertions.assertThrows(BadRequestException.class,  () -> imageService.createImage(imageRequestDto));
+        Exception exception =
+            Assertions.assertThrows(BadRequestException.class, () -> imageService.createImage(imageRequestDto));
         Assertions.assertEquals("ImageRequestDto cannot be null", exception.getMessage());
 
         verify(imageRepo, times(0)).save(any(Image.class));
@@ -110,7 +111,8 @@ public class ImageServiceImplTest {
 
         when(imageRepo.findById(image.getId())).thenReturn(Optional.empty());
 
-        Exception exception = Assertions.assertThrows(EntityNotFoundException.class,  () -> imageService.updateImage(1L, imageRequestDto));
+        Exception exception =
+            Assertions.assertThrows(EntityNotFoundException.class, () -> imageService.updateImage(1L, imageRequestDto));
         Assertions.assertEquals("Image not found with id: 1", exception.getMessage());
 
         verify(imageRepo, times(0)).save(any(Image.class));

@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class UserAchievementServiceImpl implements UserAchievementService{
+public class UserAchievementServiceImpl implements UserAchievementService {
 
     private final UserAchievementRepo userAchievementRepo;
     private final AchievementRepo achievementRepo;
@@ -28,27 +28,25 @@ public class UserAchievementServiceImpl implements UserAchievementService{
     private final UserAchievementMapper userAchievementMapper;
     private final AchievementMapper achievementMapper;
 
-
     @Override
     @Transactional
     public UserAchievementResponseDto addUserAchievement(UserAchievementRequestDto userAchievementRequestDto) {
 
         User user = userRepo.findById(userAchievementRequestDto.getUserId())
-                .orElseThrow(
-                        ()-> new NotFoundException("Such a user is not found! ")
-                );
+            .orElseThrow(
+                () -> new NotFoundException("Such a user is not found! "));
         Achievement achievement = achievementRepo.findById(userAchievementRequestDto.getAchievementId())
-                .orElseThrow(
-                        ()-> new NotFoundException("Such Achievement is not found !")
-                );
+            .orElseThrow(
+                () -> new NotFoundException("Such Achievement is not found !"));
 
-        if(userAchievementRepo.findByUserAndAchievement(user.getId(), achievement.getId()).isPresent())
+        if (userAchievementRepo.findByUserAndAchievement(user.getId(), achievement.getId()).isPresent())
             throw new AchievementAlreadyExistsException("Such an achievement already exists for this user!");
 
-        if(!checkWhetherAllPreviousAchievementsAreOpened(achievement, user))
-            throw new AchievementUnlockingException("You can't unlock this current Achievement before unlocking the previous ones! ");
+        if (!checkWhetherAllPreviousAchievementsAreOpened(achievement, user))
+            throw new AchievementUnlockingException(
+                "You can't unlock this current Achievement before unlocking the previous ones! ");
 
-        if(user.getRating() >= achievement.getRequiredRate()) {
+        if (user.getRating() >= achievement.getRequiredRate()) {
 
             UserAchievement userAchievement = new UserAchievement();
             userAchievement.setAchievement(achievement);
@@ -59,7 +57,7 @@ public class UserAchievementServiceImpl implements UserAchievementService{
             return userAchievementMapper.convert(userAchievementRepo.save(userAchievement));
         }
 
-        throw new NotEnoughRatingForAchievement("Not enough rating to get an Achievement "+ achievement.getType());
+        throw new NotEnoughRatingForAchievement("Not enough rating to get an Achievement " + achievement.getType());
 
     }
 
@@ -67,15 +65,13 @@ public class UserAchievementServiceImpl implements UserAchievementService{
     public List<UserAchievementResponseDto> getAllUserAchievements(Long userId) {
 
         User user = userRepo.findById(userId)
-                .orElseThrow(
-                        ()-> new NotFoundException("Such a user is not found! ")
-                );
+            .orElseThrow(
+                () -> new NotFoundException("Such a user is not found! "));
         List<UserAchievement> userAchievements = userAchievementRepo.findByUser(user);
         /*
-        List<Achievement> achievementsForUser = userAchievements.stream()
-                .map(UserAchievement::getAchievement)
-                .toList();
-                achievementsForUser.stream().map(achievementMapper::convert).toList();
+         * List<Achievement> achievementsForUser = userAchievements.stream()
+         * .map(UserAchievement::getAchievement) .toList();
+         * achievementsForUser.stream().map(achievementMapper::convert).toList();
          */
 
         return userAchievements.stream().map(userAchievementMapper::convert).toList();
@@ -85,13 +81,11 @@ public class UserAchievementServiceImpl implements UserAchievementService{
     public UserAchievementResponseDto getUserAchievementByIds(UserAchievementRequestDto userAchievementRequestDto) {
 
         return userAchievementMapper.convert(userAchievementRepo
-                .findByUserAndAchievement(userAchievementRequestDto.getUserId(),
-                       userAchievementRequestDto.getAchievementId())
-                .orElseThrow(
-                        ()->new NotFoundException("Such a user doesn't have this achievement or" +
-                                "a user doesn't exist ! ")
-                )
-        );
+            .findByUserAndAchievement(userAchievementRequestDto.getUserId(),
+                userAchievementRequestDto.getAchievementId())
+            .orElseThrow(
+                () -> new NotFoundException("Such a user doesn't have this achievement or" +
+                    "a user doesn't exist ! ")));
     }
 
     private boolean checkWhetherAllPreviousAchievementsAreOpened(Achievement achievement, User user) {
@@ -108,9 +102,9 @@ public class UserAchievementServiceImpl implements UserAchievementService{
         }
 
         List<Integer> userRanks = userAchievements.stream()
-                .map(ua -> ua.getAchievement().getType().getRank())
-                .sorted()
-                .toList();
+            .map(ua -> ua.getAchievement().getType().getRank())
+            .sorted()
+            .toList();
 
         if (userRanks.size() == 1) {
             int lastUnlockedRank = userRanks.get(0);

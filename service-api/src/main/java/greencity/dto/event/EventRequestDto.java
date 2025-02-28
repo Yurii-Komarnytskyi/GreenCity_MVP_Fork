@@ -22,10 +22,9 @@ public class EventRequestDto {
 
     @NotBlank(message = "Description cannot be empty")
     @Size(
-            min = 20,
-            max = 63206,
-            message = "Event description must contain more than 20 characters but less than 63,206 characters"
-    )
+        min = 20,
+        max = 63206,
+        message = "Event description must contain more than 20 characters but less than 63,206 characters")
     private String description;
 
     private String authorEmail;
@@ -34,27 +33,24 @@ public class EventRequestDto {
     private int duration = 1;
 
     @Size(
-            min = 1,
-            max = 7,
-            message = "The number of event days must be between 1 and 7"
-    )
+        min = 1,
+        max = 7,
+        message = "The number of event days must be between 1 and 7")
     @Valid
     private List<EventDateInfoRequestDto> eventDays;
 
     @Size(
-            min = 1,
-            max = 3,
-            message = "The number of initiative types must be between 1 and 3"
-    )
+        min = 1,
+        max = 3,
+        message = "The number of initiative types must be between 1 and 3")
     private List<InitiativeTypeRequestDto> initiativeTypes;
 
     @JsonProperty("isOpen")
     private boolean isOpen = true;
 
     @Size(
-            max = 5,
-            message = "The number of images must be up to 5"
-    )
+        max = 5,
+        message = "The number of images must be up to 5")
     @Valid
     private List<ImageRequestDto> images;
     private ImageRequestDto mainImage;

@@ -12,7 +12,8 @@ import java.util.Optional;
 @Component
 public class FriendCardDtoMapper extends AbstractConverter<User, FriendCardDto> {
 
-    public FriendCardDtoMapper() {}
+    public FriendCardDtoMapper() {
+    }
 
     @Override
     @NotNull
@@ -20,11 +21,11 @@ public class FriendCardDtoMapper extends AbstractConverter<User, FriendCardDto> 
         final int DEFAULT_AMOUNT_MUTUAL_FRIENDS = 0;
         Objects.requireNonNull(friend, "User cannot be null");
         return new FriendCardDto(
-                friend.getId(),
-                Optional.ofNullable(friend.getProfilePicturePath()).orElse(""),
-                friend.getName(),
-                friend.getRating(),
-                Optional.ofNullable(friend.getCity()).orElse(""),
-                DEFAULT_AMOUNT_MUTUAL_FRIENDS);
+            friend.getId(),
+            Optional.ofNullable(friend.getProfilePicturePath()).orElse(""),
+            friend.getName(),
+            friend.getRating(),
+            Optional.ofNullable(friend.getCity()).orElse(""),
+            DEFAULT_AMOUNT_MUTUAL_FRIENDS);
     }
 }

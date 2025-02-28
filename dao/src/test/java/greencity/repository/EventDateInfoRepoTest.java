@@ -20,13 +20,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 @TestPropertySource(properties = {
-        "spring.test.database.replace=NONE",
-        "spring.datasource.url=jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
-        "spring.datasource.username=sa",
-        "spring.datasource.password=",
-        "spring.jpa.hibernate.ddl-auto=update",
-        "spring.sql.init.mode=never",
-        "spring.liquibase.enabled=false"
+    "spring.test.database.replace=NONE",
+    "spring.datasource.url=jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
+    "spring.datasource.username=sa",
+    "spring.datasource.password=",
+    "spring.jpa.hibernate.ddl-auto=update",
+    "spring.sql.init.mode=never",
+    "spring.liquibase.enabled=false"
 })
 public class EventDateInfoRepoTest {
 
@@ -69,14 +69,14 @@ public class EventDateInfoRepoTest {
     @Test
     void testFindByEvent() {
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .event(event)
-                .eventDate(LocalDate.now())
-                .isAllDay(true)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Kyiv")
-                .url("https://example.com")
-                .build();
+            .event(event)
+            .eventDate(LocalDate.now())
+            .isAllDay(true)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Kyiv")
+            .url("https://example.com")
+            .build();
         eventDateInfoRepo.save(eventDateInfo);
 
         List<EventDateInfo> foundEventDateInfos = eventDateInfoRepo.findByEvent(event);
@@ -88,14 +88,14 @@ public class EventDateInfoRepoTest {
     @Test
     void testFindByEventDate() {
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .event(event)
-                .eventDate(LocalDate.now())
-                .isAllDay(false)
-                .isPlace(false)
-                .isOnline(true)
-                .location("Lviv")
-                .url("https://example.com/online")
-                .build();
+            .event(event)
+            .eventDate(LocalDate.now())
+            .isAllDay(false)
+            .isPlace(false)
+            .isOnline(true)
+            .location("Lviv")
+            .url("https://example.com/online")
+            .build();
         eventDateInfoRepo.save(eventDateInfo);
 
         List<EventDateInfo> foundEventDateInfos = eventDateInfoRepo.findByEventDate(LocalDate.now());
@@ -107,14 +107,14 @@ public class EventDateInfoRepoTest {
     @Test
     void testFindByIsOnlineTrue() {
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .event(event)
-                .eventDate(LocalDate.now())
-                .isAllDay(false)
-                .isPlace(false)
-                .isOnline(true)
-                .location("Online")
-                .url("https://online.com")
-                .build();
+            .event(event)
+            .eventDate(LocalDate.now())
+            .isAllDay(false)
+            .isPlace(false)
+            .isOnline(true)
+            .location("Online")
+            .url("https://online.com")
+            .build();
         eventDateInfoRepo.save(eventDateInfo);
 
         List<EventDateInfo> foundEventDateInfos = eventDateInfoRepo.findByIsOnlineTrue();
@@ -126,14 +126,14 @@ public class EventDateInfoRepoTest {
     @Test
     void testFindByLocation() {
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .event(event)
-                .eventDate(LocalDate.now())
-                .isAllDay(false)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Ivano-Frankivsk")
-                .url("https://example.com/offline")
-                .build();
+            .event(event)
+            .eventDate(LocalDate.now())
+            .isAllDay(false)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Ivano-Frankivsk")
+            .url("https://example.com/offline")
+            .build();
         eventDateInfoRepo.save(eventDateInfo);
 
         List<EventDateInfo> foundEventDateInfos = eventDateInfoRepo.findByLocation("Ivano-Frankivsk");
@@ -148,14 +148,14 @@ public class EventDateInfoRepoTest {
         LocalDate endDate = LocalDate.now().plusDays(1);
 
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .event(event)
-                .eventDate(LocalDate.now())
-                .isAllDay(false)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Kyiv")
-                .url("https://example.com/range")
-                .build();
+            .event(event)
+            .eventDate(LocalDate.now())
+            .isAllDay(false)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Kyiv")
+            .url("https://example.com/range")
+            .build();
         eventDateInfoRepo.save(eventDateInfo);
 
         List<EventDateInfo> foundEventDateInfos = eventDateInfoRepo.findByEventDateBetween(startDate, endDate);
@@ -167,14 +167,14 @@ public class EventDateInfoRepoTest {
     @Test
     void testFindByIsAllDayTrue() {
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .event(event)
-                .eventDate(LocalDate.now())
-                .isAllDay(true)
-                .isPlace(false)
-                .isOnline(false)
-                .location("Lviv")
-                .url("https://example.com/allday")
-                .build();
+            .event(event)
+            .eventDate(LocalDate.now())
+            .isAllDay(true)
+            .isPlace(false)
+            .isOnline(false)
+            .location("Lviv")
+            .url("https://example.com/allday")
+            .build();
         eventDateInfoRepo.save(eventDateInfo);
 
         List<EventDateInfo> foundEventDateInfos = eventDateInfoRepo.findByIsAllDayTrue();

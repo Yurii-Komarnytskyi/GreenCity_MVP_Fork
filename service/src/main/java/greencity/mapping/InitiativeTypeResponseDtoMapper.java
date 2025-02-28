@@ -14,8 +14,8 @@ public class InitiativeTypeResponseDtoMapper extends AbstractConverter<Initiativ
         }
 
         return InitiativeTypeResponseDto.builder()
-                .id(initiativeType.getId())
-                .name(initiativeType.getName())
-                .build();
+            .id(initiativeType.getId())
+            .name(initiativeType.getName())
+            .build();
     }
 }

@@ -13,9 +13,9 @@ public class InitiativeTypeResponseDtoMapperTest {
     @Test
     void convertTest() {
         InitiativeType initiativeType = InitiativeType.builder()
-                .id(1L)
-                .name("Environmental")
-                .build();
+            .id(1L)
+            .name("Environmental")
+            .build();
 
         InitiativeTypeResponseDto result = mapper.convert(initiativeType);
 

@@ -577,8 +577,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exceptionResponse);
     }
 
-
-
     /**
      * Customize the response for WrongIdException.
      *
@@ -596,17 +594,16 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers,
-                                                                  HttpStatusCode status,
-                                                                  WebRequest request) {
+        HttpHeaders headers,
+        HttpStatusCode status,
+        WebRequest request) {
         Map<String, Object> response = new LinkedHashMap<>();
         response.put("message", "Validation failed");
         response.put("errors", ex.getBindingResult().getFieldErrors().stream()
-                .map(error -> Map.of(
-                        "field", error.getField(),
-                        "message", error.getDefaultMessage()
-                ))
-                .collect(Collectors.toList()));
+            .map(error -> Map.of(
+                "field", error.getField(),
+                "message", error.getDefaultMessage()))
+            .collect(Collectors.toList()));
 
         log.trace(ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
@@ -614,12 +611,12 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     private Map<String, Object> getErrorAttributes(WebRequest webRequest) {
         return new HashMap<>(errorAttributes.getErrorAttributes(webRequest,
-                ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
+            ErrorAttributeOptions.of(ErrorAttributeOptions.Include.MESSAGE)));
     }
 
     @ExceptionHandler(UnsupportedMediaTypeException.class)
     public final ResponseEntity<Object> handleUnsupportedMediaTypeException(
-            UnsupportedMediaTypeException ex, WebRequest request) {
+        UnsupportedMediaTypeException ex, WebRequest request) {
         log.info(ex.getMessage());
         ExceptionResponse exceptionResponse = new ExceptionResponse(getErrorAttributes(request));
         exceptionResponse.setMessage(ex.getMessage());
@@ -639,7 +636,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AchievementAlreadyExistsException.class)
     public final ResponseEntity<Object> handleAchievementAlreadyExistsException(
 
-            AchievementAlreadyExistsException ex, WebRequest request) {
+        AchievementAlreadyExistsException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(getErrorAttributes(request));
         log.trace(ex.getMessage(), ex);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.CONFLICT);
@@ -649,7 +646,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(AchievementUnlockingException.class)
     public final ResponseEntity<Object> handleAchievementUnlockingException(
 
-            AchievementUnlockingException ex, WebRequest request) {
+        AchievementUnlockingException ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(getErrorAttributes(request));
         log.trace(ex.getMessage(), ex);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);
@@ -659,7 +656,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotEnoughRatingForAchievement.class)
     public final ResponseEntity<Object> handleANotEnoughRatingForAchievement(
 
-            NotEnoughRatingForAchievement ex, WebRequest request) {
+        NotEnoughRatingForAchievement ex, WebRequest request) {
         ExceptionResponse exceptionResponse = new ExceptionResponse(getErrorAttributes(request));
         log.trace(ex.getMessage(), ex);
         return new ResponseEntity<>(exceptionResponse, HttpStatus.BAD_REQUEST);

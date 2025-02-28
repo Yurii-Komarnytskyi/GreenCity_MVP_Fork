@@ -82,7 +82,7 @@ class AccessTokenAuthenticationFilterTest {
         when(jwtTool.getTokenFromHttpServletRequest(request)).thenReturn(token);
         when(authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(token, null)))
-                .thenThrow(ExpiredJwtException.class);
+            .thenThrow(ExpiredJwtException.class);
         authenticationFilter.doFilterInternal(request, response, chain);
         verify(jwtTool).getTokenFromHttpServletRequest(request);
         verify(authenticationManager).authenticate(any());

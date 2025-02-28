@@ -16,13 +16,13 @@ public class EventRequestDtoMapperTest {
     @Test
     void convertTest() {
         EventRequestDto eventRequestDto = EventRequestDto.builder()
-                .title("Test Event")
-                .description("This is a test event.")
-                .duration(3)
-                .initiativeTypes(List.of(new InitiativeTypeRequestDto("Type 1"), new InitiativeTypeRequestDto("Type 2")))
-                .isOpen(true)
-                .images(List.of(new ImageRequestDto("image1.png"), new ImageRequestDto("image2.png")))
-                .build();
+            .title("Test Event")
+            .description("This is a test event.")
+            .duration(3)
+            .initiativeTypes(List.of(new InitiativeTypeRequestDto("Type 1"), new InitiativeTypeRequestDto("Type 2")))
+            .isOpen(true)
+            .images(List.of(new ImageRequestDto("image1.png"), new ImageRequestDto("image2.png")))
+            .build();
 
         Event event = mapper.convert(eventRequestDto);
 

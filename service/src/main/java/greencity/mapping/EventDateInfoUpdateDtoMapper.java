@@ -10,15 +10,15 @@ public class EventDateInfoUpdateDtoMapper extends AbstractConverter<EventDateInf
     @Override
     protected EventDateInfo convert(EventDateInfoUpdateDto dto) {
         EventDateInfo.EventDateInfoBuilder builder = EventDateInfo.builder()
-                .eventDate(dto.getEventDate())
-                .eventTimeStart(dto.getEventTimeStart())
-                .eventTimeEnd(dto.getEventTimeEnd())
-                .isAllDay(dto.getIsAllDay())
-                .isPlace(dto.getIsPlace())
-                .isOnline(dto.getIsOnline())
-                .location(dto.getLocation())
-                .numOfDayInEvent(dto.getNumOfTheDay())
-                .url(dto.getUrl());
+            .eventDate(dto.getEventDate())
+            .eventTimeStart(dto.getEventTimeStart())
+            .eventTimeEnd(dto.getEventTimeEnd())
+            .isAllDay(dto.getIsAllDay())
+            .isPlace(dto.getIsPlace())
+            .isOnline(dto.getIsOnline())
+            .location(dto.getLocation())
+            .numOfDayInEvent(dto.getNumOfTheDay())
+            .url(dto.getUrl());
 
         if (dto.getId() != null) {
             builder.id(dto.getId());

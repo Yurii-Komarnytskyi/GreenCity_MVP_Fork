@@ -11,8 +11,7 @@ import lombok.*;
 @Builder
 public class ImageRequestDto {
     @Pattern(
-            regexp = ".*\\.(jpg|png)$",
-            message = "Image should be in the .jpg or .png. format"
-    )
+        regexp = ".*\\.(jpg|png)$",
+        message = "Image should be in the .jpg or .png. format")
     private String imagePath;
 }

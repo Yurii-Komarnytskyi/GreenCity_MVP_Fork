@@ -28,7 +28,7 @@ public class EventDateInfoServiceImpl implements EventDateInfoService {
     @Override
     public EventDateInfoResponseDto createEventDateInfo(Long eventId, EventDateInfoRequestDto requestDto) {
         Event event = eventRepo.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
+            .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
 
         EventDateInfo eventDateInfo = modelMapper.map(requestDto, EventDateInfo.class);
         eventDateInfo.setEvent(event);
@@ -43,7 +43,7 @@ public class EventDateInfoServiceImpl implements EventDateInfoService {
     public EventDateInfoResponseDto updateEventDateInfo(Long id, EventDateInfoUpdateDto requestDto) {
 
         EventDateInfo existingInfo = eventDateInfoRepo.findById(id)
-                .orElseThrow(() -> new NotFoundException("EventDateInfo not found with id: " + id));
+            .orElseThrow(() -> new NotFoundException("EventDateInfo not found with id: " + id));
 
         existingInfo.setEventDate(requestDto.getEventDate());
         existingInfo.setAllDay(requestDto.getIsAllDay());
@@ -67,13 +67,13 @@ public class EventDateInfoServiceImpl implements EventDateInfoService {
     @Override
     public List<EventDateInfoResponseDto> getEventDateInfoByEvent(Long eventId) {
         Event event = eventRepo.findById(eventId)
-                .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
+            .orElseThrow(() -> new IllegalArgumentException("Event not found with id: " + eventId));
 
         List<EventDateInfo> eventDateInfos = eventDateInfoRepo.findByEvent(event);
 
         return eventDateInfos.stream()
-                .map(eventDateInfo -> modelMapper.map(eventDateInfo, EventDateInfoResponseDto.class))
-                .collect(Collectors.toList());
+            .map(eventDateInfo -> modelMapper.map(eventDateInfo, EventDateInfoResponseDto.class))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -101,4 +101,3 @@ public class EventDateInfoServiceImpl implements EventDateInfoService {
         return List.of();
     }
 }
-

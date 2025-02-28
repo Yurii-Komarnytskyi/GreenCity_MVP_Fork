@@ -18,6 +18,7 @@ public class ImageRequestDtoMapperTest {
         Image result = mapper.convert(imageRequestDto);
 
         assertNotNull(result, "The result should not be null");
-        assertEquals(imageRequestDto.getImagePath(), result.getImagePath(), "The image path should be mapped correctly");
+        assertEquals(imageRequestDto.getImagePath(), result.getImagePath(),
+            "The image path should be mapped correctly");
     }
 }

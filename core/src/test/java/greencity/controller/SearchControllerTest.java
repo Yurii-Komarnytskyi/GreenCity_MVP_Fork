@@ -53,9 +53,9 @@ class SearchControllerTest {
     @BeforeEach
     void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(searchController)
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
-                .setValidator(validator)
-                .build();
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+            .setValidator(validator)
+            .build();
     }
 
     @Test
@@ -66,9 +66,9 @@ class SearchControllerTest {
         log.info("Chosen locale is {}", locale);
 
         SearchResponseDto expectedResponse = SearchResponseDto.builder()
-                .ecoNews(List.of())
-                .countOfResults(0L)
-                .build();
+            .ecoNews(List.of())
+            .countOfResults(0L)
+            .build();
 
         List<String> codes = languageService.findAllLanguageCodes();
         log.info("Found codes {}", codes);
@@ -76,10 +76,10 @@ class SearchControllerTest {
         when(searchService.search(searchQuery, locale.getLanguage())).thenReturn(expectedResponse);
 
         mockMvc.perform(get("/search")
-                        .param("searchQuery", searchQuery)
-                        .param("locale", locale.getLanguage())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+            .param("searchQuery", searchQuery)
+            .param("locale", locale.getLanguage())
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
 
         verify(searchService).search(searchQuery, locale.getLanguage());
     }
@@ -91,13 +91,13 @@ class SearchControllerTest {
         PageableDto<SearchNewsDto> expectedResponse = new PageableDto<>(List.of(), 0, 0, 1);
 
         when(searchService.searchAllNews(any(Pageable.class), eq(searchQuery), eq(locale.getLanguage())))
-                .thenReturn(expectedResponse);
+            .thenReturn(expectedResponse);
 
         mockMvc.perform(get("/search/econews")
-                        .param("searchQuery", searchQuery)
-                        .param("locale", locale.getLanguage())
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+            .param("searchQuery", searchQuery)
+            .param("locale", locale.getLanguage())
+            .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
 
         verify(searchService).searchAllNews(any(Pageable.class), eq(searchQuery), eq(locale.getLanguage()));
     }

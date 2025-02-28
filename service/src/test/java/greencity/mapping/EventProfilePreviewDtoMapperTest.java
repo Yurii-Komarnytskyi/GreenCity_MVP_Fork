@@ -41,14 +41,14 @@ public class EventProfilePreviewDtoMapperTest {
         EventMappingContext eventMappingContext = new EventMappingContext(event, eventDateInfo, participants);
 
         EventProfilePreviewDto expected = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Title")
-                .creationDate(ZonedDateTime.of(2025, 12, 25, 10, 0, 0, 0, ZoneOffset.UTC))
-                .eventDate(LocalDate.of(2025, 12, 25))
-                .eventTimeStart(LocalDateTime.of(2025, 12, 25, 10, 0))
-                .author(AuthorDto.builder().name("Ann").id(2L).build())
-                .participants(List.of(UserProfilePictureDto.builder().id(1L).build()))
-                .build();
+            .id(1L)
+            .title("Title")
+            .creationDate(ZonedDateTime.of(2025, 12, 25, 10, 0, 0, 0, ZoneOffset.UTC))
+            .eventDate(LocalDate.of(2025, 12, 25))
+            .eventTimeStart(LocalDateTime.of(2025, 12, 25, 10, 0))
+            .author(AuthorDto.builder().name("Ann").id(2L).build())
+            .participants(List.of(UserProfilePictureDto.builder().id(1L).build()))
+            .build();
 
         EventProfilePreviewDto result = mapper.convert(eventMappingContext);
 

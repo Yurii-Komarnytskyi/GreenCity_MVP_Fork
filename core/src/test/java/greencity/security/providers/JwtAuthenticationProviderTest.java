@@ -44,17 +44,17 @@ class JwtAuthenticationProviderTest {
         when(jwtTool.getAccessTokenKey()).thenReturn("12312312312312312312312312312312312");
 
         Authentication authentication = new UsernamePasswordAuthenticationToken(
-                accessToken,
-                null);
+            accessToken,
+            null);
         Authentication actual = jwtAuthenticationProvider.authenticate(authentication);
         final String expectedEmail = "qqq@email.com";
         assertEquals(expectedEmail, actual.getPrincipal());
         assertEquals(
-                Stream.of(expectedRole)
-                        .map(Role::toString)
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList()),
-                actual.getAuthorities());
+            Stream.of(expectedRole)
+                .map(Role::toString)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList()),
+            actual.getAuthorities());
         assertEquals("", actual.getCredentials());
     }
 

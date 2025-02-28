@@ -28,15 +28,16 @@ public class FriendCardDto {
     @Min(0)
     private int mutualFriends = 0;
 
-    public FriendCardDto() {}
+    public FriendCardDto() {
+    }
 
     public FriendCardDto(
-            Long id,
-            String profilePicturePath,
-            String name,
-            Double rating,
-            String city,
-            int mutualFriends) {
+        Long id,
+        String profilePicturePath,
+        String name,
+        Double rating,
+        String city,
+        int mutualFriends) {
         this.id = id;
         this.profilePicturePath = profilePicturePath;
         this.name = name;
@@ -95,8 +96,11 @@ public class FriendCardDto {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof FriendCardDto that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(profilePicturePath, that.profilePicturePath) && Objects.equals(name, that.name) && Objects.equals(rating, that.rating) && Objects.equals(city, that.city);
+        if (!(o instanceof FriendCardDto that))
+            return false;
+        return Objects.equals(id, that.id) && Objects.equals(profilePicturePath, that.profilePicturePath)
+            && Objects.equals(name, that.name) && Objects.equals(rating, that.rating)
+            && Objects.equals(city, that.city);
     }
 
     @Override
@@ -107,11 +111,11 @@ public class FriendCardDto {
     @Override
     public String toString() {
         return "FriendCardDto{" +
-                "city='" + city + '\'' +
-                ", rating=" + rating +
-                ", name='" + name + '\'' +
-                ", profilePicturePath='" + profilePicturePath + '\'' +
-                ", id=" + id +
-                '}';
+            "city='" + city + '\'' +
+            ", rating=" + rating +
+            ", name='" + name + '\'' +
+            ", profilePicturePath='" + profilePicturePath + '\'' +
+            ", id=" + id +
+            '}';
     }
 }

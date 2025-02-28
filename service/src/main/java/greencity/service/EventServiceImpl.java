@@ -59,7 +59,7 @@ public class EventServiceImpl implements EventService {
 
         if (imagesDto == null || imagesDto.isEmpty()) {
             Image defaultImage = imageRepo.findById(1L)
-                    .orElseThrow(() -> new EntityNotFoundException("Default image not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Default image not found"));
             images.add(defaultImage);
             mainImage = defaultImage;
         } else {
@@ -78,7 +78,8 @@ public class EventServiceImpl implements EventService {
         return mainImage;
     }
 
-    private Event createEventFromRequest(EventRequestDto eventRequestDto, User author, Image mainImage, Set<Image> images) {
+    private Event createEventFromRequest(EventRequestDto eventRequestDto, User author, Image mainImage,
+        Set<Image> images) {
         Event event = modelMapper.map(eventRequestDto, Event.class);
         event.setCreationDate(ZonedDateTime.now());
         event.setAuthor(author);
@@ -89,8 +90,8 @@ public class EventServiceImpl implements EventService {
 
     private void saveEventDateInfo(EventRequestDto eventRequestDto, Event savedEvent) {
         List<EventDateInfoRequestDto> dtos = eventRequestDto.getEventDays().stream()
-                .sorted(Comparator.comparing(EventDateInfoRequestDto::getEventTimeStart))
-                .toList();
+            .sorted(Comparator.comparing(EventDateInfoRequestDto::getEventTimeStart))
+            .toList();
 
         int count = 1;
 
@@ -106,8 +107,8 @@ public class EventServiceImpl implements EventService {
 
     private void sendEventCreationEmail(User author, Event event) {
         String emailBody = String.format(
-                "Dear %s,<br><br>Your event \"%s\" has been created.<br><br>Best regards,<br>Green City team",
-                author.getName(), event.getTitle());
+            "Dear %s,<br><br>Your event \"%s\" has been created.<br><br>Best regards,<br>Green City team",
+            author.getName(), event.getTitle());
         String emailSubject = "\uD83D\uDD14 Your Event Creation Status";
 
         try {
@@ -120,7 +121,8 @@ public class EventServiceImpl implements EventService {
     public Set<Image> createSetOfImages(List<ImageRequestDto> imagesDto) {
 
         Set<Image> setOfImages = (imagesDto == null || imagesDto.isEmpty())
-                ? Set.of(Objects.requireNonNull(imageRepo.findById(1L).orElse(null))) : imagesDto.stream()
+            ? Set.of(Objects.requireNonNull(imageRepo.findById(1L).orElse(null)))
+            : imagesDto.stream()
                 .map(i -> modelMapper.map(i, Image.class))
                 .map(image -> saveImage(image.getImagePath()))
                 .collect(Collectors.toSet());
@@ -148,14 +150,15 @@ public class EventServiceImpl implements EventService {
         saveEventDateInfo(eventRequestDto, savedEventInRepo);
 
         List<InitiativeType> initiativeTypes = eventRequestDto.getInitiativeTypes().stream()
-                .map(i -> initiativeTypeRepo.findByName(i.getName())
-                        .orElseThrow(() -> new NotFoundException("Initiative type not found: " + i.getName())))
-                .collect(Collectors.toList());
+            .map(i -> initiativeTypeRepo.findByName(i.getName())
+                .orElseThrow(() -> new NotFoundException("Initiative type not found: " + i.getName())))
+            .collect(Collectors.toList());
         savedEventInRepo.setInitiativeTypes(initiativeTypes);
 
         EventResponseDto eventResponseDto = modelMapper.map(savedEventInRepo, EventResponseDto.class);
 
-        List<EventDateInfoResponseDto> eventDateInfoResponseDtos = eventDateInfoRepo.findByEvent(savedEventInRepo).stream()
+        List<EventDateInfoResponseDto> eventDateInfoResponseDtos =
+            eventDateInfoRepo.findByEvent(savedEventInRepo).stream()
                 .map(e -> modelMapper.map(e, EventDateInfoResponseDto.class))
                 .collect(Collectors.toList());
 
@@ -204,22 +207,23 @@ public class EventServiceImpl implements EventService {
         updateEventDateInfo(eventUpdateDto, id);
 
         List<InitiativeType> initiativeTypes = eventUpdateDto.getInitiativeTypes().stream()
-                .map(i -> initiativeTypeRepo.findByName(i.getName())
-                        .orElseThrow(() -> new NotFoundException("Initiative type not found: " + i.getName())))
-                .collect(Collectors.toList());
+            .map(i -> initiativeTypeRepo.findByName(i.getName())
+                .orElseThrow(() -> new NotFoundException("Initiative type not found: " + i.getName())))
+            .collect(Collectors.toList());
         existingEvent.setInitiativeTypes(initiativeTypes);
 
         List<EventDateInfoResponseDto> eventDays = eventDateInfoRepo.findByEvent(existingEvent).stream()
-                .map(e -> modelMapper.map(e, EventDateInfoResponseDto.class))
-                .sorted(Comparator.comparing(EventDateInfoResponseDto::getEventTimeStart))
-                .toList();
+            .map(e -> modelMapper.map(e, EventDateInfoResponseDto.class))
+            .sorted(Comparator.comparing(EventDateInfoResponseDto::getEventTimeStart))
+            .toList();
         existingEvent.setDuration(eventDays.size());
         existingEvent.setOpen(eventUpdateDto.isOpen());
         EventResponseDto eventResponseDto = modelMapper.map(existingEvent, EventResponseDto.class);
         eventResponseDto.setEventDays(eventDays);
         eventResponseDto.setParticipants(participationRepo.findUsersByEventId(eventResponseDto.getId()).stream().map(
-                p -> modelMapper.map(p, UserProfilePictureDto.class)).toList());
-        eventResponseDto.setJoined(checkParticipation(userRepo.findByEmail(email).get().getId(), eventResponseDto.getId()));
+            p -> modelMapper.map(p, UserProfilePictureDto.class)).toList());
+        eventResponseDto
+            .setJoined(checkParticipation(userRepo.findByEmail(email).get().getId(), eventResponseDto.getId()));
         eventResponseDto.setLikes(eventLikesRepo.countLikesByEventId(existingEvent.getId()));
 
         return eventResponseDto;
@@ -228,12 +232,12 @@ public class EventServiceImpl implements EventService {
     @Transactional
     protected void updateEventDateInfo(EventUpdateDto eventUpdateDto, Long eventId) {
         Event existingEvent = eventRepo.findById(eventId)
-                .orElseThrow(() -> new NotFoundException("Event not found: " + eventId));
+            .orElseThrow(() -> new NotFoundException("Event not found: " + eventId));
 
         List<EventDateInfoUpdateDto> eventDateInfoUpdateDtos = eventUpdateDto.getEventDays()
-                .stream()
-                .sorted(Comparator.comparing(EventDateInfoUpdateDto::getEventTimeStart))
-                .toList();
+            .stream()
+            .sorted(Comparator.comparing(EventDateInfoUpdateDto::getEventTimeStart))
+            .toList();
 
         Set<Long> updatedIds = new HashSet<>();
 
@@ -249,17 +253,17 @@ public class EventServiceImpl implements EventService {
 
         for (EventDateInfoUpdateDto eventDateInfoUpdateDto : eventDateInfoUpdateDtos) {
             EventDateInfo existingDateInfo = eventDateInfoRepo.findById(eventDateInfoUpdateDto.getId())
-                    .orElseThrow(() -> new NotFoundException("EventDateInfo not found"));
+                .orElseThrow(() -> new NotFoundException("EventDateInfo not found"));
             if (eventDateInfoUpdateDto.getId() != null
-                    && (existingDateInfo.getEvent().getId().equals(eventId))) {
+                && (existingDateInfo.getEvent().getId().equals(eventId))) {
                 eventDateInfoService.updateEventDateInfo(eventDateInfoUpdateDto.getId(), eventDateInfoUpdateDto);
             }
         }
 
         updatedIds.addAll(eventDateInfoUpdateDtos.stream()
-                .map(EventDateInfoUpdateDto::getId)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toSet()));
+            .map(EventDateInfoUpdateDto::getId)
+            .filter(Objects::nonNull)
+            .collect(Collectors.toSet()));
 
         List<EventDateInfo> eventDateInfos = eventDateInfoRepo.findByEvent(existingEvent);
 
@@ -271,8 +275,8 @@ public class EventServiceImpl implements EventService {
 
         List<EventDateInfo> eventDateInfosUpdated = eventDateInfoRepo.findByEvent(existingEvent);
         List<EventDateInfo> sortedEventDateInfos = eventDateInfosUpdated.stream()
-                .sorted(Comparator.comparing(EventDateInfo::getEventTimeStart))
-                .toList();
+            .sorted(Comparator.comparing(EventDateInfo::getEventTimeStart))
+            .toList();
 
         int count1 = 1;
 
@@ -290,17 +294,19 @@ public class EventServiceImpl implements EventService {
     @Transactional(readOnly = true)
     public Optional<EventResponseDto> getEventById(Long id, String userEmail) {
         EventResponseDto eventResponseDto = eventRepo.findById(id).map(event -> modelMapper
-                .map(event, EventResponseDto.class)).orElse(null);
+            .map(event, EventResponseDto.class)).orElse(null);
 
         if (userRepo.findByEmail(userEmail).isPresent()) {
             assert eventResponseDto != null;
-            eventResponseDto.setJoined(checkParticipation(userRepo.findByEmail(userEmail).get().getId(), eventResponseDto.getId()));
-            eventResponseDto.setParticipants(participationRepo.findUsersByEventId(eventResponseDto.getId()).stream().map(
+            eventResponseDto
+                .setJoined(checkParticipation(userRepo.findByEmail(userEmail).get().getId(), eventResponseDto.getId()));
+            eventResponseDto
+                .setParticipants(participationRepo.findUsersByEventId(eventResponseDto.getId()).stream().map(
                     p -> modelMapper.map(p, UserProfilePictureDto.class)).toList());
             eventResponseDto.setEventDays(eventDateInfoRepo.findByEvent(eventRepo.findById(id).get())
-                    .stream().map(e -> modelMapper.map(e, EventDateInfoResponseDto.class))
-                    .sorted(Comparator.comparing(EventDateInfoResponseDto::getEventTimeStart))
-                    .toList());
+                .stream().map(e -> modelMapper.map(e, EventDateInfoResponseDto.class))
+                .sorted(Comparator.comparing(EventDateInfoResponseDto::getEventTimeStart))
+                .toList());
         }
         if (eventResponseDto != null) {
             return Optional.of(eventResponseDto);
@@ -325,44 +331,42 @@ public class EventServiceImpl implements EventService {
 
         if (events.isEmpty()) {
             return new EventProfilePreviewPageable(
-                    Collections.emptyList(),
-                    0,
-                    0,
-                    0,
-                    0,
-                    true
-            );
+                Collections.emptyList(),
+                0,
+                0,
+                0,
+                0,
+                true);
         }
 
         List<Event> listOfEvents = events.getContent();
 
         List<EventProfilePreviewDto> content = listOfEvents.stream()
-                .map(event -> {
-                    EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).stream()
-                            .min(Comparator.comparing(EventDateInfo::getEventTimeStart))
-                            .orElse(null);
-                    List<User> participants = participationRepo.findUsersByEventId(event.getId());
-                    EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
-                    return modelMapper.map(context, EventProfilePreviewDto.class);
-                })
-                .toList();
+            .map(event -> {
+                EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).stream()
+                    .min(Comparator.comparing(EventDateInfo::getEventTimeStart))
+                    .orElse(null);
+                List<User> participants = participationRepo.findUsersByEventId(event.getId());
+                EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
+                return modelMapper.map(context, EventProfilePreviewDto.class);
+            })
+            .toList();
 
         return new EventProfilePreviewPageable(
-                content,
-                events.getNumber(),
-                events.getSize(),
-                events.getTotalElements(),
-                events.getTotalPages(),
-                events.isLast()
-        );
+            content,
+            events.getNumber(),
+            events.getSize(),
+            events.getTotalElements(),
+            events.getTotalPages(),
+            events.isLast());
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<EventResponseDto> getAllEvents() {
         return eventRepo.findAll().stream()
-                .map(event -> modelMapper.map(event, EventResponseDto.class))
-                .collect(Collectors.toList());
+            .map(event -> modelMapper.map(event, EventResponseDto.class))
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -392,27 +396,26 @@ public class EventServiceImpl implements EventService {
         List<Event> listOfEvents = events.getContent();
 
         List<EventProfilePreviewDto> content = listOfEvents.stream()
-                .map(event -> {
-                    EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).stream()
-                            .min(Comparator.comparing(EventDateInfo::getEventDate)).orElse(null);
-                    List<User> participants = participationRepo.findUsersByEventId(event.getId());
-                    EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
-                    return modelMapper.map(context, EventProfilePreviewDto.class);
-                }).toList();
+            .map(event -> {
+                EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).stream()
+                    .min(Comparator.comparing(EventDateInfo::getEventDate)).orElse(null);
+                List<User> participants = participationRepo.findUsersByEventId(event.getId());
+                EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
+                return modelMapper.map(context, EventProfilePreviewDto.class);
+            }).toList();
 
         return new EventProfilePreviewPageable(
-                content,
-                events.getNumber(),
-                events.getSize(),
-                events.getTotalElements(),
-                events.getTotalPages(),
-                events.isLast()
-        );
+            content,
+            events.getNumber(),
+            events.getSize(),
+            events.getTotalElements(),
+            events.getTotalPages(),
+            events.isLast());
     }
 
     private EventProfilePreviewPageable getUserEvents(String userEmail, String type, Pageable pageable) {
         User user = userRepo.findByEmail(userEmail)
-                .orElseThrow(() -> new NotFoundException("User not found: " + userEmail));
+            .orElseThrow(() -> new NotFoundException("User not found: " + userEmail));
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -426,52 +429,50 @@ public class EventServiceImpl implements EventService {
         List<Event> listOfEvents = events.getContent();
 
         List<EventProfilePreviewDto> content = listOfEvents.stream()
-                .map(event -> {
-                    EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).stream()
-                            .min(Comparator.comparing(EventDateInfo::getEventDate)).orElse(null);
-                    List<User> participants = participationRepo.findUsersByEventId(event.getId());
-                    EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
-                    return modelMapper.map(context, EventProfilePreviewDto.class);
-                })
-                .toList();
+            .map(event -> {
+                EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).stream()
+                    .min(Comparator.comparing(EventDateInfo::getEventDate)).orElse(null);
+                List<User> participants = participationRepo.findUsersByEventId(event.getId());
+                EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
+                return modelMapper.map(context, EventProfilePreviewDto.class);
+            })
+            .toList();
 
         return new EventProfilePreviewPageable(
-                content,
-                events.getNumber(),
-                events.getSize(),
-                events.getTotalElements(),
-                events.getTotalPages(),
-                events.isLast()
-        );
+            content,
+            events.getNumber(),
+            events.getSize(),
+            events.getTotalElements(),
+            events.getTotalPages(),
+            events.isLast());
     }
 
     @Override
     @Transactional(readOnly = true)
     public EventProfilePreviewPageable getAllUserEventsByStatus(String userEmail, String status, Pageable pageable) {
         User user = userRepo.findByEmail(userEmail)
-                .orElseThrow(() -> new NotFoundException("User not found: " + userEmail));
+            .orElseThrow(() -> new NotFoundException("User not found: " + userEmail));
 
         boolean isOnline = "online".equalsIgnoreCase(status);
 
         Page<Event> events = eventRepo.findEventsByAuthorAndFirstDayOnlineStatus(user.getId(), isOnline, pageable);
 
         List<EventProfilePreviewDto> content = events.getContent().stream()
-                .map(event -> {
-                    EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).getFirst();
-                    List<User> participants = participationRepo.findUsersByEventId(event.getId());
-                    EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
-                    return modelMapper.map(context, EventProfilePreviewDto.class);
-                })
-                .collect(Collectors.toList());
+            .map(event -> {
+                EventDateInfo eventDateInfo = eventDateInfoRepo.findByEvent(event).getFirst();
+                List<User> participants = participationRepo.findUsersByEventId(event.getId());
+                EventMappingContext context = new EventMappingContext(event, eventDateInfo, participants);
+                return modelMapper.map(context, EventProfilePreviewDto.class);
+            })
+            .collect(Collectors.toList());
 
         return new EventProfilePreviewPageable(
-                content,
-                events.getNumber(),
-                events.getSize(),
-                events.getTotalElements(),
-                events.getTotalPages(),
-                events.isLast()
-        );
+            content,
+            events.getNumber(),
+            events.getSize(),
+            events.getTotalElements(),
+            events.getTotalPages(),
+            events.isLast());
     }
 
     private void validateUser(String userEmail, Long id) {
@@ -479,7 +480,8 @@ public class EventServiceImpl implements EventService {
         Event event = eventRepo.findById(id).orElse(null);
         if (user == null) {
             throw new NotFoundException("User not found");
-        } else if (!(Objects.equals(user.getId(), event.getAuthor().getId()) || user.getRole().equals(Role.ROLE_ADMIN))) {
+        } else if (!(Objects.equals(user.getId(), event.getAuthor().getId())
+            || user.getRole().equals(Role.ROLE_ADMIN))) {
             throw new AccessDeniedException("You have no permission to update this event");
         }
     }
@@ -496,10 +498,10 @@ public class EventServiceImpl implements EventService {
         }
 
         LocalDateTime latestEventDate = eventDateInfos.stream()
-                .map(EventDateInfo::getEventTimeStart)
-                .filter(Objects::nonNull)
-                .max(Comparator.naturalOrder())
-                .orElse(null);
+            .map(EventDateInfo::getEventTimeStart)
+            .filter(Objects::nonNull)
+            .max(Comparator.naturalOrder())
+            .orElse(null);
 
         if (latestEventDate != null && latestEventDate.isAfter(LocalDateTime.now())) {
             return true;

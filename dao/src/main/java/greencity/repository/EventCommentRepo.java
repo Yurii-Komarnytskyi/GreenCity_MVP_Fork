@@ -69,7 +69,8 @@ public interface EventCommentRepo extends JpaRepository<EventComment, Long> {
     List<EventComment> findNonDeletedCommentsByEvent(Event event);
 
     /**
-     * Method to count the total number of comments (including replies) for a specific event.
+     * Method to count the total number of comments (including replies) for a
+     * specific event.
      *
      * @param event the {@link Event} instance.
      * @return total number of comments.
@@ -86,14 +87,17 @@ public interface EventCommentRepo extends JpaRepository<EventComment, Long> {
     @Query("SELECT COUNT(ec) FROM EventComment ec WHERE ec.parentComment = :parentComment")
     long countRepliesByParentComment(EventComment parentComment);
 
-
     /**
-     * Method to find all comments for a specific event, ordered by creation date in descending order.
-     * This ensures that the newest comments appear first in the list.
+     * Method to find all comments for a specific event, ordered by creation date in
+     * descending order. This ensures that the newest comments appear first in the
+     * list.
      *
-     * @param event    the {@link Event} instance for which comments are being retrieved.
-     * @param pageable the {@link Pageable} object for pagination and sorting options.
-     * @return a {@link Page} of {@link EventComment} instances sorted by `createdDate` in descending order.
+     * @param event    the {@link Event} instance for which comments are being
+     *                 retrieved.
+     * @param pageable the {@link Pageable} object for pagination and sorting
+     *                 options.
+     * @return a {@link Page} of {@link EventComment} instances sorted by
+     *         `createdDate` in descending order.
      */
     Page<EventComment> findByEventOrderByCreatedDateDesc(Event event, Pageable pageable);
 

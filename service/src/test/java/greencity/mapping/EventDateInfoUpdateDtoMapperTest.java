@@ -16,17 +16,17 @@ public class EventDateInfoUpdateDtoMapperTest {
     @Test
     void convertTest() {
         EventDateInfoUpdateDto dto = EventDateInfoUpdateDto.builder()
-                .id(1L)
-                .eventDate(LocalDate.of(2025, 2, 16))
-                .eventTimeStart(LocalDateTime.of(2025, 2, 16, 10, 0))
-                .eventTimeEnd(LocalDateTime.of(2025, 2, 16, 12, 0))
-                .isAllDay(false)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Sample Location")
-                .numOfTheDay(1)
-                .url("http://example.com")
-                .build();
+            .id(1L)
+            .eventDate(LocalDate.of(2025, 2, 16))
+            .eventTimeStart(LocalDateTime.of(2025, 2, 16, 10, 0))
+            .eventTimeEnd(LocalDateTime.of(2025, 2, 16, 12, 0))
+            .isAllDay(false)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Sample Location")
+            .numOfTheDay(1)
+            .url("http://example.com")
+            .build();
 
         EventDateInfo entity = mapper.convert(dto);
 
@@ -46,16 +46,16 @@ public class EventDateInfoUpdateDtoMapperTest {
     @Test
     void convertTest_NullId() {
         EventDateInfoUpdateDto dto = EventDateInfoUpdateDto.builder()
-                .eventDate(LocalDate.of(2025, 2, 16))
-                .eventTimeStart(LocalDateTime.of(2025, 2, 16, 10, 0))
-                .eventTimeEnd(LocalDateTime.of(2025, 2, 16, 12, 0))
-                .isAllDay(true)
-                .isPlace(false)
-                .isOnline(true)
-                .location("Another Location")
-                .numOfTheDay(2)
-                .url("http://test.com")
-                .build();
+            .eventDate(LocalDate.of(2025, 2, 16))
+            .eventTimeStart(LocalDateTime.of(2025, 2, 16, 10, 0))
+            .eventTimeEnd(LocalDateTime.of(2025, 2, 16, 12, 0))
+            .isAllDay(true)
+            .isPlace(false)
+            .isOnline(true)
+            .location("Another Location")
+            .numOfTheDay(2)
+            .url("http://test.com")
+            .build();
 
         EventDateInfo entity = mapper.convert(dto);
 

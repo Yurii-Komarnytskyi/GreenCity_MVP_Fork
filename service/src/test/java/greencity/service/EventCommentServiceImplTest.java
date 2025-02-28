@@ -57,27 +57,27 @@ public class EventCommentServiceImplTest {
 
     private static User getUser() {
         return User.builder()
-                .id(1L)
-                .email("test@example.com")
-                .name("Test User")
-                .role(Role.ROLE_USER)
-                .userStatus(UserStatus.ACTIVATED)
-                .lastActivityTime(LocalDateTime.now())
-                .verifyEmail(new VerifyEmail())
-                .dateOfRegistration(LocalDateTime.now())
-                .build();
+            .id(1L)
+            .email("test@example.com")
+            .name("Test User")
+            .role(Role.ROLE_USER)
+            .userStatus(UserStatus.ACTIVATED)
+            .lastActivityTime(LocalDateTime.now())
+            .verifyEmail(new VerifyEmail())
+            .dateOfRegistration(LocalDateTime.now())
+            .build();
     }
 
     private static UserVO getUserVO() {
         return UserVO.builder()
-                .id(1L)
-                .email("test@example.com")
-                .name("Test User")
-                .role(Role.ROLE_USER)
-                .lastActivityTime(LocalDateTime.now())
-                .verifyEmail(new VerifyEmailVO())
-                .dateOfRegistration(LocalDateTime.now())
-                .build();
+            .id(1L)
+            .email("test@example.com")
+            .name("Test User")
+            .role(Role.ROLE_USER)
+            .lastActivityTime(LocalDateTime.now())
+            .verifyEmail(new VerifyEmailVO())
+            .dateOfRegistration(LocalDateTime.now())
+            .build();
     }
 
     @BeforeEach
@@ -115,21 +115,21 @@ public class EventCommentServiceImplTest {
         Page<EventComment> eventCommentPage = new PageImpl<>(List.of(newerComment, olderComment), pageable, 2);
 
         when(eventCommentRepo.findByEventOrderByCreatedDateDesc(any(Event.class), eq(pageable)))
-                .thenReturn(eventCommentPage);
+            .thenReturn(eventCommentPage);
 
         when(modelMapper.map(any(EventComment.class), eq(EventCommentResponseDto.class)))
-                .thenAnswer(invocation -> {
-                    EventComment source = invocation.getArgument(0);
-                    return EventCommentResponseDto.builder()
-                            .id(source.getId())
-                            .text(source.getText())
-                            .createdDate(source.getCreatedDate())
-                            .modifiedDate(source.getModifiedDate())
-                            .author(new UserProfilePictureDto())
-                            .likes(0)
-                            .parentCommentId(null)
-                            .build();
-                });
+            .thenAnswer(invocation -> {
+                EventComment source = invocation.getArgument(0);
+                return EventCommentResponseDto.builder()
+                    .id(source.getId())
+                    .text(source.getText())
+                    .createdDate(source.getCreatedDate())
+                    .modifiedDate(source.getModifiedDate())
+                    .author(new UserProfilePictureDto())
+                    .likes(0)
+                    .parentCommentId(null)
+                    .build();
+            });
 
         PageableAdvancedDto<EventCommentResponseDto> result = service.getCommentsByEvent(1L, 0, 10);
 
@@ -139,8 +139,6 @@ public class EventCommentServiceImplTest {
         Assertions.assertEquals("Newest Comment", result.getContent().get(0).getText());
         Assertions.assertEquals("Older Comment", result.getContent().get(1).getText());
     }
-
-
 
     @Test
     void getCommentsByEventNoEventTest() {
@@ -260,18 +258,18 @@ public class EventCommentServiceImplTest {
 
         when(eventCommentRepo.findById(any(Long.class))).thenReturn(Optional.of(eventComment));
         when(modelMapper.map(any(EventComment.class), eq(EventCommentResponseDto.class)))
-                .thenAnswer(invocation -> {
-                    EventComment source = invocation.getArgument(0);
-                    return EventCommentResponseDto.builder()
-                            .id(source.getId())
-                            .text(source.getText())
-                            .createdDate(source.getCreatedDate())
-                            .modifiedDate(source.getModifiedDate())
-                            .author(new UserProfilePictureDto())
-                            .likes(0)
-                            .parentCommentId(null)
-                            .build();
-                });
+            .thenAnswer(invocation -> {
+                EventComment source = invocation.getArgument(0);
+                return EventCommentResponseDto.builder()
+                    .id(source.getId())
+                    .text(source.getText())
+                    .createdDate(source.getCreatedDate())
+                    .modifiedDate(source.getModifiedDate())
+                    .author(new UserProfilePictureDto())
+                    .likes(0)
+                    .parentCommentId(null)
+                    .build();
+            });
 
         EventCommentResponseDto response = service.getCommentById(1L, 1L);
 

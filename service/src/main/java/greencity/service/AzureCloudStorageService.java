@@ -38,7 +38,7 @@ public class AzureCloudStorageService implements FileService {
      * Constructor with parameters.
      */
     public AzureCloudStorageService(@Autowired PropertyResolver propertyResolver,
-                                    ModelMapper modelMapper) {
+        ModelMapper modelMapper) {
         this.connectionString = propertyResolver.getProperty("azure.connection.string");
         this.containerName = propertyResolver.getProperty("azure.container.name");
         this.modelMapper = modelMapper;
@@ -59,7 +59,7 @@ public class AzureCloudStorageService implements FileService {
 
         final String blob = UUID.randomUUID().toString();
         BlobClient client = containerClient()
-                .getBlobClient(blob + multipartFile.getOriginalFilename());
+            .getBlobClient(blob + multipartFile.getOriginalFilename());
         try {
             client.upload(new BufferedInputStream(multipartFile.getInputStream()), multipartFile.getSize());
         } catch (IOException e) {
@@ -84,7 +84,7 @@ public class AzureCloudStorageService implements FileService {
 
     private BlobContainerClient containerClient() {
         BlobServiceClient serviceClient = new BlobServiceClientBuilder()
-                .connectionString(connectionString).buildClient();
+            .connectionString(connectionString).buildClient();
         return serviceClient.getBlobContainerClient(containerName);
     }
 

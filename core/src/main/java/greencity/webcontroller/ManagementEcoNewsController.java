@@ -54,7 +54,7 @@ public class ManagementEcoNewsController {
      */
     @GetMapping
     public String getAllEcoNews(@RequestParam(required = false, name = "query") String query, Model model,
-                                @Parameter(hidden = true) Pageable pageable, EcoNewsViewDto ecoNewsViewDto) {
+        @Parameter(hidden = true) Pageable pageable, EcoNewsViewDto ecoNewsViewDto) {
         PageableAdvancedDto<EcoNewsDto> allEcoNews;
         if (ecoNewsViewDto.getId() != null && !ecoNewsViewDto.isEmpty()) {
             allEcoNews = ecoNewsService.getFilteredDataForManagementByPage(pageable, ecoNewsViewDto);
@@ -62,8 +62,8 @@ public class ManagementEcoNewsController {
             model.addAttribute("query", "");
         } else {
             allEcoNews = query == null || query.isEmpty()
-                    ? ecoNewsService.findAll(pageable)
-                    : ecoNewsService.searchEcoNewsBy(pageable, query);
+                ? ecoNewsService.findAll(pageable)
+                : ecoNewsService.searchEcoNewsBy(pageable, query);
             model.addAttribute("fields", new EcoNewsViewDto());
             model.addAttribute("query", query);
         }
@@ -83,15 +83,14 @@ public class ManagementEcoNewsController {
     }
 
     /**
-     * Method which delete {@link EcoNewsVO}
-     * by given id.
+     * Method which delete {@link EcoNewsVO} by given id.
      *
      * @param id of Eco New
      * @return {@link ResponseEntity}
      */
     @DeleteMapping("/delete")
     public ResponseEntity<Long> delete(@RequestParam("id") Long id,
-                                       @Parameter(hidden = true) @CurrentUser UserVO user) {
+        @Parameter(hidden = true) @CurrentUser UserVO user) {
         ecoNewsService.delete(id, user);
         return ResponseEntity.status(HttpStatus.OK).body(id);
     }
@@ -117,16 +116,16 @@ public class ManagementEcoNewsController {
     @Operation(summary = "Find econews by id.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                    content = @Content(schema = @Schema(implementation = EcoNewsDto.class))),
+            content = @Content(schema = @Schema(implementation = EcoNewsDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })
     @ApiLocale
     @GetMapping("/find/{id}")
     public ResponseEntity<EcoNewsDto> getEcoNewsById(@PathVariable Long id,
-                                                     @Parameter(hidden = true) @ValidLanguage Locale locale) {
+        @Parameter(hidden = true) @ValidLanguage Locale locale) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(ecoNewsService.findDtoByIdAndLanguage(id, locale.getLanguage()));
+            .body(ecoNewsService.findDtoByIdAndLanguage(id, locale.getLanguage()));
     }
 
     /**
@@ -138,14 +137,14 @@ public class ManagementEcoNewsController {
     @Operation(summary = "Find econew's page by id.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                    content = @Content(schema = @Schema(implementation = EcoNewsDto.class))),
+            content = @Content(schema = @Schema(implementation = EcoNewsDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })
     @ApiLocale
     @GetMapping("/{id}")
     public String getEcoNewsPage(@PathVariable("id") Long id,
-                                 @Parameter(hidden = true) Locale locale, Model model) {
+        @Parameter(hidden = true) Locale locale, Model model) {
         EcoNewsDto econew = ecoNewsService.findDtoByIdAndLanguage(id, locale.getLanguage());
         model.addAttribute("econew", econew);
         ZonedDateTime time = econew.getCreationDate();
@@ -175,14 +174,15 @@ public class ManagementEcoNewsController {
     @Operation(summary = "Save EcoNews.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                    content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
+            content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })
     @ResponseBody
     @PostMapping("/save")
     public GenericResponseDto saveEcoNews(@Valid @RequestPart AddEcoNewsDtoRequest addEcoNewsDtoRequest,
-                                          BindingResult bindingResult, @ImageValidation @RequestParam(required = false,
-            name = "file") MultipartFile file, @Parameter(hidden = true) Principal principal) {
+        BindingResult bindingResult, @ImageValidation @RequestParam(required = false,
+            name = "file") MultipartFile file,
+        @Parameter(hidden = true) Principal principal) {
         if (!bindingResult.hasErrors()) {
             ecoNewsService.save(addEcoNewsDtoRequest, file, principal.getName());
         }
@@ -204,7 +204,7 @@ public class ManagementEcoNewsController {
     @ResponseBody
     @PutMapping("/")
     public GenericResponseDto update(@Valid @RequestPart EcoNewsDtoManagement ecoNewsDtoManagement,
-                                     BindingResult bindingResult, @ImageValidation @RequestPart(required = false,
+        BindingResult bindingResult, @ImageValidation @RequestPart(required = false,
             name = "file") MultipartFile file) {
         if (!bindingResult.hasErrors()) {
             ecoNewsService.update(ecoNewsDtoManagement, file);

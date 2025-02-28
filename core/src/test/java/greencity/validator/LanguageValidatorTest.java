@@ -39,13 +39,13 @@ public class LanguageValidatorTest {
     }
 
     @Test
-    void testIsValidWithValidLanguage(){
+    void testIsValidWithValidLanguage() {
         Locale locale = Locale.forLanguageTag("en");
         assertTrue(languageValidator.isValid(locale, constraintValidatorContext));
     }
 
     @Test
-    void testIsValidWithInvalidLanguage(){
+    void testIsValidWithInvalidLanguage() {
         Locale locale = Locale.forLanguageTag("de");
         assertFalse(languageValidator.isValid(locale, constraintValidatorContext));
     }

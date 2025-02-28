@@ -65,9 +65,9 @@ class HabitFactControllerTest {
     void setUp() throws Exception {
         // mockMvc setup was shamelessly stolen from Yurii Feduniak, god bless U
         mockMvc = MockMvcBuilders.standaloneSetup(habitFactController)
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
-                .setValidator(validator)
-                .build();
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
+            .setValidator(validator)
+            .build();
         objectMapper = new ObjectMapper();
     }
 
@@ -78,14 +78,14 @@ class HabitFactControllerTest {
         Locale locale = Locale.ENGLISH;
 
         when(habitFactService.getRandomHabitFactByHabitIdAndLanguage(RANDOM_ID, locale.getLanguage()))
-                .thenReturn(response);
+            .thenReturn(response);
 
         mockMvc.perform(get("/facts/random/%d".formatted(RANDOM_ID)).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(habitFactService, times(1))
-                .getRandomHabitFactByHabitIdAndLanguage(RANDOM_ID, locale.getLanguage());
+            .getRandomHabitFactByHabitIdAndLanguage(RANDOM_ID, locale.getLanguage());
     }
 
     @Test
@@ -95,9 +95,9 @@ class HabitFactControllerTest {
         when(habitFactService.getHabitFactOfTheDay(RANDOM_ID)).thenReturn(languageTranslationDTO);
 
         mockMvc.perform(get("/facts/dayFact/%d".formatted(RANDOM_ID)).accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(languageTranslationDTO)));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(objectMapper.writeValueAsString(languageTranslationDTO)));
 
         verify(habitFactService, times(1)).getHabitFactOfTheDay(RANDOM_ID);
     }
@@ -112,13 +112,13 @@ class HabitFactControllerTest {
         when(habitFactService.getAllHabitFacts(any(Pageable.class), eq(locale.getLanguage()))).thenReturn(response);
 
         ResultActions resultActions = mockMvc.perform(get(HABIT_FACT_CONTROLLER_LINK)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON));
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(objectMapper.writeValueAsString(response)));
 
         verify(habitFactService, times(1)).getAllHabitFacts(any(Pageable.class), eq(locale.getLanguage()));
     }
@@ -134,14 +134,14 @@ class HabitFactControllerTest {
         when(modelMapper.map(habitFactVO, HabitFactDtoResponse.class)).thenReturn(response);
 
         ResultActions resultActions = mockMvc.perform(post(HABIT_FACT_CONTROLLER_LINK)
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(fact)));
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(fact)));
 
         resultActions
-                .andExpect(status().isCreated())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+            .andExpect(status().isCreated())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(objectMapper.writeValueAsString(response)));
 
         verify(habitFactService, times(1)).save(fact);
     }
@@ -157,14 +157,14 @@ class HabitFactControllerTest {
         when(modelMapper.map(updatedHabitFactVO, HabitFactPostDto.class)).thenReturn(response);
 
         ResultActions resultActions = mockMvc.perform(put("/facts/%d".formatted(RANDOM_ID))
-                .accept(MediaType.APPLICATION_JSON)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(objectMapper.writeValueAsString(habitFactUpdateDto)));
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(habitFactUpdateDto)));
 
         resultActions
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().json(objectMapper.writeValueAsString(response)));
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().json(objectMapper.writeValueAsString(response)));
 
         verify(habitFactService, times(1)).update(habitFactUpdateDto, RANDOM_ID);
     }

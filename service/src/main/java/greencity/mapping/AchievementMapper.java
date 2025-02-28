@@ -12,11 +12,11 @@ public class AchievementMapper extends AbstractConverter<Achievement, Achievemen
     public AchievementResponseDto convert(Achievement achievement) {
 
         return AchievementResponseDto
-                .builder()
-                .id(achievement.getId())
-                .type(String.valueOf(achievement.getType()))
-                .conditions(achievement.getConditions())
-                .requiredRate(achievement.getRequiredRate())
-                .build();
+            .builder()
+            .id(achievement.getId())
+            .type(String.valueOf(achievement.getType()))
+            .conditions(achievement.getConditions())
+            .requiredRate(achievement.getRequiredRate())
+            .build();
     }
 }

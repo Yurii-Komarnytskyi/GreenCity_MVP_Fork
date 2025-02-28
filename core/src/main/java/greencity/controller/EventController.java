@@ -26,7 +26,8 @@ public class EventController {
     private final EventService eventService;
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody EventRequestDto eventRequestDto, @CurrentUser Principal currentUser, BindingResult result) {
+    public ResponseEntity<?> create(@Valid @RequestBody EventRequestDto eventRequestDto,
+        @CurrentUser Principal currentUser, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
@@ -35,8 +36,10 @@ public class EventController {
     }
 
     @GetMapping("/myEvents")
-    public ResponseEntity<EventProfilePreviewPageable> getEventsByUser(@CurrentUser Principal currentUser, @Parameter(hidden = true) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllUserEvents(currentUser.getName(), pageable));
+    public ResponseEntity<EventProfilePreviewPageable> getEventsByUser(@CurrentUser Principal currentUser,
+        @Parameter(hidden = true) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(eventService.getAllUserEvents(currentUser.getName(), pageable));
     }
 
     @GetMapping("/{id}")
@@ -45,33 +48,42 @@ public class EventController {
     }
 
     @GetMapping("/myEvents/past")
-    public ResponseEntity<EventProfilePreviewPageable> getPastEventsByUser(@CurrentUser Principal currentUser, @Parameter(hidden = true) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllUserPastEvents(currentUser.getName(), pageable));
+    public ResponseEntity<EventProfilePreviewPageable> getPastEventsByUser(@CurrentUser Principal currentUser,
+        @Parameter(hidden = true) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(eventService.getAllUserPastEvents(currentUser.getName(), pageable));
     }
 
     @GetMapping("/myEvents/live")
-    public ResponseEntity<EventProfilePreviewPageable> getLiveEventsByUser(@CurrentUser Principal currentUser, @Parameter(hidden = true) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllUserLiveEvents(currentUser.getName(), pageable));
+    public ResponseEntity<EventProfilePreviewPageable> getLiveEventsByUser(@CurrentUser Principal currentUser,
+        @Parameter(hidden = true) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(eventService.getAllUserLiveEvents(currentUser.getName(), pageable));
     }
 
     @GetMapping("/myEvents/upcoming")
-    public ResponseEntity<EventProfilePreviewPageable> getUpcomingEventsByUser(@CurrentUser Principal currentUser, @Parameter(hidden = true) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllUserUpcomingEvents(currentUser.getName(), pageable));
+    public ResponseEntity<EventProfilePreviewPageable> getUpcomingEventsByUser(@CurrentUser Principal currentUser,
+        @Parameter(hidden = true) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(eventService.getAllUserUpcomingEvents(currentUser.getName(), pageable));
     }
 
     @GetMapping("/myEvents/status/{status}")
     public ResponseEntity<EventProfilePreviewPageable> getAllUserEventsByStatus(@CurrentUser Principal currentUser,
-                                                                @PathVariable String status,
-                                                                @Parameter(hidden = true) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.getAllUserEventsByStatus(currentUser.getName(), status, pageable));
+        @PathVariable String status,
+        @Parameter(hidden = true) Pageable pageable) {
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(eventService.getAllUserEventsByStatus(currentUser.getName(), status, pageable));
     }
 
     @PutMapping("/{eventId}")
-    public ResponseEntity<?> update(@Valid @RequestBody EventUpdateDto eventUpdateDto, BindingResult result, @CurrentUser Principal currentUser, @PathVariable Long eventId) {
+    public ResponseEntity<?> update(@Valid @RequestBody EventUpdateDto eventUpdateDto, BindingResult result,
+        @CurrentUser Principal currentUser, @PathVariable Long eventId) {
         if (result.hasErrors()) {
             return ResponseEntity.badRequest().body(result.getAllErrors());
         }
-        return ResponseEntity.status(HttpStatus.OK).body(eventService.updateEvent(eventId, eventUpdateDto, currentUser.getName()));
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(eventService.updateEvent(eventId, eventUpdateDto, currentUser.getName()));
     }
 
     @GetMapping
@@ -81,8 +93,8 @@ public class EventController {
 
     @GetMapping("/search")
     public ResponseEntity<EventProfilePreviewPageable> searchEventByTittle(
-            @RequestParam(required = false, defaultValue = "") String title,
-            @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
+        @RequestParam(required = false, defaultValue = "") String title,
+        @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable) {
         return ResponseEntity.status(HttpStatus.OK).body(eventService.getEventsByTitle(title, pageable));
     }
 }

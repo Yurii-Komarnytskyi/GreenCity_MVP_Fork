@@ -45,12 +45,12 @@ class HabitStatisticControllerTest {
     @Test
     void findAllByHabitIdNotFoundTest() {
         Long habitId = 999L;
-        when(habitStatisticService.findAllStatsByHabitId(habitId)).thenThrow(new NotFoundException("Habit not found by id: " + habitId));
+        when(habitStatisticService.findAllStatsByHabitId(habitId))
+            .thenThrow(new NotFoundException("Habit not found by id: " + habitId));
 
         NotFoundException exception = org.junit.jupiter.api.Assertions.assertThrows(
-                NotFoundException.class,
-                () -> habitStatisticController.findAllByHabitId(habitId)
-        );
+            NotFoundException.class,
+            () -> habitStatisticController.findAllByHabitId(habitId));
         assertEquals("Habit not found by id: " + habitId, exception.getMessage());
     }
 
@@ -60,7 +60,8 @@ class HabitStatisticControllerTest {
         List<HabitStatisticDto> mockResponse = Collections.singletonList(new HabitStatisticDto());
         when(habitStatisticService.findAllStatsByHabitAssignId(habitAssignId)).thenReturn(mockResponse);
 
-        ResponseEntity<List<HabitStatisticDto>> response = habitStatisticController.findAllStatsByHabitAssignId(habitAssignId);
+        ResponseEntity<List<HabitStatisticDto>> response =
+            habitStatisticController.findAllStatsByHabitAssignId(habitAssignId);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockResponse, response.getBody());
@@ -70,12 +71,11 @@ class HabitStatisticControllerTest {
     void findAllStatsByHabitAssignIdNotFoundTest() {
         Long habitAssignId = 999L;
         when(habitStatisticService.findAllStatsByHabitAssignId(habitAssignId))
-                .thenThrow(new NotFoundException("Habit assign not found"));
+            .thenThrow(new NotFoundException("Habit assign not found"));
 
         NotFoundException exception = org.junit.jupiter.api.Assertions.assertThrows(
-                NotFoundException.class,
-                () -> habitStatisticController.findAllStatsByHabitAssignId(habitAssignId)
-        );
+            NotFoundException.class,
+            () -> habitStatisticController.findAllStatsByHabitAssignId(habitAssignId));
 
         assertEquals("Habit assign not found", exception.getMessage());
     }
@@ -88,7 +88,8 @@ class HabitStatisticControllerTest {
         UserVO userVO = UserVO.builder().id(1L).build();
         when(habitStatisticService.saveByHabitIdAndUserId(habitId, 1L, inputDto)).thenReturn(mockResponse);
 
-        ResponseEntity<HabitStatisticDto> response = habitStatisticController.saveHabitStatistic(inputDto, userVO, habitId);
+        ResponseEntity<HabitStatisticDto> response =
+            habitStatisticController.saveHabitStatistic(inputDto, userVO, habitId);
 
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertEquals(mockResponse, response.getBody());
@@ -100,7 +101,7 @@ class HabitStatisticControllerTest {
         AddHabitStatisticDto inputDto = new AddHabitStatisticDto();
         UserVO userVO = UserVO.builder().id(1L).build();
         when(habitStatisticService.saveByHabitIdAndUserId(habitId, 1L, inputDto))
-                .thenThrow(new NotSavedException("Habit statistic already exists with such date"));
+            .thenThrow(new NotSavedException("Habit statistic already exists with such date"));
 
         try {
             habitStatisticController.saveHabitStatistic(inputDto, userVO, habitId);
@@ -115,7 +116,7 @@ class HabitStatisticControllerTest {
         AddHabitStatisticDto inputDto = new AddHabitStatisticDto();
         UserVO userVO = UserVO.builder().id(1L).build();
         when(habitStatisticService.saveByHabitIdAndUserId(habitId, 1L, inputDto))
-                .thenThrow(new NotFoundException("Habit assign not found with user id and habit id: 1, 1"));
+            .thenThrow(new NotFoundException("Habit assign not found with user id and habit id: 1, 1"));
 
         try {
             habitStatisticController.saveHabitStatistic(inputDto, userVO, habitId);
@@ -130,7 +131,7 @@ class HabitStatisticControllerTest {
         AddHabitStatisticDto inputDto = new AddHabitStatisticDto();
         UserVO userVO = UserVO.builder().id(1L).build();
         when(habitStatisticService.saveByHabitIdAndUserId(habitId, 1L, inputDto))
-                .thenThrow(new BadRequestException("Wrong date"));
+            .thenThrow(new BadRequestException("Wrong date"));
 
         try {
             habitStatisticController.saveHabitStatistic(inputDto, userVO, habitId);
@@ -147,7 +148,8 @@ class HabitStatisticControllerTest {
         UserVO userVO = UserVO.builder().id(1L).build();
         when(habitStatisticService.update(id, 1L, inputDto)).thenReturn(mockResponse);
 
-        ResponseEntity<UpdateHabitStatisticDto> response = habitStatisticController.updateStatistic(id, userVO, inputDto);
+        ResponseEntity<UpdateHabitStatisticDto> response =
+            habitStatisticController.updateStatistic(id, userVO, inputDto);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockResponse, response.getBody());
@@ -159,12 +161,11 @@ class HabitStatisticControllerTest {
         UpdateHabitStatisticDto inputDto = new UpdateHabitStatisticDto();
         UserVO userVO = UserVO.builder().id(1L).build();
         when(habitStatisticService.update(id, 1L, inputDto))
-                .thenThrow(new NotFoundException("Statistic not found"));
+            .thenThrow(new NotFoundException("Statistic not found"));
 
         NotFoundException exception = org.junit.jupiter.api.Assertions.assertThrows(
-                NotFoundException.class,
-                () -> habitStatisticController.updateStatistic(id, userVO, inputDto)
-        );
+            NotFoundException.class,
+            () -> habitStatisticController.updateStatistic(id, userVO, inputDto));
 
         assertEquals("Statistic not found", exception.getMessage());
     }
@@ -176,7 +177,8 @@ class HabitStatisticControllerTest {
         Locale locale = new Locale(language);
         when(habitStatisticService.getTodayStatisticsForAllHabitItems(language)).thenReturn(mockResponse);
 
-        ResponseEntity<List<HabitItemsAmountStatisticDto>> response = habitStatisticController.getTodayStatisticsForAllHabitItems(locale);
+        ResponseEntity<List<HabitItemsAmountStatisticDto>> response =
+            habitStatisticController.getTodayStatisticsForAllHabitItems(locale);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(mockResponse, response.getBody());

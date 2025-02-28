@@ -13,8 +13,8 @@ public class InitiativeTypeRequestDtoMapperTest {
     @Test
     void convertTest() {
         InitiativeTypeRequestDto dto = InitiativeTypeRequestDto.builder()
-                .name("Environmental")
-                .build();
+            .name("Environmental")
+            .build();
 
         InitiativeType result = mapper.convert(dto);
 

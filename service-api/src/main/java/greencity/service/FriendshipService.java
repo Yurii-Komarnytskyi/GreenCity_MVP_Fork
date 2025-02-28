@@ -20,20 +20,20 @@ public interface FriendshipService {
     List<FriendCardDto> getAllFriendsByUserId(Long id);
 
     /**
-     * Retrieves a list of all friendship requests for a specified user.
-     * This method provides a view of incoming friendship requests that have been sent
-     * to the user, allowing them to view and manage pending relationships.
+     * Retrieves a list of all friendship requests for a specified user. This method
+     * provides a view of incoming friendship requests that have been sent to the
+     * user, allowing them to view and manage pending relationships.
      *
      * @param userId the ID of the user for whom to retrieve friendship requests
-     * @return a list of FriendshipRequestDto objects representing users who have sent friendship
-     * requests to the specified user
+     * @return a list of FriendshipRequestDto objects representing users who have
+     *         sent friendship requests to the specified user
      */
     List<RequestedFriendshipDto> getAllFriendshipRequestsForUserById(Long userId);
 
     /**
      * Retrieves a list of mutual friends between two specified users.
      *
-     * @param userId the ID of the first user
+     * @param userId       the ID of the first user
      * @param targetUserId the ID of the second user whose mutual friends are sought
      * @return a list of FriendCardDto objects representing the mutual friends
      */
@@ -50,7 +50,7 @@ public interface FriendshipService {
     /**
      * Sends a friendship request from one user to another.
      *
-     * @param senderId the ID of the user sending the request
+     * @param senderId    the ID of the user sending the request
      * @param recipientId the ID of the user receiving the request
      * @return true if request was successful, false otherwise
      */
@@ -59,7 +59,7 @@ public interface FriendshipService {
     /**
      * Cancels a friendship request sent by a user to another user.
      *
-     * @param senderId the ID of the user who sent the friendship request
+     * @param senderId    the ID of the user who sent the friendship request
      * @param recipientId the ID of the user to whom the request was sent
      * @return true if friendship was canceled successfully, false otherwise
      */
@@ -68,7 +68,7 @@ public interface FriendshipService {
     /**
      * Accepts a friendship request from one user to another.
      *
-     * @param senderId the ID of the user who sent the friendship request
+     * @param senderId    the ID of the user who sent the friendship request
      * @param recipientId the ID of the user accepting the friendship request
      * @return true if the request was accepted successfully, false otherwise
      */
@@ -77,7 +77,7 @@ public interface FriendshipService {
     /**
      * Declines a friendship request from one user to another.
      *
-     * @param senderId the ID of the user who sent the friendship request
+     * @param senderId    the ID of the user who sent the friendship request
      * @param recipientId the ID of the user declining the friendship request
      * @return true if the request was declined successfully, false otherwise
      */
@@ -86,16 +86,18 @@ public interface FriendshipService {
     /**
      * Retrieves the friendship request status between two specified users.
      *
-     * @param userId the ID of one user involved in the friendship request
-     * @param targetUserId the ID of the other user involved in the friendship request
-     * @return the FriendshipRequestStatus representing the current status of the request
+     * @param userId       the ID of one user involved in the friendship request
+     * @param targetUserId the ID of the other user involved in the friendship
+     *                     request
+     * @return the FriendshipRequestStatus representing the current status of the
+     *         request
      */
     Optional<FriendshipStatus> getFriendshipStatusByUserId(Long userId, Long targetUserId);
 
     /**
      * Deletes a friendship between two specified users.
      *
-     * @param userId the ID of the user who wants to delete the friendship
+     * @param userId   the ID of the user who wants to delete the friendship
      * @param friendId the ID of the friend to be deleted
      * @return true if the friendship was deleted successfully, false otherwise
      */
@@ -111,16 +113,16 @@ public interface FriendshipService {
     boolean areFriends(Long userId, Long friendId);
 
     /**
-     * Blocks friendship requests from a specified user.
-     * This method prevents the specified user (sender) from sending friendship requests
-     * to the recipient user. It can be used to manage unwanted requests and relationships.
+     * Blocks friendship requests from a specified user. This method prevents the
+     * specified user (sender) from sending friendship requests to the recipient
+     * user. It can be used to manage unwanted requests and relationships.
      *
-     * @param senderId   the ID of the user whose friendship requests will be blocked
+     * @param senderId    the ID of the user whose friendship requests will be
+     *                    blocked
      * @param recipientId the ID of the user who is blocking the requests
      * @return true if the operation was successful and the user is now blocked from
-     * sending friendship requests; false otherwise
+     *         sending friendship requests; false otherwise
      */
     boolean blockFriendshipRequestsFromUserById(Long senderId, Long recipientId);
 
 }
-

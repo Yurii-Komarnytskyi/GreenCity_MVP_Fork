@@ -13,9 +13,9 @@ public interface ParticipationService {
 
     void removeParticipation(Long userId, Long eventId);
 
-   // List<ParticipationResponseDto> getParticipantsByEventId(Long eventId);
+    // List<ParticipationResponseDto> getParticipantsByEventId(Long eventId);
 
-   // List<ParticipationResponseDto> getEventsByUserId(Long userId);
+    // List<ParticipationResponseDto> getEventsByUserId(Long userId);
 
     List<UserProfilePictureDto> getUsersByEventId(Long eventId);
 

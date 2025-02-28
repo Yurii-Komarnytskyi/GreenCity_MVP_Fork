@@ -40,7 +40,7 @@ public class FileServiceController {
     @Operation(summary = "Upload an image.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = String.class))),
+            content = @Content(schema = @Schema(implementation = String.class))),
         @ApiResponse(responseCode = "401", description = HttpStatuses.UNAUTHORIZED)
     })
     @PostMapping(path = "/image", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class AchievementServiceImpl implements AchievementService{
+public class AchievementServiceImpl implements AchievementService {
 
     private final AchievementRepo achievementRepo;
     private final AchievementRequestDtoMapper achievementRequestDtoMapper;
@@ -26,7 +26,7 @@ public class AchievementServiceImpl implements AchievementService{
         Achievement newAchievement = achievementRequestDtoMapper.convert(achievementRequestDto);
 
         return achievementMapper
-                .convert(achievementRepo.save(newAchievement));
+            .convert(achievementRepo.save(newAchievement));
     }
 
     @Override
@@ -35,7 +35,7 @@ public class AchievementServiceImpl implements AchievementService{
         Achievement foundAchievement = findAchievementByIdPrivate(id);
 
         return achievementMapper
-                .convert(achievementRepo.save(foundAchievement));
+            .convert(achievementRepo.save(foundAchievement));
     }
 
     @Override
@@ -61,16 +61,16 @@ public class AchievementServiceImpl implements AchievementService{
     public List<AchievementResponseDto> getAchievementsByConditionsContainingText(String text) {
 
         return achievementRepo.findByConditionsContainingIgnoreCase(text)
-                .stream().map(achievementMapper::convert)
-                .toList();
+            .stream().map(achievementMapper::convert)
+            .toList();
     }
 
     @Override
     public List<AchievementResponseDto> getAchievementsByTypeContainingText(String text) {
 
         return achievementRepo.findByTypeContainingIgnoreCase(text)
-                .stream().map(achievementMapper::convert)
-                .toList();
+            .stream().map(achievementMapper::convert)
+            .toList();
     }
 
     @Override
@@ -83,7 +83,7 @@ public class AchievementServiceImpl implements AchievementService{
         achievementToUpd.setRequiredRate(achievementRequestDtoUpd.getRequiredUserRating());
 
         return achievementMapper
-                .convert(achievementRepo.save(achievementToUpd));
+            .convert(achievementRepo.save(achievementToUpd));
     }
 
     @Override
@@ -92,13 +92,12 @@ public class AchievementServiceImpl implements AchievementService{
         Achievement achievementToDel = findAchievementByIdPrivate(id);
         String achievementType = achievementToDel.getType().toString();
         achievementRepo.delete(achievementToDel);
-        return achievementType +" was successfully deleted! ";
+        return achievementType + " was successfully deleted! ";
     }
 
-    private Achievement findAchievementByIdPrivate(Long id){
+    private Achievement findAchievementByIdPrivate(Long id) {
 
         return achievementRepo.findById(id).orElseThrow(
-                ()-> new EntityNotFoundException("Achievement is not found")
-        );
+            () -> new EntityNotFoundException("Achievement is not found"));
     }
 }

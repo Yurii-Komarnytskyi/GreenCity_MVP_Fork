@@ -73,7 +73,7 @@ public class ManagementHabitController {
     @Operation(summary = "Find habit by id.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = HabitManagementDto.class))),
+            content = @Content(schema = @Schema(implementation = HabitManagementDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })
@@ -93,7 +93,7 @@ public class ManagementHabitController {
     @Operation(summary = "Find habit by id.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = HabitManagementDto.class))),
+            content = @Content(schema = @Schema(implementation = HabitManagementDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN),
     })
@@ -125,7 +125,7 @@ public class ManagementHabitController {
     @Operation(summary = "Save habit with translations.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "201", description = HttpStatuses.CREATED,
-                content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
+            content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })
@@ -152,7 +152,7 @@ public class ManagementHabitController {
     @Operation(summary = "Update habit with translations.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
+            content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
         @ApiResponse(responseCode = "400", description = HttpStatuses.BAD_REQUEST),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })

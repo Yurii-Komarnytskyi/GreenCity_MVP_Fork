@@ -16,11 +16,10 @@ import java.util.List;
 @Repository
 public interface NotificationRepo extends JpaRepository<Notification, Long> {
 
-
     /**
      * method, that finds all the {@link Notification} by receiver as List.
      *
-     * @param receiver  - who is a notification receiver.
+     * @param receiver - who is a notification receiver.
      * @return {@link List<Notification>} by it's code.
      * @author Mykhailo Derecha
      */
@@ -29,7 +28,7 @@ public interface NotificationRepo extends JpaRepository<Notification, Long> {
     /**
      * method, that finds all the {@link Notification} by receiver as Pageable.
      *
-     * @param receiver  - who is a notifications receiver, we want to gets.
+     * @param receiver - who is a notifications receiver, we want to gets.
      * @param pageable .
      * @return {@link Page<Notification>}.
      * @author Mykhailo Derecha
@@ -39,7 +38,7 @@ public interface NotificationRepo extends JpaRepository<Notification, Long> {
     /**
      * method, that finds all the {@link Notification} by sender.
      *
-     * @param sender code of the language.
+     * @param sender   code of the language.
      * @param pageable
      * @return {@link List<Notification>} by sender.
      * @author Mykhailo Derecha
@@ -49,7 +48,7 @@ public interface NotificationRepo extends JpaRepository<Notification, Long> {
     /**
      * method, that finds all the {@link Notification} by section.
      *
-     * @param section code of the language.
+     * @param section  code of the language.
      * @param pageable
      * @return {@link Page<Notification>} by section.
      * @author Mykhailo Derecha

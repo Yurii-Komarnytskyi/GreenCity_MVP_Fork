@@ -37,11 +37,11 @@ class FileServiceControllerTest {
     @Test
     void uploadImageTest() throws Exception {
         MockMultipartFile file = new MockMultipartFile("image", "test-image.jpg",
-                MediaType.IMAGE_JPEG_VALUE, "Spring Framework".getBytes());
+            MediaType.IMAGE_JPEG_VALUE, "Spring Framework".getBytes());
 
         mockMvc.perform(multipart("/files/image")
-                        .file(file))
-                .andExpect(status().isOk());
+            .file(file))
+            .andExpect(status().isOk());
 
         verify(fileService).upload(file);
     }

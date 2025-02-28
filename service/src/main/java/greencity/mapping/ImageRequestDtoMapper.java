@@ -14,7 +14,7 @@ public class ImageRequestDtoMapper extends AbstractConverter<ImageRequestDto, Im
         }
 
         return Image.builder()
-                .imagePath(imageRequestDto.getImagePath())
-                .build();
+            .imagePath(imageRequestDto.getImagePath())
+            .build();
     }
 }

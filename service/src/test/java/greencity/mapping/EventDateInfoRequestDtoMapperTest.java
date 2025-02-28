@@ -16,20 +16,21 @@ public class EventDateInfoRequestDtoMapperTest {
     @Test
     void convertTest() {
         EventDateInfoRequestDto dto = EventDateInfoRequestDto.builder()
-                .eventDate(LocalDate.of(2025, 1, 1))
-                .eventTimeStart(LocalDateTime.of(2025, 1, 1, 10, 0))
-                .eventTimeEnd(LocalDateTime.of(2025, 1, 1, 12, 0))
-                .isAllDay(false)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Test location")
-                .build();
+            .eventDate(LocalDate.of(2025, 1, 1))
+            .eventTimeStart(LocalDateTime.of(2025, 1, 1, 10, 0))
+            .eventTimeEnd(LocalDateTime.of(2025, 1, 1, 12, 0))
+            .isAllDay(false)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Test location")
+            .build();
 
         EventDateInfo result = mapper.convert(dto);
 
         assertNotNull(result, "The result should not be null");
         assertEquals(dto.getEventDate(), result.getEventDate(), "The event date should be mapped correctly");
-        assertEquals(dto.getEventTimeStart(), result.getEventTimeStart(), "The event start time should be mapped correctly");
+        assertEquals(dto.getEventTimeStart(), result.getEventTimeStart(),
+            "The event start time should be mapped correctly");
         assertEquals(dto.getEventTimeEnd(), result.getEventTimeEnd(), "The event end time should be mapped correctly");
         assertEquals(dto.getIsAllDay(), result.isAllDay(), "The isAllDay flag should be mapped correctly");
         assertEquals(dto.getIsPlace(), result.isPlace(), "The isPlace flag should be mapped correctly");

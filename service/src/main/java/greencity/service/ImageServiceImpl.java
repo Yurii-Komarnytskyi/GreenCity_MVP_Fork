@@ -75,7 +75,8 @@ public class ImageServiceImpl implements ImageService {
 
         if (event != null) {
             List<Image> images = imageRepo.findAllByEvent(event);
-            List<ImageResponseDto> result = images.stream().map(image -> modelMapper.map(image, ImageResponseDto.class)).toList();
+            List<ImageResponseDto> result =
+                images.stream().map(image -> modelMapper.map(image, ImageResponseDto.class)).toList();
             return result;
         } else {
             throw new EntityNotFoundException("Event not found with id: " + eventId);

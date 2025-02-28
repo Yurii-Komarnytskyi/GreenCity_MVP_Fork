@@ -58,7 +58,7 @@ class EventServiceImplTest {
     private ParticipationRepo participationRepo;
 
     @Mock
-    private EventDateInfoService eventDateInfoService;  // Mocking the service
+    private EventDateInfoService eventDateInfoService; // Mocking the service
 
     @InjectMocks
     private EventServiceImpl eventService;
@@ -196,12 +196,12 @@ class EventServiceImplTest {
         when(participationRepo.findUsersByEventId(anyLong())).thenReturn(List.of());
 
         EventProfilePreviewDto mockDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Mock Event Dto")
-                .build();
+            .id(1L)
+            .title("Mock Event Dto")
+            .build();
 
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenReturn(mockDto);
+            .thenReturn(mockDto);
 
         EventProfilePreviewPageable result = eventService.getAllUserEvents(mockUser.getEmail(), pageable);
 
@@ -242,16 +242,17 @@ class EventServiceImplTest {
         Page<Event> events = new PageImpl<>(content);
         Pageable pageable = PageRequest.of(0, 3);
 
-        when(eventRepo.findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("PAST"), eq(pageable))).thenReturn(events);
+        when(eventRepo.findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("PAST"), eq(pageable)))
+            .thenReturn(events);
         when(eventDateInfoRepo.findByEvent(any(Event.class))).thenReturn(List.of(new EventDateInfo()));
         when(participationRepo.findUsersByEventId(anyLong())).thenReturn(List.of());
 
         EventProfilePreviewDto mockDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Mock Past Event Dto")
-                .build();
+            .id(1L)
+            .title("Mock Past Event Dto")
+            .build();
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenReturn(mockDto);
+            .thenReturn(mockDto);
 
         EventProfilePreviewPageable result = eventService.getAllUserPastEvents(userEmail, pageable);
 
@@ -260,7 +261,8 @@ class EventServiceImplTest {
         assertEquals("Mock Past Event Dto", result.getContent().get(0).getTitle());
 
         verify(userRepo, times(1)).findByEmail(userEmail);
-        verify(eventRepo, times(1)).findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("PAST"), eq(pageable));
+        verify(eventRepo, times(1)).findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("PAST"),
+            eq(pageable));
     }
 
     @Test
@@ -279,16 +281,17 @@ class EventServiceImplTest {
         Page<Event> events = new PageImpl<>(content);
         Pageable pageable = PageRequest.of(0, 3);
 
-        when(eventRepo.findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("LIVE"), eq(pageable))).thenReturn(events);
+        when(eventRepo.findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("LIVE"), eq(pageable)))
+            .thenReturn(events);
         when(eventDateInfoRepo.findByEvent(any(Event.class))).thenReturn(List.of(new EventDateInfo()));
         when(participationRepo.findUsersByEventId(anyLong())).thenReturn(List.of());
 
         EventProfilePreviewDto mockDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Mock Live Event Dto")
-                .build();
+            .id(1L)
+            .title("Mock Live Event Dto")
+            .build();
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenReturn(mockDto);
+            .thenReturn(mockDto);
 
         EventProfilePreviewPageable result = eventService.getAllUserLiveEvents(userEmail, pageable);
 
@@ -297,7 +300,8 @@ class EventServiceImplTest {
         assertEquals("Mock Live Event Dto", result.getContent().get(0).getTitle());
 
         verify(userRepo, times(1)).findByEmail(userEmail);
-        verify(eventRepo, times(1)).findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("LIVE"), eq(pageable));
+        verify(eventRepo, times(1)).findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("LIVE"),
+            eq(pageable));
     }
 
     @Test
@@ -316,16 +320,17 @@ class EventServiceImplTest {
         Page<Event> events = new PageImpl<>(content);
         Pageable pageable = PageRequest.of(0, 3);
 
-        when(eventRepo.findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("UPCOMING"), eq(pageable))).thenReturn(events);
+        when(eventRepo.findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("UPCOMING"), eq(pageable)))
+            .thenReturn(events);
         when(eventDateInfoRepo.findByEvent(any(Event.class))).thenReturn(List.of(new EventDateInfo()));
         when(participationRepo.findUsersByEventId(anyLong())).thenReturn(List.of());
 
         EventProfilePreviewDto mockDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Mock Upcoming Event Dto")
-                .build();
+            .id(1L)
+            .title("Mock Upcoming Event Dto")
+            .build();
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenReturn(mockDto);
+            .thenReturn(mockDto);
 
         EventProfilePreviewPageable result = eventService.getAllUserUpcomingEvents(userEmail, pageable);
 
@@ -334,7 +339,8 @@ class EventServiceImplTest {
         assertEquals("Mock Upcoming Event Dto", result.getContent().get(0).getTitle());
 
         verify(userRepo, times(1)).findByEmail(userEmail);
-        verify(eventRepo, times(1)).findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("UPCOMING"), eq(pageable));
+        verify(eventRepo, times(1)).findUserEventsByTime(eq(user.getId()), any(LocalDateTime.class), eq("UPCOMING"),
+            eq(pageable));
     }
 
     @Test
@@ -365,14 +371,14 @@ class EventServiceImplTest {
 
         boolean isOnline = true;
         when(eventRepo.findEventsByAuthorAndFirstDayOnlineStatus(eq(user.getId()), eq(isOnline), eq(pageable)))
-                .thenReturn(events);
+            .thenReturn(events);
 
         EventProfilePreviewDto mockDto = EventProfilePreviewDto.builder()
-                .id(1L)
-                .title("Mock Event Dto")
-                .build();
+            .id(1L)
+            .title("Mock Event Dto")
+            .build();
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenReturn(mockDto);
+            .thenReturn(mockDto);
 
         EventProfilePreviewPageable result = eventService.getAllUserEventsByStatus(userEmail, "online", pageable);
 
@@ -381,7 +387,8 @@ class EventServiceImplTest {
         assertEquals("Mock Event Dto", result.getContent().get(0).getTitle());
 
         verify(userRepo, times(1)).findByEmail(userEmail);
-        verify(eventRepo, times(1)).findEventsByAuthorAndFirstDayOnlineStatus(eq(user.getId()), eq(isOnline), eq(pageable));
+        verify(eventRepo, times(1)).findEventsByAuthorAndFirstDayOnlineStatus(eq(user.getId()), eq(isOnline),
+            eq(pageable));
         verify(eventDateInfoRepo, times(2)).findByEvent(any(Event.class));
         verify(participationRepo, times(2)).findUsersByEventId(anyLong());
         verify(modelMapper, times(2)).map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class));
@@ -473,8 +480,9 @@ class EventServiceImplTest {
 
         when(eventDateInfoRepo.findById(1L)).thenReturn(Optional.of(eventDateInfo));
         when(modelMapper.map(any(Event.class), eq(EventResponseDto.class)))
-                .thenReturn(new EventResponseDto());
-        when(modelMapper.map(any(EventDateInfo.class), eq(EventDateInfoResponseDto.class))).thenReturn(eventDateInfoResponseDto);
+            .thenReturn(new EventResponseDto());
+        when(modelMapper.map(any(EventDateInfo.class), eq(EventDateInfoResponseDto.class)))
+            .thenReturn(eventDateInfoResponseDto);
         when(modelMapper.map(any(EventDateInfoUpdateDto.class), eq(EventDateInfo.class))).thenReturn(eventDateInfo);
         when(eventLikesRepo.countLikesByEventId(eventId)).thenReturn(150);
         when(eventDateInfoRepo.findByEvent(existingEvent)).thenReturn(List.of(eventDateInfo));
@@ -525,13 +533,13 @@ class EventServiceImplTest {
         when(participationRepo.findUsersByEventId(anyLong())).thenReturn(List.of());
 
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenAnswer(invocation -> {
-                    EventMappingContext context = invocation.getArgument(0);
-                    return EventProfilePreviewDto.builder()
-                            .id(context.getEvent().getId())
-                            .title("Mapped Event " + context.getEvent().getId())
-                            .build();
-                });
+            .thenAnswer(invocation -> {
+                EventMappingContext context = invocation.getArgument(0);
+                return EventProfilePreviewDto.builder()
+                    .id(context.getEvent().getId())
+                    .title("Mapped Event " + context.getEvent().getId())
+                    .build();
+            });
 
         EventProfilePreviewPageable result = eventService.getAllEventsPageable(pageable);
 
@@ -550,7 +558,7 @@ class EventServiceImplTest {
         String title = "non-existing";
         Pageable pageable = PageRequest.of(0, 10);
         when(eventRepo.findByTitleContainingIgnoreCaseSortedByTitle(title, pageable))
-                .thenReturn(Page.empty());
+            .thenReturn(Page.empty());
 
         EventProfilePreviewPageable result = eventService.getEventsByTitle(title, pageable);
 
@@ -570,7 +578,7 @@ class EventServiceImplTest {
 
         Page<Event> eventPage = new PageImpl<>(events);
         when(eventRepo.findByTitleContainingIgnoreCaseSortedByTitle(title, pageable))
-                .thenReturn(eventPage);
+            .thenReturn(eventPage);
 
         EventDateInfo eventDateInfo = new EventDateInfo();
         when(eventDateInfoRepo.findByEvent(event)).thenReturn(List.of(eventDateInfo));
@@ -579,7 +587,7 @@ class EventServiceImplTest {
 
         EventProfilePreviewDto dto = new EventProfilePreviewDto();
         when(modelMapper.map(any(EventMappingContext.class), eq(EventProfilePreviewDto.class)))
-                .thenReturn(dto);
+            .thenReturn(dto);
 
         EventProfilePreviewPageable result = eventService.getEventsByTitle(title, pageable);
 

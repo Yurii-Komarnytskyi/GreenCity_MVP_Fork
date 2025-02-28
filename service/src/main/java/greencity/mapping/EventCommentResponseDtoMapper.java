@@ -16,12 +16,12 @@ public class EventCommentResponseDtoMapper extends AbstractConverter<EventCommen
         }
 
         return EventCommentResponseDto.builder()
-                .id(eventComment.getId())
-                .text(eventComment.getText())
-                .createdDate(eventComment.getCreatedDate())
-                .modifiedDate(eventComment.getModifiedDate())
-                .author(mapper.convert(eventComment.getUser()))
-                .parentCommentId(eventComment.getParentComment() != null ? eventComment.getParentComment().getId() : null)
-                .build();
+            .id(eventComment.getId())
+            .text(eventComment.getText())
+            .createdDate(eventComment.getCreatedDate())
+            .modifiedDate(eventComment.getModifiedDate())
+            .author(mapper.convert(eventComment.getUser()))
+            .parentCommentId(eventComment.getParentComment() != null ? eventComment.getParentComment().getId() : null)
+            .build();
     }
 }

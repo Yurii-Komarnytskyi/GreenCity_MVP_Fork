@@ -21,7 +21,6 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-
 @ExtendWith(MockitoExtension.class)
 class LanguageControllerTest {
 
@@ -47,14 +46,13 @@ class LanguageControllerTest {
         when(languageService.findAllLanguageCodes()).thenReturn(languages);
 
         ResultActions response = mockMvc.perform(MockMvcRequestBuilders.get(LANGUAGE_PATH)
-                .accept(MediaType.APPLICATION_JSON)
-        );
+            .accept(MediaType.APPLICATION_JSON));
 
         response.andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$[0]").value(languages.get(0)))
-                .andExpect(jsonPath("$[1]").value(languages.get(1)))
-                .andExpect(jsonPath("$[2]").value(languages.get(2)));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$[0]").value(languages.get(0)))
+            .andExpect(jsonPath("$[1]").value(languages.get(1)))
+            .andExpect(jsonPath("$[2]").value(languages.get(2)));
 
         verify(languageService, times(1)).findAllLanguageCodes();
     }

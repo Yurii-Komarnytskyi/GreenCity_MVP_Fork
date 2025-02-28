@@ -13,9 +13,9 @@ public class ImageResponseDtoMapperTest {
     @Test
     void convertTest() {
         Image image = Image.builder()
-                .id(1L)
-                .imagePath("test/path/to/image.jpg")
-                .build();
+            .id(1L)
+            .imagePath("test/path/to/image.jpg")
+            .build();
 
         ImageResponseDto result = mapper.convert(image);
 

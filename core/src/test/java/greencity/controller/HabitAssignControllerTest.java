@@ -54,7 +54,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
-
 @ExtendWith(MockitoExtension.class)
 public class HabitAssignControllerTest {
     @Mock
@@ -83,10 +82,10 @@ public class HabitAssignControllerTest {
         attributes.put("trace", "Test stack trace");
 
         mockMvc = MockMvcBuilders.standaloneSetup(habitAssignController)
-                .setControllerAdvice(new CustomExceptionHandler(errorAttributes, objectMapper))
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
-                        new UserArgumentResolver(userService, modelMapper))
-                .build();
+            .setControllerAdvice(new CustomExceptionHandler(errorAttributes, objectMapper))
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
+                new UserArgumentResolver(userService, modelMapper))
+            .build();
     }
 
     @Test
@@ -100,21 +99,21 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.assignDefaultHabitForUser(eq(habitId), any(UserVO.class)))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
         mockMvc.perform(post("/habit/assign/" + habitId)
-                        .principal(principal)
-                        .param("habitId", String.valueOf(habitId)))
-                .andExpect(status().isCreated())
-                .andExpect(result -> {
-                    String resultDtoString = result.getResponse().getContentAsString();
-                    XmlMapper mapper = new XmlMapper();
-                    mapper.registerModule(new JavaTimeModule());
-                    HabitAssignManagementDto actualDto = mapper.readValue(resultDtoString, HabitAssignManagementDto.class);
-                    Assertions.assertNotNull(actualDto);
-                    Assertions.assertEquals(7L, actualDto.getId());
-                    Assertions.assertEquals(expectedDto.getId(), actualDto.getId());
-                });
+            .principal(principal)
+            .param("habitId", String.valueOf(habitId)))
+            .andExpect(status().isCreated())
+            .andExpect(result -> {
+                String resultDtoString = result.getResponse().getContentAsString();
+                XmlMapper mapper = new XmlMapper();
+                mapper.registerModule(new JavaTimeModule());
+                HabitAssignManagementDto actualDto = mapper.readValue(resultDtoString, HabitAssignManagementDto.class);
+                Assertions.assertNotNull(actualDto);
+                Assertions.assertEquals(7L, actualDto.getId());
+                Assertions.assertEquals(expectedDto.getId(), actualDto.getId());
+            });
 
         verify(habitAssignService, times(1)).assignDefaultHabitForUser(eq(habitId), any(UserVO.class));
     }
@@ -129,29 +128,31 @@ public class HabitAssignControllerTest {
         UserVO mockUser = getUserVO();
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        when(habitAssignService.assignCustomHabitForUser(eq(habitId), any(UserVO.class), any(HabitAssignCustomPropertiesDto.class)))
-                .thenReturn(List.of(expectedDto));
+        when(habitAssignService.assignCustomHabitForUser(eq(habitId), any(UserVO.class),
+            any(HabitAssignCustomPropertiesDto.class)))
+            .thenReturn(List.of(expectedDto));
 
         HabitAssignCustomPropertiesDto requestDto = new HabitAssignCustomPropertiesDto();
 
         mockMvc.perform(post("/habit/assign/" + habitId + "/custom")
-                        .principal(principal)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(requestDto)))
-                .andExpect(status().isCreated())
-                .andExpect(result -> {
-                    String resultDtoString = result.getResponse().getContentAsString();
-                    XmlMapper mapper = new XmlMapper();
-                    mapper.registerModule(new JavaTimeModule());
-                    List<HabitAssignManagementDto> resultDto = mapper.readValue(resultDtoString, new TypeReference<List<HabitAssignManagementDto>>() {
+            .principal(principal)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(requestDto)))
+            .andExpect(status().isCreated())
+            .andExpect(result -> {
+                String resultDtoString = result.getResponse().getContentAsString();
+                XmlMapper mapper = new XmlMapper();
+                mapper.registerModule(new JavaTimeModule());
+                List<HabitAssignManagementDto> resultDto =
+                    mapper.readValue(resultDtoString, new TypeReference<List<HabitAssignManagementDto>>() {
                     });
-                    Assertions.assertNotNull(resultDto);
-                    Assertions.assertEquals(1, resultDto.size());
-                    Assertions.assertEquals(7L, resultDto.get(0).getId());
-                });
+                Assertions.assertNotNull(resultDto);
+                Assertions.assertEquals(1, resultDto.size());
+                Assertions.assertEquals(7L, resultDto.get(0).getId());
+            });
 
         verify(habitAssignService, times(1))
-                .assignCustomHabitForUser(eq(habitId), any(UserVO.class), any(HabitAssignCustomPropertiesDto.class));
+            .assignCustomHabitForUser(eq(habitId), any(UserVO.class), any(HabitAssignCustomPropertiesDto.class));
     }
 
     @Test
@@ -170,24 +171,29 @@ public class HabitAssignControllerTest {
         expectedDto.setWorkingDays(3);
 
         when(habitAssignService.updateUserHabitInfoDuration(eq(habitAssignId), any(Long.class), any(Integer.class)))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(put("/habit/assign/{habitAssignId}/update-habit-duration", habitAssignId)
-                        .principal(principal)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .param("duration", String.valueOf(22)))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .accept(MediaType.APPLICATION_JSON)
+            .param("duration", String.valueOf(22)))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse);
-        Assertions.assertEquals(expectedDto.getDuration(), JsonPath.parse(jsonResponse).read("$.duration", Integer.class));
-        Assertions.assertEquals(expectedDto.getHabitAssignId(), JsonPath.parse(jsonResponse).read("$.habitAssignId", Long.class));
+        Assertions.assertEquals(expectedDto.getDuration(),
+            JsonPath.parse(jsonResponse).read("$.duration", Integer.class));
+        Assertions.assertEquals(expectedDto.getHabitAssignId(),
+            JsonPath.parse(jsonResponse).read("$.habitAssignId", Long.class));
         Assertions.assertEquals(expectedDto.getUserId(), JsonPath.parse(jsonResponse).read("$.userId", Long.class));
-        Assertions.assertEquals(expectedDto.getStatus(), HabitAssignStatus.valueOf(JsonPath.parse(jsonResponse).read("$.status", String.class)));
-        Assertions.assertEquals(expectedDto.getWorkingDays(), JsonPath.parse(jsonResponse).read("$.workingDays", Integer.class));
+        Assertions.assertEquals(expectedDto.getStatus(),
+            HabitAssignStatus.valueOf(JsonPath.parse(jsonResponse).read("$.status", String.class)));
+        Assertions.assertEquals(expectedDto.getWorkingDays(),
+            JsonPath.parse(jsonResponse).read("$.workingDays", Integer.class));
 
-        verify(habitAssignService, times(1)).updateUserHabitInfoDuration(eq(habitAssignId), any(Long.class), any(Integer.class));
+        verify(habitAssignService, times(1)).updateUserHabitInfoDuration(eq(habitAssignId), any(Long.class),
+            any(Integer.class));
     }
 
     @Test
@@ -203,22 +209,24 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.getByHabitAssignIdAndUserId(habitAssignId, mockUser.getId(), locale.getLanguage()))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(get("/habit/assign/{habitAssignId}", habitAssignId)
-                        .principal(principal)
-                        .header("Accept-Language", locale.getLanguage())
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
+            .principal(principal)
+            .header("Accept-Language", locale.getLanguage())
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse);
         Assertions.assertEquals(expectedDto.getId(), JsonPath.parse(jsonResponse).read("$.id", Long.class));
-        Assertions.assertEquals(expectedDto.getStatus(), HabitAssignStatus.valueOf(JsonPath.parse(jsonResponse).read("$.status", String.class)));
+        Assertions.assertEquals(expectedDto.getStatus(),
+            HabitAssignStatus.valueOf(JsonPath.parse(jsonResponse).read("$.status", String.class)));
         Assertions.assertEquals(expectedDto.getUserId(), JsonPath.parse(jsonResponse).read("$.userId", Long.class));
 
-        verify(habitAssignService, times(1)).getByHabitAssignIdAndUserId(habitAssignId, mockUser.getId(), locale.getLanguage());
+        verify(habitAssignService, times(1)).getByHabitAssignIdAndUserId(habitAssignId, mockUser.getId(),
+            locale.getLanguage());
     }
 
     @Test
@@ -233,14 +241,14 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.getAllHabitAssignsByUserIdAndStatusNotCancelled(mockUser.getId(), locale.getLanguage()))
-                .thenReturn(List.of(expectedDto));
+            .thenReturn(List.of(expectedDto));
 
         MvcResult result = mockMvc.perform(get("/habit/assign/allForCurrentUser")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal)
-                        .header("Accept-Language", locale.getLanguage()))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal)
+            .header("Accept-Language", locale.getLanguage()))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse);
@@ -249,10 +257,12 @@ public class HabitAssignControllerTest {
         Assertions.assertEquals(1, listSize, "The list should contain only one element");
 
         Assertions.assertEquals(expectedDto.getId(), JsonPath.parse(jsonResponse).read("$[0].id", Long.class));
-        Assertions.assertEquals(expectedDto.getStatus(), HabitAssignStatus.valueOf(JsonPath.parse(jsonResponse).read("$[0].status", String.class)));
+        Assertions.assertEquals(expectedDto.getStatus(),
+            HabitAssignStatus.valueOf(JsonPath.parse(jsonResponse).read("$[0].status", String.class)));
         Assertions.assertEquals(expectedDto.getUserId(), JsonPath.parse(jsonResponse).read("$[0].userId", Long.class));
 
-        verify(habitAssignService, times(1)).getAllHabitAssignsByUserIdAndStatusNotCancelled(mockUser.getId(), locale.getLanguage());
+        verify(habitAssignService, times(1)).getAllHabitAssignsByUserIdAndStatusNotCancelled(mockUser.getId(),
+            locale.getLanguage());
     }
 
     @Test
@@ -267,21 +277,25 @@ public class HabitAssignControllerTest {
         expectedDto.setCustomShoppingListItemDto(List.of(customShoppingListItemResponseDto));
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        when(habitAssignService.getUserShoppingAndCustomShoppingLists(mockUser.getId(), habitAssignId, locale.getLanguage()))
-                .thenReturn(expectedDto);
+        when(habitAssignService.getUserShoppingAndCustomShoppingLists(mockUser.getId(), habitAssignId,
+            locale.getLanguage()))
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(get("/habit/assign/{habitAssignId}/allUserAndCustomList", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal)
-                        .header("Accept-Language", locale.getLanguage()))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal)
+            .header("Accept-Language", locale.getLanguage()))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
-        Assertions.assertEquals(expectedDto.getCustomShoppingListItemDto().getFirst().getId(), JsonPath.parse(jsonResponse).read("$.customShoppingListItemDto[0].id", Long.class), "ID of the first customShoppingListItemDto should match");
+        Assertions.assertEquals(expectedDto.getCustomShoppingListItemDto().getFirst().getId(),
+            JsonPath.parse(jsonResponse).read("$.customShoppingListItemDto[0].id", Long.class),
+            "ID of the first customShoppingListItemDto should match");
 
-        verify(habitAssignService, times(1)).getUserShoppingAndCustomShoppingLists(mockUser.getId(), habitAssignId, locale.getLanguage());
+        verify(habitAssignService, times(1)).getUserShoppingAndCustomShoppingLists(mockUser.getId(), habitAssignId,
+            locale.getLanguage());
     }
 
     @Test
@@ -292,18 +306,20 @@ public class HabitAssignControllerTest {
         UserShoppingAndCustomShoppingListsDto listsDto = new UserShoppingAndCustomShoppingListsDto();
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        doNothing().when(habitAssignService).fullUpdateUserAndCustomShoppingLists(mockUser.getId(), habitAssignId, listsDto, locale.getLanguage());
+        doNothing().when(habitAssignService).fullUpdateUserAndCustomShoppingLists(mockUser.getId(), habitAssignId,
+            listsDto, locale.getLanguage());
 
         mockMvc.perform(put("/habit/assign/{habitAssignId}/allUserAndCustomList", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(listsDto))
-                        .header("Accept-Language", locale.getLanguage()))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(listsDto))
+            .header("Accept-Language", locale.getLanguage()))
+            .andExpect(status().isOk())
+            .andReturn();
 
-        verify(habitAssignService, times(1)).fullUpdateUserAndCustomShoppingLists(mockUser.getId(), habitAssignId, listsDto, locale.getLanguage());
+        verify(habitAssignService, times(1)).fullUpdateUserAndCustomShoppingLists(mockUser.getId(), habitAssignId,
+            listsDto, locale.getLanguage());
     }
 
     @Test
@@ -317,15 +333,16 @@ public class HabitAssignControllerTest {
         expectedDto.setCustomShoppingListItemDto(List.of(customShoppingListItemResponseDto));
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        when(habitAssignService.getListOfUserAndCustomShoppingListsWithStatusInprogress(mockUser.getId(), locale.getLanguage()))
-                .thenReturn(List.of(expectedDto));
+        when(habitAssignService.getListOfUserAndCustomShoppingListsWithStatusInprogress(mockUser.getId(),
+            locale.getLanguage()))
+            .thenReturn(List.of(expectedDto));
 
         MvcResult result = mockMvc.perform(get("/habit/assign/allUserAndCustomShoppingListsInprogress")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal)
-                        .header("Accept-Language", locale.getLanguage()))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal)
+            .header("Accept-Language", locale.getLanguage()))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -333,10 +350,12 @@ public class HabitAssignControllerTest {
         int listSize = JsonPath.parse(jsonResponse).read("$.length()", Integer.class);
         Assertions.assertEquals(1, listSize, "The list should contain only one element");
 
-        Assertions.assertEquals(expectedDto.getCustomShoppingListItemDto().getFirst().getId(), JsonPath.parse(jsonResponse).read("$[0].customShoppingListItemDto[0].id", Long.class),
-                "ID of the first customShoppingListItemDto should match");
+        Assertions.assertEquals(expectedDto.getCustomShoppingListItemDto().getFirst().getId(),
+            JsonPath.parse(jsonResponse).read("$[0].customShoppingListItemDto[0].id", Long.class),
+            "ID of the first customShoppingListItemDto should match");
 
-        verify(habitAssignService, times(1)).getListOfUserAndCustomShoppingListsWithStatusInprogress(mockUser.getId(), locale.getLanguage());
+        verify(habitAssignService, times(1)).getListOfUserAndCustomShoppingListsWithStatusInprogress(mockUser.getId(),
+            locale.getLanguage());
     }
 
     @Test
@@ -350,13 +369,13 @@ public class HabitAssignControllerTest {
         expectedDto.setUserId(27L);
 
         when(habitAssignService.getAllHabitAssignsByHabitIdAndStatusNotCancelled(habitId, locale.getLanguage()))
-                .thenReturn(List.of(expectedDto));
+            .thenReturn(List.of(expectedDto));
 
         MvcResult result = mockMvc.perform(get("/habit/assign/{habitId}/all", habitId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", locale.getLanguage()))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .header("Accept-Language", locale.getLanguage()))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -368,10 +387,12 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the first habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignDto should match");
         Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(), "ID of the userId should match");
 
-        verify(habitAssignService, times(1)).getAllHabitAssignsByHabitIdAndStatusNotCancelled(habitId, locale.getLanguage());
+        verify(habitAssignService, times(1)).getAllHabitAssignsByHabitIdAndStatusNotCancelled(habitId,
+            locale.getLanguage());
     }
 
     @Test
@@ -387,14 +408,14 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.findHabitAssignByUserIdAndHabitId(mockUser.getId(), habitId, locale.getLanguage()))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(get("/habit/assign/{habitId}/active", habitId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", locale.getLanguage())
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .header("Accept-Language", locale.getLanguage())
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -403,10 +424,12 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignDto should match");
         Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(), "ID of the userId should match");
 
-        verify(habitAssignService, times(1)).findHabitAssignByUserIdAndHabitId(mockUser.getId(), habitId, locale.getLanguage());
+        verify(habitAssignService, times(1)).findHabitAssignByUserIdAndHabitId(mockUser.getId(), habitId,
+            locale.getLanguage());
     }
 
     @Test
@@ -421,15 +444,16 @@ public class HabitAssignControllerTest {
         expectedDto.setComplexity(77);
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        when(habitAssignService.findHabitByUserIdAndHabitAssignId(mockUser.getId(), habitAssignId, locale.getLanguage()))
-                .thenReturn(expectedDto);
+        when(
+            habitAssignService.findHabitByUserIdAndHabitAssignId(mockUser.getId(), habitAssignId, locale.getLanguage()))
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(get("/habit/assign/{habitAssignId}/more", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", locale.getLanguage())
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .header("Accept-Language", locale.getLanguage())
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -438,10 +462,13 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitDto should match");
-        Assertions.assertEquals(expectedDto.getComplexity(), actualDto.getComplexity(), "Complexity of the habitDto should match");
-        Assertions.assertEquals(expectedDto.getIsCustomHabit(), actualDto.getIsCustomHabit(), "isCustomHabit() should match");
+        Assertions.assertEquals(expectedDto.getComplexity(), actualDto.getComplexity(),
+            "Complexity of the habitDto should match");
+        Assertions.assertEquals(expectedDto.getIsCustomHabit(), actualDto.getIsCustomHabit(),
+            "isCustomHabit() should match");
 
-        verify(habitAssignService, times(1)).findHabitByUserIdAndHabitAssignId(mockUser.getId(), habitAssignId, locale.getLanguage());
+        verify(habitAssignService, times(1)).findHabitByUserIdAndHabitAssignId(mockUser.getId(), habitAssignId,
+            locale.getLanguage());
     }
 
     @Test
@@ -457,14 +484,14 @@ public class HabitAssignControllerTest {
         expectedDto.setWorkingDays(6);
 
         when(habitAssignService.updateStatusByHabitAssignId(habitAssignId, givenDto))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(patch("/habit/assign/{habitAssignId}", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(givenDto)))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(givenDto)))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -472,9 +499,12 @@ public class HabitAssignControllerTest {
         HabitAssignManagementDto actualDto = JsonPath.parse(jsonResponse).read("$", HabitAssignManagementDto.class);
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
-        Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitAssignManagementDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignManagementDto should match");
-        Assertions.assertEquals(expectedDto.getWorkingDays(), actualDto.getWorkingDays(), "WorkingDays of the habitAssignManagementDto should match");
+        Assertions.assertEquals(expectedDto.getId(), actualDto.getId(),
+            "ID of the habitAssignManagementDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignManagementDto should match");
+        Assertions.assertEquals(expectedDto.getWorkingDays(), actualDto.getWorkingDays(),
+            "WorkingDays of the habitAssignManagementDto should match");
 
         verify(habitAssignService, times(1)).updateStatusByHabitAssignId(habitAssignId, givenDto);
     }
@@ -494,14 +524,15 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.enrollHabit(habitAssignId, mockUser.getId(), date, locale.getLanguage()))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
-        MvcResult result = mockMvc.perform(post("/habit/assign/{habitAssignId}/enroll/{date}", habitAssignId, formattedDate)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", locale.getLanguage())
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc
+            .perform(post("/habit/assign/{habitAssignId}/enroll/{date}", habitAssignId, formattedDate)
+                .accept(MediaType.APPLICATION_JSON)
+                .header("Accept-Language", locale.getLanguage())
+                .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -510,8 +541,10 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(), "UserId of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(),
+            "UserId of the habitAssignDto should match");
 
         verify(habitAssignService, times(1)).enrollHabit(habitAssignId, mockUser.getId(), date, locale.getLanguage());
     }
@@ -530,13 +563,14 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.unenrollHabit(habitAssignId, mockUser.getId(), date))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
-        MvcResult result = mockMvc.perform(post("/habit/assign/{habitAssignId}/unenroll/{date}", habitAssignId, formattedDate)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+        MvcResult result = mockMvc
+            .perform(post("/habit/assign/{habitAssignId}/unenroll/{date}", habitAssignId, formattedDate)
+                .accept(MediaType.APPLICATION_JSON)
+                .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -545,8 +579,10 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(), "UserId of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(),
+            "UserId of the habitAssignDto should match");
 
         verify(habitAssignService, times(1)).unenrollHabit(habitAssignId, mockUser.getId(), date);
     }
@@ -565,14 +601,14 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.findInprogressHabitAssignsOnDate(mockUser.getId(), date, locale.getLanguage()))
-                .thenReturn(List.of(expectedDto));
+            .thenReturn(List.of(expectedDto));
 
         MvcResult result = mockMvc.perform(get("/habit/assign/active/{date}", formattedDate)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", locale.getLanguage())
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .header("Accept-Language", locale.getLanguage())
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -581,10 +617,13 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(), "UserId of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(),
+            "UserId of the habitAssignDto should match");
 
-        verify(habitAssignService, times(1)).findInprogressHabitAssignsOnDate(mockUser.getId(), date, locale.getLanguage());
+        verify(habitAssignService, times(1)).findInprogressHabitAssignsOnDate(mockUser.getId(), date,
+            locale.getLanguage());
     }
 
     @Test
@@ -599,14 +638,14 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.findHabitAssignsBetweenDates(mockUser.getId(), date1, date2, locale.getLanguage()))
-                .thenReturn(List.of(expectedDto));
+            .thenReturn(List.of(expectedDto));
 
         MvcResult result = mockMvc.perform(get("/habit/assign/activity/{from}/to/{to}", date1, date2)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .header("Accept-Language", locale.getLanguage())
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .header("Accept-Language", locale.getLanguage())
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -615,12 +654,14 @@ public class HabitAssignControllerTest {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
 
-        List<HabitsDateEnrollmentDto> actualDtos = objectMapper.readValue(jsonResponse, new TypeReference<List<HabitsDateEnrollmentDto>>() {
-        });
+        List<HabitsDateEnrollmentDto> actualDtos =
+            objectMapper.readValue(jsonResponse, new TypeReference<List<HabitsDateEnrollmentDto>>() {
+            });
         Assertions.assertEquals(date1, actualDtos.get(0).getEnrollDate());
         Assertions.assertEquals(1, actualDtos.size(), "Size of the result array should be 1");
 
-        verify(habitAssignService, times(1)).findHabitAssignsBetweenDates(mockUser.getId(), date1, date2, locale.getLanguage());
+        verify(habitAssignService, times(1)).findHabitAssignsBetweenDates(mockUser.getId(), date1, date2,
+            locale.getLanguage());
     }
 
     @Test
@@ -635,13 +676,13 @@ public class HabitAssignControllerTest {
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
         when(habitAssignService.cancelHabitAssign(habitId, mockUser.getId()))
-                .thenReturn(expectedDto);
+            .thenReturn(expectedDto);
 
         MvcResult result = mockMvc.perform(patch("/habit/assign/cancel/{habitId}", habitId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         String jsonResponse = result.getResponse().getContentAsString();
         Assertions.assertNotNull(jsonResponse, "JSON response should not be null");
@@ -650,8 +691,10 @@ public class HabitAssignControllerTest {
         Assertions.assertNotNull(actualDto, "The result should not be null");
 
         Assertions.assertEquals(expectedDto.getId(), actualDto.getId(), "ID of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(), "Status of the habitAssignDto should match");
-        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(), "UserId of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getStatus(), actualDto.getStatus(),
+            "Status of the habitAssignDto should match");
+        Assertions.assertEquals(expectedDto.getUserId(), actualDto.getUserId(),
+            "UserId of the habitAssignDto should match");
 
         verify(habitAssignService, times(1)).cancelHabitAssign(habitId, mockUser.getId());
     }
@@ -665,10 +708,10 @@ public class HabitAssignControllerTest {
         doNothing().when(habitAssignService).deleteHabitAssign(habitAssignId, mockUser.getId());
 
         mockMvc.perform(delete("/habit/assign/delete/{habitAssignId}", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         verify(habitAssignService, times(1)).deleteHabitAssign(habitAssignId, mockUser.getId());
     }
@@ -681,15 +724,17 @@ public class HabitAssignControllerTest {
         attributes.put("message", ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId);
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        doThrow(new NotFoundException(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId)).when(habitAssignService).deleteHabitAssign(habitAssignId, mockUser.getId());
-        when(errorAttributes.getErrorAttributes(any(WebRequest.class), any(ErrorAttributeOptions.class))).thenReturn(attributes);
+        doThrow(new NotFoundException(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId))
+            .when(habitAssignService).deleteHabitAssign(habitAssignId, mockUser.getId());
+        when(errorAttributes.getErrorAttributes(any(WebRequest.class), any(ErrorAttributeOptions.class)))
+            .thenReturn(attributes);
 
         mockMvc.perform(delete("/habit/assign/delete/{habitAssignId}", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId))
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message").value(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId))
+            .andReturn();
 
         verify(habitAssignService, times(1)).deleteHabitAssign(habitAssignId, mockUser.getId());
     }
@@ -705,11 +750,11 @@ public class HabitAssignControllerTest {
         givenDto.setUserShoppingListItemId(1L);
 
         mockMvc.perform(put("/habit/assign/saveShoppingListForHabitAssign")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(new ObjectMapper().writeValueAsString(givenDto)))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(givenDto)))
+            .andExpect(status().isOk())
+            .andReturn();
 
         verify(habitAssignService, times(1)).updateUserShoppingListItem(givenDto);
     }
@@ -723,10 +768,10 @@ public class HabitAssignControllerTest {
         doNothing().when(habitAssignService).updateProgressNotificationHasDisplayed(habitAssignId, mockUser.getId());
 
         mockMvc.perform(put("/habit/assign/{habitAssignId}/updateProgressNotificationHasDisplayed", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andReturn();
 
         verify(habitAssignService, times(1)).updateProgressNotificationHasDisplayed(habitAssignId, mockUser.getId());
     }
@@ -739,15 +784,17 @@ public class HabitAssignControllerTest {
         attributes.put("message", ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId);
 
         when(userService.findByEmail(anyString())).thenReturn(mockUser);
-        when(errorAttributes.getErrorAttributes(any(WebRequest.class), any(ErrorAttributeOptions.class))).thenReturn(attributes);
-        doThrow(new NotFoundException(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId)).when(habitAssignService).updateProgressNotificationHasDisplayed(habitAssignId, mockUser.getId());
+        when(errorAttributes.getErrorAttributes(any(WebRequest.class), any(ErrorAttributeOptions.class)))
+            .thenReturn(attributes);
+        doThrow(new NotFoundException(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId))
+            .when(habitAssignService).updateProgressNotificationHasDisplayed(habitAssignId, mockUser.getId());
 
         mockMvc.perform(put("/habit/assign/{habitAssignId}/updateProgressNotificationHasDisplayed", habitAssignId)
-                        .accept(MediaType.APPLICATION_JSON)
-                        .principal(principal))
-                .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId))
-                .andReturn();
+            .accept(MediaType.APPLICATION_JSON)
+            .principal(principal))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.message").value(ErrorMessage.HABIT_ASSIGN_NOT_FOUND_BY_ID + habitAssignId))
+            .andReturn();
 
         verify(habitAssignService, times(1)).updateProgressNotificationHasDisplayed(habitAssignId, mockUser.getId());
     }

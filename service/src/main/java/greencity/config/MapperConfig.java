@@ -24,15 +24,14 @@ public class MapperConfig {
     public ModelMapper getModelMapper(List<Converter<?, ?>> converters) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper
-                .getConfiguration()
-                .setMatchingStrategy(MatchingStrategies.STRICT)
-                .setFieldMatchingEnabled(true)
-                .setSkipNullEnabled(true)
-                .setFieldAccessLevel(AccessLevel.PRIVATE);
+            .getConfiguration()
+            .setMatchingStrategy(MatchingStrategies.STRICT)
+            .setFieldMatchingEnabled(true)
+            .setSkipNullEnabled(true)
+            .setFieldAccessLevel(AccessLevel.PRIVATE);
 
         converters.forEach(modelMapper::addConverter);
 
         return modelMapper;
     }
 }
-

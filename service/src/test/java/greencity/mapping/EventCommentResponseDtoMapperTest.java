@@ -35,9 +35,13 @@ public class EventCommentResponseDtoMapperTest {
         assertNotNull(result, "The result should not be null");
         assertEquals(eventComment.getId(), result.getId(), "The id should be mapped correctly");
         assertEquals(eventComment.getText(), result.getText(), "The text should be mapped correctly");
-        assertEquals(eventComment.getCreatedDate(), result.getCreatedDate(), "The created date should be mapped correctly");
-        assertEquals(eventComment.getModifiedDate(), result.getModifiedDate(), "The modified date should be mapped correctly");
-        assertEquals(eventComment.getUser().getId(), result.getAuthor().getId(), "The author should be mapped correctly");
-        assertEquals(eventComment.getParentComment().getId(), result.getParentCommentId(), "The parent comment ID should be mapped correctly");
+        assertEquals(eventComment.getCreatedDate(), result.getCreatedDate(),
+            "The created date should be mapped correctly");
+        assertEquals(eventComment.getModifiedDate(), result.getModifiedDate(),
+            "The modified date should be mapped correctly");
+        assertEquals(eventComment.getUser().getId(), result.getAuthor().getId(),
+            "The author should be mapped correctly");
+        assertEquals(eventComment.getParentComment().getId(), result.getParentCommentId(),
+            "The parent comment ID should be mapped correctly");
     }
 }

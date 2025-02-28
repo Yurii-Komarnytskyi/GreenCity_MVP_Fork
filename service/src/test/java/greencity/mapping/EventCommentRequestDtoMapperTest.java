@@ -15,8 +15,8 @@ public class EventCommentRequestDtoMapperTest {
         EventCommentRequestDtoMapper mapper = new EventCommentRequestDtoMapper();
 
         EventCommentRequestDto toConvert = EventCommentRequestDto.builder()
-                .text("Test text")
-                .build();
+            .text("Test text")
+            .build();
 
         EventComment actualComment = mapper.convert(toConvert);
 
@@ -24,6 +24,6 @@ public class EventCommentRequestDtoMapperTest {
         assertEquals(toConvert.getText(), actualComment.getText(), "The result should be the same");
         assertNotNull(actualComment.getCreatedDate(), "The result should not be null");
         assertTrue(actualComment.getCreatedDate().isBefore(LocalDateTime.now().plusSeconds(1)),
-                "The created date should be set to the current time");
+            "The created date should be set to the current time");
     }
 }

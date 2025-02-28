@@ -20,19 +20,20 @@ public class EventRequestDtoMapper extends AbstractConverter<EventRequestDto, Ev
     protected Event convert(EventRequestDto eventRequestDto) {
 
         return Event.builder()
-                .title(eventRequestDto.getTitle())
-                .description(eventRequestDto.getDescription())
-                .duration(eventRequestDto.getDuration())
-                .initiativeTypes(eventRequestDto.getInitiativeTypes().stream()
-                        .map(dto -> InitiativeType.builder()
-                                .name(dto.getName())
-                                .build())
-                        .toList())
-                .isOpen(eventRequestDto.isOpen())
-                .images(eventRequestDto.getImages() != null ? eventRequestDto.getImages().stream()
-                        .map(dto -> modelMapper.map(dto, Image.class)).collect(Collectors.toSet()) : null)
-                .mainImage(eventRequestDto.getMainImage() != null ?
-                        modelMapper.map(eventRequestDto.getMainImage(), Image.class) : null)
-                .build();
+            .title(eventRequestDto.getTitle())
+            .description(eventRequestDto.getDescription())
+            .duration(eventRequestDto.getDuration())
+            .initiativeTypes(eventRequestDto.getInitiativeTypes().stream()
+                .map(dto -> InitiativeType.builder()
+                    .name(dto.getName())
+                    .build())
+                .toList())
+            .isOpen(eventRequestDto.isOpen())
+            .images(eventRequestDto.getImages() != null ? eventRequestDto.getImages().stream()
+                .map(dto -> modelMapper.map(dto, Image.class)).collect(Collectors.toSet()) : null)
+            .mainImage(
+                eventRequestDto.getMainImage() != null ? modelMapper.map(eventRequestDto.getMainImage(), Image.class)
+                    : null)
+            .build();
     }
 }

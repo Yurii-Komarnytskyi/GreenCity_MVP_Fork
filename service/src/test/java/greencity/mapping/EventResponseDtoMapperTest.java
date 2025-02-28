@@ -32,18 +32,18 @@ public class EventResponseDtoMapperTest {
         author.setName("author");
 
         Event event = Event.builder()
-                .id(1L)
-                .title("Test Event")
-                .description("Test Event Description")
-                .duration(5)
-                .initiativeTypes(List.of(initiativeType))
-                .isOpen(true)
-                .images(Set.of(image))
-                .author(author)
-                .creationDate(ZonedDateTime.now())
-                .comments(List.of(comment))
-                .likes(10)
-                .build();
+            .id(1L)
+            .title("Test Event")
+            .description("Test Event Description")
+            .duration(5)
+            .initiativeTypes(List.of(initiativeType))
+            .isOpen(true)
+            .images(Set.of(image))
+            .author(author)
+            .creationDate(ZonedDateTime.now())
+            .comments(List.of(comment))
+            .likes(10)
+            .build();
 
         EventResponseDto eventResponseDto = mapper.convert(event);
 

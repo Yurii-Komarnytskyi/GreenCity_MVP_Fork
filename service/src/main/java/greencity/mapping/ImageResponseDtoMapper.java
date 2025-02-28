@@ -14,8 +14,8 @@ public class ImageResponseDtoMapper extends AbstractConverter<Image, ImageRespon
         }
 
         return ImageResponseDto.builder()
-                .id(image.getId())
-                .imagePath(image.getImagePath())
-                .build();
+            .id(image.getId())
+            .imagePath(image.getImagePath())
+            .build();
     }
 }

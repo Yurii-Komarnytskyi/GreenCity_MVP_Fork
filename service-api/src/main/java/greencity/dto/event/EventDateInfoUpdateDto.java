@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ConsistentDateTime
-public class EventDateInfoUpdateDto implements EventDateInfoDto{
+public class EventDateInfoUpdateDto implements EventDateInfoDto {
 
     private Long id;
 

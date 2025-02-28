@@ -12,7 +12,8 @@ public class RequestedFriendshipDto {
     @Min(1)
     private Long recipientId;
 
-    public RequestedFriendshipDto() {}
+    public RequestedFriendshipDto() {
+    }
 
     public RequestedFriendshipDto(Long senderId, Long recipientId) {
         this.senderId = senderId;
@@ -37,7 +38,8 @@ public class RequestedFriendshipDto {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof RequestedFriendshipDto that)) return false;
+        if (!(o instanceof RequestedFriendshipDto that))
+            return false;
         return Objects.equals(senderId, that.senderId) && Objects.equals(recipientId, that.recipientId);
     }
 
@@ -49,8 +51,8 @@ public class RequestedFriendshipDto {
     @Override
     public String toString() {
         return "FriendshipRequestDto{" +
-                "requesterId=" + senderId +
-                ", recipientId=" + recipientId +
-                '}';
+            "requesterId=" + senderId +
+            ", recipientId=" + recipientId +
+            '}';
     }
 }

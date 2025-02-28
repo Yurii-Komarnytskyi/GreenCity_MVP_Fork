@@ -80,8 +80,10 @@ public class Friendship {
 
     @Override
     public boolean equals(Object o) {
-        if (!(o instanceof Friendship that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(user, that.user) && Objects.equals(friend, that.friend) && status == that.status;
+        if (!(o instanceof Friendship that))
+            return false;
+        return Objects.equals(id, that.id) && Objects.equals(user, that.user) && Objects.equals(friend, that.friend)
+            && status == that.status;
     }
 
     @Override
@@ -92,12 +94,12 @@ public class Friendship {
     @Override
     public String toString() {
         return "Friendship{" +
-                "id=" + id +
-                ", user=" + user +
-                ", friend=" + friend +
-                ", status=" + status +
-                ", requestedAt=" + requestedAt +
-                ", friendshipRequestExpiration=" + friendshipRequestExpiration +
-                '}';
+            "id=" + id +
+            ", user=" + user +
+            ", friend=" + friend +
+            ", status=" + status +
+            ", requestedAt=" + requestedAt +
+            ", friendshipRequestExpiration=" + friendshipRequestExpiration +
+            '}';
     }
 }

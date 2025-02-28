@@ -12,12 +12,14 @@ public interface EventCommentLikesService {
     /**
      * Method to like or dislike an event comment.
      *
-     * @param eventCommentId the ID of the event comment.
-     * @param userId the ID of the user liking/disliking the comment.
+     * @param eventCommentId              the ID of the event comment.
+     * @param userId                      the ID of the user liking/disliking the
+     *                                    comment.
      * @param eventCommentLikesRequestDto the request data for liking/disliking.
      * @return the updated {@link EventCommentLikesResponseDto}.
      */
-    EventCommentLikesResponseDto likeOrDislikeComment(Long eventCommentId, Long userId, EventCommentLikesRequestDto eventCommentLikesRequestDto);
+    EventCommentLikesResponseDto likeOrDislikeComment(Long eventCommentId, Long userId,
+        EventCommentLikesRequestDto eventCommentLikesRequestDto);
 
     /**
      * Method to get all users who liked or disliked a specific event comment.

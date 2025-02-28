@@ -10,11 +10,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "notifications")
 @EqualsAndHashCode(
-        exclude = {"sender", "receiver"}
-)
+    exclude = {"sender", "receiver"})
 @ToString(
-        exclude = {"sender", "receiver"}
-)
+    exclude = {"sender", "receiver"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter

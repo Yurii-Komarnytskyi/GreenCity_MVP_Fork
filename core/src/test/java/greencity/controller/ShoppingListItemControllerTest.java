@@ -52,14 +52,13 @@ class ShoppingListItemControllerTest {
     @Mock
     private Principal principal = getPrincipal();
 
-
     @BeforeEach
     void setUp() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(shoppingListItemController)
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
-                        new UserArgumentResolver(userService, modelMapper))
-                .setValidator(mockValidator)
-                .build();
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
+                new UserArgumentResolver(userService, modelMapper))
+            .setValidator(mockValidator)
+            .build();
     }
 
     @Test
@@ -94,19 +93,20 @@ class ShoppingListItemControllerTest {
         when(userService.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
 
         when(shoppingListItemService.updateUserShoppingListItemStatus(
-                userShoppingListItemId, mockUser.getId(), language, status))
-                .thenReturn(List.of(responseDto));
+            userShoppingListItemId, mockUser.getId(), language, status))
+            .thenReturn(List.of(responseDto));
 
-        mockMvc.perform(patch("/user/shopping-list-items/{userShoppingListItemId}/status/{status}", userShoppingListItemId, status)
-                        .principal(principal)
-                        .header("Accept-Language", language)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
+        mockMvc.perform(
+            patch("/user/shopping-list-items/{userShoppingListItemId}/status/{status}", userShoppingListItemId, status)
+                .principal(principal)
+                .header("Accept-Language", language)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(print());
 
         verify(userService, times(1)).findByEmail(mockUser.getEmail());
         verify(shoppingListItemService, times(1))
-                .updateUserShoppingListItemStatus(userShoppingListItemId, mockUser.getId(), language, status);
+            .updateUserShoppingListItemStatus(userShoppingListItemId, mockUser.getId(), language, status);
     }
 
     @Test
@@ -126,20 +126,20 @@ class ShoppingListItemControllerTest {
         when(userService.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
 
         when(shoppingListItemService.updateUserShoppingListItemStatus(
-                userShoppingListItemId, mockUser.getId(), "en", status))
-                .thenReturn(List.of(responseDto));
+            userShoppingListItemId, mockUser.getId(), "en", status))
+            .thenReturn(List.of(responseDto));
 
-        mockMvc.perform(patch("/user/shopping-list-items/{userShoppingListItemId}/status/{status}", userShoppingListItemId, status)
-                        .principal(principal)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andDo(print());
+        mockMvc.perform(
+            patch("/user/shopping-list-items/{userShoppingListItemId}/status/{status}", userShoppingListItemId, status)
+                .principal(principal)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andDo(print());
 
         verify(userService, times(1)).findByEmail(mockUser.getEmail());
         verify(shoppingListItemService, times(1))
-                .updateUserShoppingListItemStatus(userShoppingListItemId, mockUser.getId(), "en", status);
+            .updateUserShoppingListItemStatus(userShoppingListItemId, mockUser.getId(), "en", status);
     }
-
 
     @Test
     void saveUserShoppingListItemTest() throws Exception {
@@ -148,12 +148,10 @@ class ShoppingListItemControllerTest {
         List<ShoppingListItemRequestDto> requestDtoList = List.of(new ShoppingListItemRequestDto());
         UserVO mockUser = getUserVO();
 
-
         UserShoppingListItemResponseDto responseDto = new UserShoppingListItemResponseDto();
         responseDto.setId(habitId);
         responseDto.setText("Test item text");
         responseDto.setStatus(ShoppingListItemStatus.DONE);
-
 
         List<UserShoppingListItemResponseDto> responseDtoList = List.of(responseDto);
 
@@ -161,19 +159,20 @@ class ShoppingListItemControllerTest {
 
         when(userService.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
 
-        when(shoppingListItemService.saveUserShoppingListItems(eq(mockUser.getId()), eq(habitId), eq(requestDtoList), eq(language)))
-                .thenReturn(responseDtoList);
+        when(shoppingListItemService.saveUserShoppingListItems(eq(mockUser.getId()), eq(habitId), eq(requestDtoList),
+            eq(language)))
+            .thenReturn(responseDtoList);
 
         mockMvc.perform(post("/user/shopping-list-items?habitId=" + habitId)
-                        .principal(principal)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("[{}]")
-                        .header("Accept-Language", language))
-                .andExpect(status().isCreated())
-                .andDo(print());
+            .principal(principal)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("[{}]")
+            .header("Accept-Language", language))
+            .andExpect(status().isCreated())
+            .andDo(print());
 
         verify(shoppingListItemService, times(1))
-                .saveUserShoppingListItems(eq(mockUser.getId()), eq(habitId), eq(requestDtoList), eq(language));
+            .saveUserShoppingListItems(eq(mockUser.getId()), eq(habitId), eq(requestDtoList), eq(language));
     }
 
     @Test
@@ -183,20 +182,20 @@ class ShoppingListItemControllerTest {
 
         UserVO mockUser = getUserVO();
         when(shoppingListItemService.getUserShoppingList(mockUser.getId(), habitId, language))
-                .thenReturn(Collections.emptyList());
+            .thenReturn(Collections.emptyList());
 
         when(principal.getName()).thenReturn(mockUser.getEmail());
 
         when(userService.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
 
         mockMvc.perform(get("/user/shopping-list-items/habits/{habitId}/shopping-list", habitId)
-                        .principal(principal)
-                        .header("Accept-Language", language))
-                .andExpect(status().isOk())
-                .andDo(print());
+            .principal(principal)
+            .header("Accept-Language", language))
+            .andExpect(status().isOk())
+            .andDo(print());
 
         verify(shoppingListItemService, times(1))
-                .getUserShoppingList(mockUser.getId(), habitId, language);
+            .getUserShoppingList(mockUser.getId(), habitId, language);
     }
 
     @Test
@@ -205,19 +204,18 @@ class ShoppingListItemControllerTest {
 
         UserVO mockUser = getUserVO();
         when(shoppingListItemService.getUserShoppingList(mockUser.getId(), habitId, "en"))
-                .thenReturn(Collections.emptyList());
+            .thenReturn(Collections.emptyList());
         when(principal.getName()).thenReturn(mockUser.getEmail());
         when(userService.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
 
         mockMvc.perform(get("/user/shopping-list-items/habits/{habitId}/shopping-list", habitId)
-                        .principal(principal))
-                .andExpect(status().isOk())
-                .andDo(print());
+            .principal(principal))
+            .andExpect(status().isOk())
+            .andDo(print());
 
         verify(shoppingListItemService, times(1))
-                .getUserShoppingList(mockUser.getId(), habitId, "en");
+            .getUserShoppingList(mockUser.getId(), habitId, "en");
     }
-
 
     @Test
     void findAllByUserTest() throws Exception {
@@ -239,22 +237,22 @@ class ShoppingListItemControllerTest {
         UserVO mockUser = getUserVO();
 
         doNothing().when(shoppingListItemService)
-                .deleteUserShoppingListItemByItemIdAndUserIdAndHabitId(shoppingListItemId, mockUser.getId(), habitId);
+            .deleteUserShoppingListItemByItemIdAndUserIdAndHabitId(shoppingListItemId, mockUser.getId(), habitId);
 
         when(principal.getName()).thenReturn(mockUser.getEmail());
 
         when(userService.findByEmail(mockUser.getEmail())).thenReturn(mockUser);
 
         mockMvc.perform(delete("/user/shopping-list-items")
-                        .principal(principal)
-                        .param("habitId", String.valueOf(habitId))
-                        .param("shoppingListItemId", String.valueOf(shoppingListItemId))
-                        .header("Accept-Language", "en"))
-                .andExpect(status().isOk())
-                .andDo(print());
+            .principal(principal)
+            .param("habitId", String.valueOf(habitId))
+            .param("shoppingListItemId", String.valueOf(shoppingListItemId))
+            .header("Accept-Language", "en"))
+            .andExpect(status().isOk())
+            .andDo(print());
 
         verify(shoppingListItemService, times(1))
-                .deleteUserShoppingListItemByItemIdAndUserIdAndHabitId(shoppingListItemId, mockUser.getId(), habitId);
+            .deleteUserShoppingListItemByItemIdAndUserIdAndHabitId(shoppingListItemId, mockUser.getId(), habitId);
     }
 
 }

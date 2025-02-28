@@ -14,8 +14,9 @@ public class RequestedFriendshipDtoMapper extends AbstractConverter<Friendship, 
 
     @Override
     protected RequestedFriendshipDto convert(Friendship source) {
-        if(Objects.isNull(source) || Objects.isNull(source.getUser()) || Objects.isNull(source.getFriend())) {
-            throw new IllegalArgumentException("RequestedFriendshipDto::convert argument source or user or friend is null");
+        if (Objects.isNull(source) || Objects.isNull(source.getUser()) || Objects.isNull(source.getFriend())) {
+            throw new IllegalArgumentException(
+                "RequestedFriendshipDto::convert argument source or user or friend is null");
         }
         return new RequestedFriendshipDto(source.getUser().getId(), source.getFriend().getId());
     }

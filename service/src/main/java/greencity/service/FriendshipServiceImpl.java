@@ -32,10 +32,10 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     @Autowired
     public FriendshipServiceImpl(
-            FriendshipRepo friendshipRepo,
-            UserRepo userRepo,
-            NotificationService notificationServise,
-            ModelMapper modelMapper) {
+        FriendshipRepo friendshipRepo,
+        UserRepo userRepo,
+        NotificationService notificationServise,
+        ModelMapper modelMapper) {
         this.friendshipRepo = friendshipRepo;
         this.userRepo = userRepo;
         this.notificationService = notificationServise;
@@ -65,8 +65,8 @@ public class FriendshipServiceImpl implements FriendshipService {
         Optional<Friendship> friendshipOptional = getFriendshipByUserIdOrderInsensitive(senderId, recipientId);
         Friendship friendship = friendshipOptional.orElseGet(Friendship::new);
         boolean isNotEligibleForResending = friendshipOptional.isPresent()
-                                            && friendshipOptional.get().getStatus() != FriendshipStatus.CANCELLED
-                                            && friendshipOptional.get().getStatus() != FriendshipStatus.DECLINED;
+            && friendshipOptional.get().getStatus() != FriendshipStatus.CANCELLED
+            && friendshipOptional.get().getStatus() != FriendshipStatus.DECLINED;
 
         if (isNotEligibleForResending || senderId.equals(recipientId)) {
             return false;
@@ -83,7 +83,6 @@ public class FriendshipServiceImpl implements FriendshipService {
         sendNotification(senderId, recipientId, "New Friendship Req.");
         return true;
     }
-
 
     @Override
     public boolean cancelFriendshipRequestByUserId(Long senderId, Long recipientId) {
@@ -145,7 +144,6 @@ public class FriendshipServiceImpl implements FriendshipService {
         return friendshipOptional.isPresent() && friendshipOptional.get().getStatus() == FriendshipStatus.ACCEPTED;
     }
 
-
     @Override
     public boolean blockFriendshipRequestsFromUserById(Long senderId, Long recipientId) {
         Optional<Friendship> friendshipOptional = getFriendshipByUserIdOrderInsensitive(senderId, recipientId);
@@ -159,12 +157,11 @@ public class FriendshipServiceImpl implements FriendshipService {
         return false;
     }
 
-
     @Override
     public List<RequestedFriendshipDto> getAllFriendshipRequestsForUserById(Long recipientId) {
         return friendshipRepo.getFriendshipRequestsByUserId(recipientId).stream()
-                .map(friendship -> modelMapper.map(friendship, RequestedFriendshipDto.class))
-                .toList();
+            .map(friendship -> modelMapper.map(friendship, RequestedFriendshipDto.class))
+            .toList();
     }
 
     protected Optional<Friendship> getFriendshipByUserIdOrderInsensitive(Long userId, Long friendId) {
@@ -173,30 +170,30 @@ public class FriendshipServiceImpl implements FriendshipService {
 
     protected List<FriendCardDto> getAllFriendCardsOfUserById(Long userId) {
         return friendshipRepo.getAllFriendshipsByUserId(userId).stream()
-                .map(friendship -> {
-                    FriendCardDto friendCard = modelMapper.map(friendship.getFriend(), FriendCardDto.class);
-                    friendCard.setMutualFriends(getAmountOfMutualFriends(userId, getFriendId.apply(friendship)));
-                    return friendCard;
-                })
-                .toList();
+            .map(friendship -> {
+                FriendCardDto friendCard = modelMapper.map(friendship.getFriend(), FriendCardDto.class);
+                friendCard.setMutualFriends(getAmountOfMutualFriends(userId, getFriendId.apply(friendship)));
+                return friendCard;
+            })
+            .toList();
     }
 
     protected int getAmountOfMutualFriends(Long userId, Long targetUserId) {
         List<Long> userFriends =
-                new ArrayList<>(friendshipRepo.getAllFriendshipsByUserId(userId).stream().map(getFriendId).toList());
+            new ArrayList<>(friendshipRepo.getAllFriendshipsByUserId(userId).stream().map(getFriendId).toList());
         List<Long> targetFriends =
-                new ArrayList<>(friendshipRepo.getAllFriendshipsByUserId(targetUserId).stream().map(getFriendId).toList());
+            new ArrayList<>(friendshipRepo.getAllFriendshipsByUserId(targetUserId).stream().map(getFriendId).toList());
         userFriends.retainAll(targetFriends);
         return userFriends.size();
     }
 
     private void sendNotification(Long senderId, Long receiverId, String message) {
         NotificationRequestDto notification = NotificationRequestDto.builder()
-                .senderId(senderId)
-                .receiverId(receiverId)
-                .message(message)
-                .section(NotificationSection.GreenCity.name())
-                .build();
+            .senderId(senderId)
+            .receiverId(receiverId)
+            .message(message)
+            .section(NotificationSection.GreenCity.name())
+            .build();
         notificationService.addNotification(notification);
     }
 }

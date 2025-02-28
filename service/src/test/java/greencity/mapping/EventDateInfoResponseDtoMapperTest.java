@@ -15,16 +15,16 @@ public class EventDateInfoResponseDtoMapperTest {
     @Test
     void convertTest() {
         EventDateInfo eventDateInfo = EventDateInfo.builder()
-                .id(1L)
-                .eventDate(LocalDate.of(2025, 1, 1))
-                .eventTimeStart(LocalDateTime.of(2025, 1, 1, 10, 0))
-                .eventTimeEnd(LocalDateTime.of(2025, 1, 1, 12, 0))
-                .isAllDay(false)
-                .isPlace(true)
-                .isOnline(false)
-                .location("Test Location")
-                .numOfDayInEvent(2)
-                .build();
+            .id(1L)
+            .eventDate(LocalDate.of(2025, 1, 1))
+            .eventTimeStart(LocalDateTime.of(2025, 1, 1, 10, 0))
+            .eventTimeEnd(LocalDateTime.of(2025, 1, 1, 12, 0))
+            .isAllDay(false)
+            .isPlace(true)
+            .isOnline(false)
+            .location("Test Location")
+            .numOfDayInEvent(2)
+            .build();
 
         EventDateInfoResponseDto dto = mapper.convert(eventDateInfo);
 

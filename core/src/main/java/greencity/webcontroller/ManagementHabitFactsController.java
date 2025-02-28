@@ -44,7 +44,7 @@ public class ManagementHabitFactsController {
     @Operation(summary = "Get habit facts by id.")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = HabitFactDtoResponse.class))),
+            content = @Content(schema = @Schema(implementation = HabitFactDtoResponse.class))),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN)
     })
     @GetMapping("/find/{id}")
@@ -79,7 +79,7 @@ public class ManagementHabitFactsController {
     @Operation(summary = "Save habit facts")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = HttpStatuses.OK,
-                content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
+            content = @Content(schema = @Schema(implementation = GenericResponseDto.class))),
         @ApiResponse(responseCode = "403", description = HttpStatuses.FORBIDDEN),
     })
     @ResponseBody

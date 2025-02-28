@@ -109,8 +109,8 @@ public class UserServiceImpl implements UserService {
     /**
      * Update {@code ROLE} of user.
      *
-     * @param id   {@link UserVO} id.
-     * @param role {@link Role} for user.
+     * @param id    {@link UserVO} id.
+     * @param role  {@link Role} for user.
      * @param email Email of the user.
      * @return {@link UserRoleDto}
      * @deprecated updates like this on User entity should be handled in

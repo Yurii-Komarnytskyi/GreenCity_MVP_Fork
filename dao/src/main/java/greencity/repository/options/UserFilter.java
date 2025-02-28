@@ -72,7 +72,7 @@ public class UserFilter implements Specification<User> {
     /**
      * return a predicate where {@link User} has status defined in the incoming
      * object.
-     * 
+     *
      * @param r      must not be {@literal null}.
      * @param cb     must not be {@literal null}.
      * @param status status which defiend in object.
@@ -86,7 +86,7 @@ public class UserFilter implements Specification<User> {
     /**
      * return a predicate where {@link User} has status defined in the incoming
      * object.
-     * 
+     *
      * @param r    must not be {@literal null}.
      * @param cb   must not be {@literal null}.
      * @param role role which defiend in object.

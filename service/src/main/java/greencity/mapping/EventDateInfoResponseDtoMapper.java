@@ -10,16 +10,16 @@ public class EventDateInfoResponseDtoMapper extends AbstractConverter<EventDateI
     @Override
     protected EventDateInfoResponseDto convert(EventDateInfo eventDateInfo) {
         return EventDateInfoResponseDto.builder()
-                .id(eventDateInfo.getId())
-                .eventDate(eventDateInfo.getEventDate())
-                .eventTimeStart(eventDateInfo.getEventTimeStart())
-                .eventTimeEnd(eventDateInfo.getEventTimeEnd())
-                .isAllDay(eventDateInfo.isAllDay())
-                .isPlace(eventDateInfo.isPlace())
-                .isOnline(eventDateInfo.isOnline())
-                .location(eventDateInfo.getLocation())
-                .url(eventDateInfo.getUrl())
-                .numOfDayInEvent(eventDateInfo.getNumOfDayInEvent())
-                .build();
+            .id(eventDateInfo.getId())
+            .eventDate(eventDateInfo.getEventDate())
+            .eventTimeStart(eventDateInfo.getEventTimeStart())
+            .eventTimeEnd(eventDateInfo.getEventTimeEnd())
+            .isAllDay(eventDateInfo.isAllDay())
+            .isPlace(eventDateInfo.isPlace())
+            .isOnline(eventDateInfo.isOnline())
+            .location(eventDateInfo.getLocation())
+            .url(eventDateInfo.getUrl())
+            .numOfDayInEvent(eventDateInfo.getNumOfDayInEvent())
+            .build();
     }
 }

@@ -48,18 +48,18 @@ class EventCommentControllerTest {
 
     private static UserVO getUserVO() {
         return UserVO.builder()
-                .id(1L)
-                .email("test@example.com")
-                .name("Test User")
-                .build();
+            .id(1L)
+            .email("test@example.com")
+            .name("Test User")
+            .build();
     }
 
     @BeforeEach
     void setup() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(eventCommentController)
-                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
-                        new UserArgumentResolver(userService, modelMapper))
-                .build();
+            .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver(),
+                new UserArgumentResolver(userService, modelMapper))
+            .build();
     }
 
     @Test
@@ -73,21 +73,21 @@ class EventCommentControllerTest {
 
         when(userService.findByEmail(any())).thenReturn(userVO);
         when(eventCommentService.addComment(anyLong(), eq(userVO.getId()), any(EventCommentRequestDto.class)))
-                .thenReturn(responseDto);
+            .thenReturn(responseDto);
 
         mockMvc.perform(post(EVENT_COMMENT_CONTROLLER_LINK, 1)
-                        .principal(principal)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(requestDto)))
-                .andExpect(status().isCreated());
+            .principal(principal)
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(objectMapper.writeValueAsString(requestDto)))
+            .andExpect(status().isCreated());
     }
 
     @Test
     void addCommentBadRequestTest() throws Exception {
         mockMvc.perform(post(EVENT_COMMENT_CONTROLLER_LINK, 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"text\":\"\"}"))
-                .andExpect(status().isBadRequest());
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"text\":\"\"}"))
+            .andExpect(status().isBadRequest());
     }
 
     @Test
@@ -111,12 +111,12 @@ class EventCommentControllerTest {
         when(eventCommentService.getCommentById(anyLong(), anyLong())).thenReturn(responseDto);
 
         mockMvc.perform(get(EVENT_COMMENT_CONTROLLER_LINK + "/{commentId}", 1, 1)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").exists())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.text").value("Sample comment"));
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.id").exists())
+            .andExpect(jsonPath("$.id").value(1))
+            .andExpect(jsonPath("$.text").value("Sample comment"));
     }
 
     @Test
@@ -131,24 +131,24 @@ class EventCommentControllerTest {
 
         List<EventCommentResponseDto> comments = List.of(responseDto1, responseDto2);
         PageableAdvancedDto<EventCommentResponseDto> pageableResponse = new PageableAdvancedDto<>(
-                comments, comments.size(), 0, 1, 10, false, false, true, true);
+            comments, comments.size(), 0, 1, 10, false, false, true, true);
 
         when(eventCommentService.getCommentsByEvent(anyLong(), anyInt(), anyInt()))
-                .thenReturn(pageableResponse);
+            .thenReturn(pageableResponse);
 
         mockMvc.perform(get(EVENT_COMMENT_CONTROLLER_LINK, 1)
-                        .param("page", "0")
-                        .param("size", "10")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.number").value(0))
-                .andExpect(jsonPath("$.totalElements").value(2))
-                .andExpect(jsonPath("$.content").isArray())
-                .andExpect(jsonPath("$.content.length()").value(2))
-                .andExpect(jsonPath("$.content[0].id").value(1))
-                .andExpect(jsonPath("$.content[0].text").value("Comment 1"))
-                .andExpect(jsonPath("$.content[1].id").value(2))
-                .andExpect(jsonPath("$.content[1].text").value("Comment 2"));
+            .param("page", "0")
+            .param("size", "10")
+            .contentType(MediaType.APPLICATION_JSON)
+            .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.number").value(0))
+            .andExpect(jsonPath("$.totalElements").value(2))
+            .andExpect(jsonPath("$.content").isArray())
+            .andExpect(jsonPath("$.content.length()").value(2))
+            .andExpect(jsonPath("$.content[0].id").value(1))
+            .andExpect(jsonPath("$.content[0].text").value("Comment 1"))
+            .andExpect(jsonPath("$.content[1].id").value(2))
+            .andExpect(jsonPath("$.content[1].text").value("Comment 2"));
     }
 }

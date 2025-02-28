@@ -141,7 +141,7 @@ class CustomShoppingListItemServiceImplTest {
 
         when(customShoppingListItemRepo.findAllCustomShoppingListItemsForUserIdAndHabitIdInProgress(anyLong(),
             anyLong()))
-                .thenReturn(List.of(item));
+            .thenReturn(List.of(item));
         when(modelMapper.map(item, CustomShoppingListItemResponseDto.class)).thenReturn(itemResponseDto);
 
         assertEquals(List.of(itemResponseDto), customShoppingListItemService

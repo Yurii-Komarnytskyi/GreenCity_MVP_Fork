@@ -18,12 +18,12 @@ public class EventLikeServiceImpl implements EventLikeService {
 
     @Override
     public void addLike(EventLikesRequestDto eventLikesRequestDto) {
-        //This method is yet to be implemented
+        // This method is yet to be implemented
     }
 
     @Override
     public void removeLike(Long userId, Long eventId) {
-        //This method is yet to be implemented
+        // This method is yet to be implemented
     }
 
     @Override
@@ -33,20 +33,20 @@ public class EventLikeServiceImpl implements EventLikeService {
 
     @Override
     public EventLikesResponseDto getLikesByUserId(Long userId) {
-        //This method is yet to be implemented
+        // This method is yet to be implemented
         return null;
     }
 
     @Override
     public List<EventLikesResponseDto> getAllLikes() {
-        //This method is yet to be implemented
+        // This method is yet to be implemented
         return List.of();
     }
 
     @Override
     public long countLikes(long eventId) {
         eventRepo.findById(eventId)
-                .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
+            .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + eventId));
 
         return eventLikesRepo.countLikesByEventId(eventId);
     }

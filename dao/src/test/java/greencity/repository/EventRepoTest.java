@@ -28,13 +28,13 @@ import static org.mockito.Mockito.when;
 
 @DataJpaTest
 @TestPropertySource(properties = {
-        "spring.test.database.replace=NONE",
-        "spring.datasource.url=jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
-        "spring.datasource.username=sa",
-        "spring.datasource.password=",
-        "spring.jpa.hibernate.ddl-auto=update",
-        "spring.sql.init.mode=never",
-        "spring.liquibase.enabled=false"
+    "spring.test.database.replace=NONE",
+    "spring.datasource.url=jdbc:h2:mem:test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH",
+    "spring.datasource.username=sa",
+    "spring.datasource.password=",
+    "spring.jpa.hibernate.ddl-auto=update",
+    "spring.sql.init.mode=never",
+    "spring.liquibase.enabled=false"
 })
 public class EventRepoTest {
 
@@ -246,7 +246,8 @@ public class EventRepoTest {
         assertEquals(1, onlineEvents.getContent().size());
         assertEquals("Online Event", onlineEvents.getContent().get(0).getTitle());
 
-        Page<Event> offlineEvents = eventRepo.findEventsByAuthorAndFirstDayOnlineStatus(author.getId(), false, pageable);
+        Page<Event> offlineEvents =
+            eventRepo.findEventsByAuthorAndFirstDayOnlineStatus(author.getId(), false, pageable);
         assertEquals(1, offlineEvents.getContent().size());
         assertEquals("Offline Event", offlineEvents.getContent().get(0).getTitle());
     }
