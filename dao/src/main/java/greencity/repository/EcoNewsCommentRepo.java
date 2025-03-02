@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface EcoNewsCommentRepo extends JpaRepository<EcoNewsComment, Long> {
     /**
@@ -56,8 +58,8 @@ public interface EcoNewsCommentRepo extends JpaRepository<EcoNewsComment, Long> 
      * @return count of comments, specified by {@link greencity.entity.EcoNews}
      */
     @Query(value = "SELECT count(ec.id) FROM econews_comment ec "
-        + "JOIN eco_news en ON en.id = ec.eco_news_id "
-        + "WHERE en.id = :ecoNewsId AND ec.deleted <> 'true'", nativeQuery = true)
+            + "JOIN eco_news en ON en.id = ec.eco_news_id "
+            + "WHERE en.id = :ecoNewsId AND ec.deleted <> 'true'", nativeQuery = true)
     int countEcoNewsCommentByEcoNews(Long ecoNewsId);
 
     /**
@@ -83,4 +85,6 @@ public interface EcoNewsCommentRepo extends JpaRepository<EcoNewsComment, Long> 
      */
     Page<EcoNewsComment> findAllByParentCommentIdAndDeletedFalseOrderByCreatedDateDesc(Pageable pageable,
         Long parentCommentId);
+
+    List<EcoNewsComment> findAllByUserId(Long userId);
 }

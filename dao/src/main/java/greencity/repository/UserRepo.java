@@ -13,6 +13,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -142,4 +143,13 @@ public interface UserRepo extends JpaRepository<User, Long>, JpaSpecificationExe
         + "(SELECT user_id FROM users_friends WHERE friend_id = :userId and status = 'FRIEND')"
         + "UNION (SELECT friend_id FROM users_friends WHERE user_id = :userId and status = 'FRIEND'));")
     List<User> getAllUserFriends(Long userId);
+
+    /**
+     * Retrieves a list of all {@link User} entities that reside in the specified city.
+     *
+     * @param city the name of the city for which to find users.
+     * @return a list of {@link User} entities located in the given city.
+     *         If no users are found, an empty list is returned.
+     */
+    List<User> findAllByCity(String city);
 }

@@ -2,22 +2,21 @@ package greencity.service;
 
 import greencity.dto.PageableDto;
 import greencity.dto.friendship.FriendCardDto;
+import greencity.dto.friendship.FriendshipVO;
+import greencity.dto.friendship.FriendshipsFilterRequestDto;
 import greencity.dto.friendship.RequestedFriendshipDto;
 import greencity.dto.user.UserVO;
 import greencity.enums.FriendshipStatus;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface FriendshipService {
 
-    /**
-     * Retrieves a list of all friends for a specified user.
-     *
-     * @param id the ID of the user for whom to retrieve friends
-     * @return a list of FriendCardDto objects representing the user's friends
-     */
-    List<FriendCardDto> getAllFriendsByUserId(Long id);
+    PageableDto<FriendCardDto> getAllFriendsByUserId(
+            Long userId,
+            FriendshipsFilterRequestDto friendshipsFilterRequest);
 
     /**
      * Retrieves a list of all friendship requests for a specified user. This method
@@ -40,12 +39,19 @@ public interface FriendshipService {
     List<FriendCardDto> getAllMutualFriendsByUserId(Long userId, Long targetUserId);
 
     /**
-     * Proposes a page of potential friends for a specified user based on criteria.
+     * Recommends friends for a user based on certain criteria, providing the results in a paginated format.
      *
-     * @param user the UserVO object for whom to propose friends
-     * @return a list of FriendCardDto objects representing proposed friends
+     * This method retrieves potential friends for the user identified by the given user ID.
+     * The results are paginated according to the specified Pageable parameter, allowing clients
+     * to receive portions of the results rather than the entire list at once.
+     *
+     * @param pageable a Pageable object containing pagination information such as page number and size
+     * @param userId the ID of the user for whom friend recommendations are being generated
+     * @return a PageableDto containing a list of FriendCardDto objects representing the recommended friends,
+     *         along with information about the total number of elements and total pages available
      */
-    PageableDto<FriendCardDto> recommendFriendsForUser(UserVO user);
+
+    PageableDto<FriendCardDto> recommendFriendsForUser(Pageable pageable, Long userId );
 
     /**
      * Sends a friendship request from one user to another.
@@ -125,4 +131,7 @@ public interface FriendshipService {
      */
     boolean blockFriendshipRequestsFromUserById(Long senderId, Long recipientId);
 
+    Optional<FriendshipVO> findFriendshipByParticipantsId(Long userId, Long friendId);
+
+    Optional<FriendshipVO> findFriendshipById(Long friendshipId);
 }

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 import java.util.Objects;
+import java.util.Optional;
 
 @Builder
 public class FriendCardDto {
@@ -13,6 +14,8 @@ public class FriendCardDto {
     @Min(1)
     @NotNull
     private Long id;
+
+    private Optional<Long> friendshipId;
 
     @NotEmpty
     private String profilePicturePath;
@@ -32,13 +35,15 @@ public class FriendCardDto {
     }
 
     public FriendCardDto(
-        Long id,
-        String profilePicturePath,
-        String name,
-        Double rating,
-        String city,
-        int mutualFriends) {
+            Long id,
+            Optional<Long> friendshipId,
+            String profilePicturePath,
+            String name,
+            Double rating,
+            String city,
+            int mutualFriends) {
         this.id = id;
+        this.friendshipId = friendshipId;
         this.profilePicturePath = profilePicturePath;
         this.name = name;
         this.rating = rating;
@@ -52,6 +57,14 @@ public class FriendCardDto {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Optional<Long> getFriendshipId() {
+        return friendshipId;
+    }
+
+    public void setFriendshipId(Optional<Long> friendshipId) {
+        this.friendshipId = friendshipId;
     }
 
     public String getProfilePicturePath() {
